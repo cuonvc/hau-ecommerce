@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: HAU-ECOMMERCE
+  data:
+    mongodb:
+      uri: mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}
