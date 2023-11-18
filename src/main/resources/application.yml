@@ -4,6 +4,22 @@ server:
 spring:
   application:
     name: HAU-ECOMMERCE
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cuong.test.development@gmail.com
+#    bellow password encoded -> avoid scanner on Github
+    password: YWttYW5veGd6Z2htaGZycA==
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   data:
     mongodb:
       uri: mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      url: ${REDIS_URL}

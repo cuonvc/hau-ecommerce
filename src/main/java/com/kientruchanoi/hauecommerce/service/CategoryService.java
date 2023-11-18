@@ -6,7 +6,6 @@ import com.kientruchanoi.hauecommerce.payload.repsonse.CategoryResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface CategoryService {
     ResponseEntity<BaseResponse<CategoryResponse>> create(CategoryDto categoryDto);
 

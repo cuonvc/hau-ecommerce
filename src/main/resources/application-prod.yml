@@ -1,3 +1,7 @@
-DB_HOST: localhost
+DB_HOST: host.docker.internal
 DB_PORT: 27017
 DB_NAME: hau-ecommerce
+
+REDIS_HOST: redis
+REDIS_PORT: 6379
+REDIS_URL: redis://redis:6379

@@ -3,6 +3,7 @@ package com.kientruchanoi.hauecommerce.mapper;
 import com.kientruchanoi.hauecommerce.entity.Category;
 import com.kientruchanoi.hauecommerce.payload.dto.CategoryDto;
 import com.kientruchanoi.hauecommerce.payload.repsonse.CategoryResponse;
+import com.kientruchanoi.hauecommerce.utils.Constants;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ public interface CategoryMapper {
 //        if (path != null) {
 //            return path;
 //        }
-        return "http://localhost:8080/resource/" + path;
+        return Constants.BASE_RESOURCE_DOMAIN + path;
     }
 
 }

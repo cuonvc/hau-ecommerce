@@ -30,8 +30,6 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
-    private static final String CATEGORY_IMAGE_REQUEST = "category-image-request";
-
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final ResponseFactory responseFactory;
