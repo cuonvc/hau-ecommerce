@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+
+  hau-ecommerce:
+    container_name: hau-ecommerce
+    image: cuonvc/hau-ecommerce
+    build: .
+    ports:
+      - "8080:8080"
+
+  redis:
+    container_name: redis
+    image: "redis"
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-config/redis.conf:/tmp/redis.conf
+    command: redis-server
+
+volumes:
+  redis_data:
