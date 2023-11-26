@@ -17,8 +17,6 @@ public class CategoryDto {
 
     private String id;
 
-    private String parentId;
-
     @NotNull
     @NotBlank(message = "Tên không được để trống")
     @NotEmpty

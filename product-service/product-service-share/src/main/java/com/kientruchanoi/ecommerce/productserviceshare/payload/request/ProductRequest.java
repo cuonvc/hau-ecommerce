@@ -33,6 +33,8 @@ public class ProductRequest {
 
     private LocalDateTime saleExpireAt;
 
+    private Integer remaining;
+
     @Size(min = 1, max = 5, message = "Categories phải có ít nhất 1 item")
     private List<String> categoryIds;
 

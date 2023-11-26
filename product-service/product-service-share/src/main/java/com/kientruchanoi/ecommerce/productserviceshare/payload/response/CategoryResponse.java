@@ -17,8 +17,6 @@ public class CategoryResponse {
 
     private String id;
 
-    private Set<CategoryResponse> children;
-
     private String name;
 
     private String description;
@@ -26,11 +24,4 @@ public class CategoryResponse {
     private String imageUrl;
 
     private Status isActive;
-
-    public void addChildren(CategoryResponse child) {
-        if (children == null) {
-            children = new HashSet<>();
-        }
-        children.add(child);
-    }
 }

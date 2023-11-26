@@ -1,0 +1,44 @@
+server:
+  port: 8083
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_CLIENT_HOST}:${EUREKA_CLIENT_PORT}/eureka/
+
+spring:
+  application:
+    name: RESOURCE-SERVICE
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      auto-offset-reset: earliest
+  cloud:
+    function:
+      definition:
+        "userAvatarHandle;\
+          productImageHandle;\
+          categoryImageHandle"
+    stream:
+      bindings:
+        userAvatarHandle-in-0:
+          destination: user-avatar-request
+        userAvatarHandle-out-0:
+          destination: user-avatar-response
+        productImageHandle-in-0:
+          destination: product-image-request
+        productImageHandle-out-0:
+          destination: product-image-response
+        categoryImageHandle-in-0:
+          destination: category-image-request
+        categoryImageHandle-out-0:
+          destination: category-image-response
+      #        testHandler-in-0:
+      #          destination: file-topic-after
+      kafka:
+        binder:
+          brokers: ${KAFKA_HOST}:${KAFKA_PORT}
+
+    compatibility-verifier:
+      enabled: false

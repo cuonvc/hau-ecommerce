@@ -22,9 +22,9 @@ public class ProductResponse {
     private Double salePrice;
     private String code;
     private String description;
+    private Integer remaining;
     private List<ProductResourceResponse> resources;
     private String brand;
     private Set<CategoryDto> categories;
-    private String commodityId;
     private UserResponse user;
 }
