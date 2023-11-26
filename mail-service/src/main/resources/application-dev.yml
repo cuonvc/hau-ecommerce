@@ -1,10 +1,6 @@
 EUREKA_CLIENT_HOST: localhost
 EUREKA_CLIENT_PORT: 8761
 
-DB_HOST: localhost
-DB_PORT: 27017
-DB_NAME: ecommerce-auth-db
-
 KAFKA_HOST: localhost
 KAFKA_PORT: 9092
 

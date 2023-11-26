@@ -1,7 +1,5 @@
 package com.kientruchanoi.ecommerce.authservicecore.controller;
 
-//import com.lender.authservice.payload.response.BaseResponse;
-
 import com.kientruchanoi.ecommerce.authservicecore.service.TokenService;
 import com.kientruchanoi.ecommerce.authservicecore.service.UserService;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.request.LoginRequest;

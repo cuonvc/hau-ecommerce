@@ -23,7 +23,7 @@ public class ProfileRequest {
     private String lastName;
 
 //    @NotBlank
-    private Gender gender;
+    private String gender;
 
     @Size(min = 1, max = 100, message = "About me must be minimum 1 characters and maximum 100 characters")
     private String about;

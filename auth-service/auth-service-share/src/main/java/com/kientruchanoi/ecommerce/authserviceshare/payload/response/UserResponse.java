@@ -19,13 +19,13 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private Gender gender;
+    private String gender;
     private String avatarUrl;
     private String about;
     private String city;
     private String detailAddress;
-    private Role role;
+    private String role;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
-    private Status status;
+    private String status;
 }
