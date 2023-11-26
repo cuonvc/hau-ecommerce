@@ -1,0 +1,6 @@
+EUREKA_CLIENT_HOST: eureka-server
+EUREKA_CLIENT_PORT: 8761
+
+AUTH_URI: auth-service
+PRODUCT_URI: product-service
+RESOURCE_URI: resource-service

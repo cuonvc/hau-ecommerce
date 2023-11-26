@@ -1,0 +1,6 @@
+EUREKA_CLIENT_HOST: localhost
+EUREKA_CLIENT_PORT: 8761
+
+AUTH_URI: localhost
+PRODUCT_URI: localhost
+RESOURCE_URI: localhost

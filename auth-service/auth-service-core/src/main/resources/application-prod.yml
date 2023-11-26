@@ -1,0 +1,13 @@
+EUREKA_CLIENT_HOST: eureka-server
+EUREKA_CLIENT_PORT: 8761
+
+DB_HOST: host.docker.internal
+DB_PORT: 27017
+DB_NAME: auth-db
+
+KAFKA_HOST: kafka
+KAFKA_PORT: 9092
+
+REDIS_HOST: redis
+REDIS_PORT: 6379
+REDIS_URL: redis://redis:6379
