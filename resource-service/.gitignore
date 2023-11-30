@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 
 /image
+key.txt
 
 ### STS ###
 .apt_generated
