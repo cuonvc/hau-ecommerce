@@ -80,4 +80,17 @@ public class ProductController {
         return productService.findAllByOwner(pageNo, pageSize, sortBy, sortDir);
     }
 
+    @GetMapping("/shop/view/{id}")
+    public ResponseEntity<BaseResponse<PageResponseProduct>> getByShop(@PathVariable("id") String id,
+                                                                       @RequestParam(value = "pageNo",
+                                                                               defaultValue = PageConstant.PAGE_NO, required = false) Integer pageNo,
+                                                                        @RequestParam(value = "pageSize",
+                                                                                defaultValue = PageConstant.PAGE_SIZE, required = false) Integer pageSize,
+                                                                        @RequestParam(value = "sortBy",
+                                                                                defaultValue = PageConstant.SORT_BY, required = false) String sortBy,
+                                                                        @RequestParam(value = "sortDir",
+                                                                                defaultValue = PageConstant.SORT_DIR, required = false) String sortDir) {
+        return productService.findAllByShop(id, pageNo, pageSize, sortBy, sortDir);
+    }
+
 }

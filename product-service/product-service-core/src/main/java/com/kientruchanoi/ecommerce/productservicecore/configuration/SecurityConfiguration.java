@@ -27,7 +27,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/product/moderator/*").hasAnyAuthority("ROOT", "ADMIN", "MODERATOR")
                         .requestMatchers("/api/product/admin/*").hasAnyAuthority("ROOT", "ADMIN")
                         .requestMatchers("/api/product/root/*").hasAnyAuthority("ROOT")
-                        .requestMatchers("/api/product/view/*", "/api/internal/**").permitAll()
+                        .requestMatchers("/api/product/view/*", "/api/product/shop/view/*", "/api/internal/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)

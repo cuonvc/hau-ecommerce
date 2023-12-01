@@ -103,17 +103,5 @@ services:
       - kafka
       - zookeeper
 
-  resource-service:
-    container_name: resource-service-hau
-    image: cuonvc/resource-service-hau:v1.0
-    networks:
-      - ecommerce-network
-    ports:
-      - "8083:8083"
-    environment:
-      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-    depends_on:
-      - kafka
-
 volumes:
   redis_data:

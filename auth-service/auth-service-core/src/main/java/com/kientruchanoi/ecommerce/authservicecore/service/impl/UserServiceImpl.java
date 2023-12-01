@@ -12,6 +12,7 @@ import com.kientruchanoi.ecommerce.authservicecore.payload.request.PasswordChang
 import com.kientruchanoi.ecommerce.authservicecore.payload.request.RenewPasswordRequest;
 import com.kientruchanoi.ecommerce.authservicecore.repository.RefreshTokenRepository;
 import com.kientruchanoi.ecommerce.authservicecore.repository.UserRepository;
+import com.kientruchanoi.ecommerce.authservicecore.service.FileImageService;
 import com.kientruchanoi.ecommerce.authservicecore.service.TokenService;
 import com.kientruchanoi.ecommerce.authservicecore.service.UserService;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Role;
@@ -72,6 +73,7 @@ public class UserServiceImpl implements UserService {
     private final StreamBridge streamBridge;
     private final RedisTemplate<RegRequest, String> redisTemplateObject;
     private final RedisTemplate<String, String> redisTemplateString;
+    private final FileImageService fileImageService;
 
     @Override
     public ResponseEntity<BaseResponse<String>> register(RegRequest request) {
@@ -186,7 +188,6 @@ public class UserServiceImpl implements UserService {
         streamBridge.send("password-forgot", message);
         return responseFactory.success("Mã xác nhận đã được gửi tới email ", email);
     }
-
     @Override
     public ResponseEntity<BaseResponse<String>> renewPassword(RenewPasswordRequest request) {
 
@@ -262,18 +263,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<String>> uploadAvatar(MultipartFile file) throws IOException {
+    public ResponseEntity<BaseResponse<UserResponse>> uploadAvatar(MultipartFile file) throws IOException {
         CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Message<FileObjectRequest> requestMessage = MessageBuilder
-                .withPayload(FileObjectRequest.builder()
-                        .field(AVATAR)
-                        .fileBytes(file.getBytes())
-                        .build())
-                .setHeader(KafkaHeaders.KEY, userDetail.getId().getBytes())
-                .build();
-
-        streamBridge.send("user-avatar-request", requestMessage);
-        return responseFactory.success("Pending", "Upload avatar thành công");
+        String url = fileImageService.saveImageFile(file.getBytes());
+        User user = userRepository.findById(userDetail.getId())
+                .orElseThrow(() -> new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "error"));
+        user.setAvatarUrl(url);
+        return responseFactory.success("Cập nhật ảnh đại diện thành công.",
+                userMapper.entityToResponse(user));
     }
 
     @Override

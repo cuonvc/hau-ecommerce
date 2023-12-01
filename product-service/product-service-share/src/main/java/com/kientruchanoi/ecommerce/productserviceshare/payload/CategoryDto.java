@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +28,7 @@ public class CategoryDto {
     @NotNull
     @NotBlank(message = "Ảnh không được để trống")
     @NotEmpty
-    private String imageValue;
+    private MultipartFile multipartFile;
 
     private Status isActive;
 }

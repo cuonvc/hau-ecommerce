@@ -11,6 +11,7 @@ import com.kientruchanoi.ecommerce.productservicecore.mapper.CategoryMapper;
 import com.kientruchanoi.ecommerce.productservicecore.repository.CategoryRepository;
 import com.kientruchanoi.ecommerce.productservicecore.repository.custom.CategoryCustomRepository;
 import com.kientruchanoi.ecommerce.productservicecore.service.CategoryService;
+import com.kientruchanoi.ecommerce.productservicecore.service.FileImageService;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.CategoryDto;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.CategoryResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.PageResponseCategory;
@@ -42,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
     private final ResponseFactory responseFactory;
     private final StreamBridge streamBridge;
+    private final FileImageService fileImageService;
 
     @Override
     public ResponseEntity<BaseResponse<CategoryResponse>> create(CategoryDto dto) {
@@ -50,11 +52,12 @@ public class CategoryServiceImpl implements CategoryService {
         if (!isBase64Image(dto.getImageValue())) {
             return responseFactory.fail(HttpStatus.BAD_REQUEST, "Base64 image invalid", null);
         }
-        Category category = categoryRepository.save(categoryMapper.dtoToEntity(dto));
-        CategoryResponse response = categoryMapper.entityToResponse(category);
-
-        storeImage(category.getId(), dto.getImageValue());
-        return responseFactory.success("Success", response);
+        Category category = categoryMapper.dtoToEntity(dto);
+        category.setImageUrl(
+                fileImageService.saveImageFile(Base64.getDecoder()
+                        .decode(dto.getImageValue())));
+        return responseFactory.success("Success",
+                categoryMapper.entityToResponse(categoryRepository.save(category)));
     }
 
     @Override
@@ -67,10 +70,11 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         categoryMapper.dtoToEntity(categoryDto, category);
+        category.setImageUrl(
+                fileImageService.saveImageFile(Base64.getDecoder()
+                        .decode(categoryDto.getImageValue())));
         category = categoryRepository.save(category);
         CategoryResponse response = categoryMapper.entityToResponse(category);
-
-        storeImage(category.getId(), categoryDto.getImageValue());
         return responseFactory.success("Success", response);
     }
 
@@ -81,17 +85,6 @@ public class CategoryServiceImpl implements CategoryService {
         } catch (IOException e) {
             throw new APIException(HttpStatus.BAD_REQUEST, "Base64 Image invalid");
         }
-    }
-
-    private void storeImage(String categoryId, String base64Image) {
-        Message<FileObjectRequest> message = MessageBuilder
-                .withPayload(FileObjectRequest.builder()
-                        .fileBytes(Base64.getDecoder().decode(base64Image))
-                        .build())
-                .setHeader(KafkaHeaders.KEY, categoryId.getBytes())
-                .build();
-
-        streamBridge.send(CATEGORY_IMAGE_REQUEST, message);
     }
 
     private Category validateCategory(String field, String value) {

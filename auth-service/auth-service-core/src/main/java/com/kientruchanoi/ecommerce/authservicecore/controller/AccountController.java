@@ -11,6 +11,7 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,7 +62,7 @@ public class AccountController {
     }
 
     @PutMapping("/account/avatar")
-    public ResponseEntity<BaseResponse<String>> uploadAvatar(@RequestPart(name = "image") MultipartFile file) {
+    public ResponseEntity<BaseResponse<UserResponse>> uploadAvatar(@RequestPart(name = "image") MultipartFile file) {
         try {
             return userService.uploadAvatar(file);
         } catch (IOException e) {

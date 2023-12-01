@@ -6,6 +6,11 @@ eureka:
     serviceUrl:
       defaultZone: http://${EUREKA_CLIENT_HOST}:${EUREKA_CLIENT_PORT}/eureka/
 
+application:
+  firebase:
+    bucket-name: lender-394509.appspot.com
+    image-url: "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media"
+
 spring:
   application:
     name: PRODUCT-SERVICE

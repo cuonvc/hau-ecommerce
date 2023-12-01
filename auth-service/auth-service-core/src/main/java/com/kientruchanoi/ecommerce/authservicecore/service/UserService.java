@@ -37,7 +37,7 @@ public interface UserService {
 
     ResponseEntity<BaseResponse<PageResponseUsers>> getAll(Integer pageNo, Integer pageSize, String sortBy, String sortDir);
 
-    ResponseEntity<BaseResponse<String>> uploadAvatar(MultipartFile file) throws IOException;
+    ResponseEntity<BaseResponse<UserResponse>> uploadAvatar(MultipartFile file) throws IOException;
 
     void saveChangeImage(String userId, String field, String path);
 

@@ -26,6 +26,9 @@ public interface ProductService {
     ResponseEntity<BaseResponse<PageResponseProduct>> findAll(Integer pageNo, Integer pageSize, String sortBy, String sortDir);
 
     ResponseEntity<BaseResponse<PageResponseProduct>> findAllByOwner(Integer pageNo, Integer pageSize, String sortBy, String sortDir);
+
+    ResponseEntity<BaseResponse<PageResponseProduct>> findAllByShop(String userId, Integer pageNo, Integer pageSize, String sortBy, String sortDir);
+
 //    ResponseEntity<BaseResponse<String>> delete(String id);
 //
 //    ResponseEntity<BaseResponse<ProductResponse>> restore(String id);

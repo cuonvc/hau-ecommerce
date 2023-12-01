@@ -14,6 +14,7 @@ import com.kientruchanoi.ecommerce.productservicecore.exception.ResourceNotFound
 import com.kientruchanoi.ecommerce.productservicecore.mapper.ProductMapper;
 import com.kientruchanoi.ecommerce.productservicecore.repository.CategoryRepository;
 import com.kientruchanoi.ecommerce.productservicecore.repository.ProductRepository;
+import com.kientruchanoi.ecommerce.productservicecore.service.FileImageService;
 import com.kientruchanoi.ecommerce.productservicecore.service.ProductResourceService;
 import com.kientruchanoi.ecommerce.productservicecore.service.ProductService;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.request.ProductRequest;
@@ -58,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
     private final StreamBridge streamBridge;
     private final RestTemplate restTemplate;
     private final ProductResourceService productResourceService;
+    private final FileImageService fileImageService;
 
     @Override
     public ResponseEntity<BaseResponse<ProductResponse>> create(ProductRequest request) {
@@ -79,48 +81,35 @@ public class ProductServiceImpl implements ProductService {
         product.setUserId(userDetail.getId());
         productRepository.save(product);
 
-        List<ProductResource> resources = productResourceService.initResources(product);
-        handleMapResource(request, product, resources);
-
+        List<ProductResource> resources = productResourceService.initResources(product, request.getResources());
         product.setResources(new HashSet<>(resources));
-        product.getResources().forEach(resource -> resource.setImageUrl(""));
 
-        ProductResponse response = productMapper.entityToResponse(product);
+        ProductResponse response = productMapper.entityToResponse(productRepository.save(product));
         response.setResources(productResourceService.getImageUrls(product.getId()));
-
-
 
         return responseFactory.success("Tạo thành công", response);
     }
 
-    private void handleMapResource(ProductRequest request, Product product, List<ProductResource> resources) {
-        int sizeRequest = request.getResources().size();
-        if (sizeRequest < 5) {
-            IntStream.range(0, 5 - sizeRequest)
-                    .forEach(item -> request.getResources().add(ProductResourceRequest.builder()
-                            .id(null)
-                            .imageValue("")
-                            .build()));
-        }
+//    private List<String> handleMapResource(ProductRequest request, Product product, List<ProductResource> resources) {
+//        int sizeRequest = request.getResources().size();
+//        if (sizeRequest < 5) {
+//            IntStream.range(0, 5 - sizeRequest)
+//                    .forEach(item -> request.getResources().add(ProductResourceRequest.builder()
+//                            .id(null)
+//                            .imageValue("")
+//                            .build()));
+//        }
+//
+//        return IntStream.range(0, resources.size()).mapToObj(index -> {
+//            String imageValue = request.getResources().get(index).getImageValue();
+//            resources.get(index).setImageUrl(imageValue);
+//            return uploadImage(product.getId(), resources.get(index).getId(), imageValue);
+//        }).collect(Collectors.toList());
+//    }
 
-        IntStream.range(0, resources.size()).forEach(index -> {
-            String imageValue = request.getResources().get(index).getImageValue();
-            resources.get(index).setImageUrl(imageValue);
-            uploadImage(product.getId(), resources.get(index).getId(), imageValue);
-        });
-    }
-
-    private void uploadImage(String productId, String resourceId, String imageValue) {
-        Message<FileObjectRequest> message = MessageBuilder
-                .withPayload(FileObjectRequest.builder()
-                        .field(THUMB)
-                        .fileBytes(Base64.getDecoder().decode(imageValue))
-                        .build())
-                .setHeader(KafkaHeaders.KEY, (productId + "/" + resourceId).getBytes())
-                .build();
-
-        streamBridge.send("product-image-request", message);
-    }
+//    private String uploadImage(String productId, String resourceId, String imageValue) {
+//        return fileImageService.saveImageFile(Base64.getDecoder().decode(imageValue));
+//    }
 
     @Override
     public ResponseEntity<BaseResponse<ProductResponse>> update(String id, ProductRequest request) {
@@ -147,11 +136,11 @@ public class ProductServiceImpl implements ProductService {
 //        resourceService.clearImagePath(product.getId());
         productMapper.requestToEntity(request, product);
         product.setCategories(categories);
-        handleMapResource(request, product, productResourceService.getByProduct(product));
+        List<ProductResource> newResources = productResourceService.updateResources(product, request.getResources());
+        product.setResources(new HashSet<>(newResources));
 
-        product = productRepository.save(product);
-
-        return responseFactory.success("Cập nhật thành công", productMapper.entityToResponse(product));
+        return responseFactory.success("Cập nhật thành công",
+                productMapper.entityToResponse(productRepository.save(product)));
     }
 
     private boolean isBase64Image(String data) {
@@ -259,6 +248,17 @@ public class ProductServiceImpl implements ProductService {
         return responseFactory.success("Success", paging(productPage));
     }
 
+    @Override
+    public ResponseEntity<BaseResponse<PageResponseProduct>> findAllByShop(String userId, Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        Page<Product> productPage = productRepository.findByUserId(pageable, userId, Status.ACTIVE);
+
+        return responseFactory.success("Success", paging(productPage));
+    }
 
     private PageResponseProduct paging(Page<Product> productPage) {
         List<ProductResponse> productResponses = productPage.getContent().stream()
