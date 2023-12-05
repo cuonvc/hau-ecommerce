@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
@@ -66,6 +68,11 @@ public class ProductController {
                                                                           @RequestParam(value = "sortDir",
                                                                                   defaultValue = PageConstant.SORT_DIR, required = false) String sortDir) {
         return productService.findAll(pageNo, pageSize, sortBy, sortDir);
+    }
+
+    @GetMapping("/view/search")
+    public ResponseEntity<BaseResponse<List<ProductResponse>>> search(@RequestParam("keyword") String keyword) {
+        return productService.filterByKeyword(keyword);
     }
 
     @GetMapping("/owner")

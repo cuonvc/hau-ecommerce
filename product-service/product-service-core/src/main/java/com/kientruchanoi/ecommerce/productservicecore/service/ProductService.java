@@ -8,6 +8,7 @@ import com.kientruchanoi.ecommerce.productserviceshare.payload.response.PageResp
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.Set;
 
 public interface ProductService {
@@ -24,6 +25,8 @@ public interface ProductService {
     ResponseEntity<BaseResponse<PageResponseProduct>> findAllByActive(Integer pageNo, Integer pageSize, String sortBy, String sortDir);
 
     ResponseEntity<BaseResponse<PageResponseProduct>> findAll(Integer pageNo, Integer pageSize, String sortBy, String sortDir);
+
+    ResponseEntity<BaseResponse<List<ProductResponse>>> filterByKeyword(String keyword);
 
     ResponseEntity<BaseResponse<PageResponseProduct>> findAllByOwner(Integer pageNo, Integer pageSize, String sortBy, String sortDir);
 

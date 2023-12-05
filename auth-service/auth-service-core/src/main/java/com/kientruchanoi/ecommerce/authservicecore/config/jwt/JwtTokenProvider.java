@@ -19,7 +19,7 @@ import java.util.Map;
 public class JwtTokenProvider {
 
     private static final String SECRET_KEY = "SnNvbiB3ZWIgdG9rZW4gZm9yIG1pY3Jvc2VydmljZSBwcm9qZWN0";
-    private static final int expireTime = 3600000;
+    private static final Long expireTime = 7776000000L; //3-months
 
     private final UserRepository userRepository;
 

@@ -6,8 +6,10 @@ import com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,6 +22,10 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     Page<Product> findByIsActive(Pageable pageable, Status status);
 
     Page<Product> findByUserId(Pageable pageable, String userId, Status status);
+
+    List<Product> findByNameMatchesRegexOrBrandMatchesRegex(String nameKeyWord, String desKeyword);
+
+    List<Product> findByNameRegexOrBrandRegex(String name, String brand);
 
     Optional<Product> findByResources(ProductResource productResource);
 

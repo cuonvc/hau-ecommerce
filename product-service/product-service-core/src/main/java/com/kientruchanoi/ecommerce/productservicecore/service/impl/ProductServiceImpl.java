@@ -235,6 +235,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ResponseEntity<BaseResponse<List<ProductResponse>>> filterByKeyword(String keyword) {
+        List<Product> resultSearch = productRepository.findByNameMatchesRegexOrBrandMatchesRegex(keyword, keyword);
+
+        List<ProductResponse> responses = resultSearch.stream()
+                .map(product -> {
+                    ProductResponse response = productMapper.entityToResponse(product);
+                    response.setResources(resourceService.getImageUrls(response.getId()));
+                    response.setUser(getUserInfo(product.getUserId()));
+                    return response;
+                })
+                .toList();
+
+        return responseFactory.success("Success", responses);
+    }
+
+    @Override
     public ResponseEntity<BaseResponse<PageResponseProduct>> findAllByOwner(Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
         CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
