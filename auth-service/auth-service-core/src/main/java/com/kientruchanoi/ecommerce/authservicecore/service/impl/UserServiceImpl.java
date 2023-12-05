@@ -137,6 +137,7 @@ public class UserServiceImpl implements UserService {
                 .accessToken(accessToken)
                 .tokenType("Bearer")
                 .refreshToken(tokenMapper.mapToDto(refreshToken))
+                .userResponse(userMapper.entityToResponse(user))
                 .build();
 
         return responseFactory.success("Success", response);
