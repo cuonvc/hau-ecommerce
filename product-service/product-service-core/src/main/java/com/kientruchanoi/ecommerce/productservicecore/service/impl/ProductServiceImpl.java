@@ -247,7 +247,7 @@ public class ProductServiceImpl implements ProductService {
                 })
                 .toList();
 
-        return responseFactory.success("Success", responses);
+        return responseFactory.success("Ok", responses);
     }
 
     @Override
