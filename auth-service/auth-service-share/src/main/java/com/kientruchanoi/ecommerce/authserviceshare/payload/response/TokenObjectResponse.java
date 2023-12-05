@@ -14,4 +14,5 @@ public class TokenObjectResponse {
     private String accessToken;
     private String tokenType = "Bearer";
     private RefreshTokenDto refreshToken;
+    private UserResponse userResponse;
 }
