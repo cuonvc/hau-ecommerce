@@ -14,4 +14,8 @@ public interface OrderService {
     ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
 
     ResponseEntity<BaseResponse<String>> cancel(String id);
+
+    ResponseEntity<BaseResponse<String>> accept(String id);
+
+    ResponseEntity<BaseResponse<String>> reject(String id);
 }

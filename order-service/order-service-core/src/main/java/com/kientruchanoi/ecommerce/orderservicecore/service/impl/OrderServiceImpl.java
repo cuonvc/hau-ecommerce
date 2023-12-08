@@ -11,6 +11,7 @@ import com.kientruchanoi.ecommerce.orderservicecore.exception.ResourceNotFoundEx
 import com.kientruchanoi.ecommerce.orderservicecore.mapper.OrderMapper;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.service.OrderService;
+import com.kientruchanoi.ecommerce.orderservicecore.utils.Constants;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentType;
@@ -31,6 +32,9 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.kientruchanoi.ecommerce.orderservicecore.utils.Constants.HttpMessage.ACCESS_DENIED;
+import static com.kientruchanoi.ecommerce.orderservicecore.utils.Constants.OrderStatus.*;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -43,16 +47,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<BaseResponse<OrderResponse>> create(OrderRequest request) {
         ProductResponse product = getProductInfo(request.getProductId());
-        CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        String currentUserId = getCurrentUserId();
 
         if (product.getRemaining() < 1) {
             throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm đã hết.");
         } else if (product.getRemaining() < request.getQuantity()) {
             throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm không đủ");
-        } else if (product.getUser().getId().equals(userDetail.getId())) {
+        } else if (product.getUser().getId().equals(currentUserId)) {
             throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể tự tăng traffic sản phẩm của mình =))");
         }
 
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
                         .productId(product.getId())
                         .amount(product.getStandardPrice() * request.getQuantity())
                         .sellerId(product.getUser().getId())
-                        .customerId(userDetail.getId())
+                        .customerId(currentUserId)
                         .sourceAddress(getUserInfo(product.getUser().getId()).getDetailAddress())
                         .destinationAddress(request.getDestinationAddress())
                         .createdDate(LocalDateTime.now())
@@ -71,19 +72,15 @@ public class OrderServiceImpl implements OrderService {
                         .quantity(product.getRemaining())
                 .build());
 
-        return responseFactory.success("Tạo đơn hàng thành công.", orderMapper.entityToResponse(order));
+        return responseFactory.success(ORDER_CREATE_SUCCESS, orderMapper.entityToResponse(order));
     }
 
     @Override
     public ResponseEntity<BaseResponse<OrderResponse>> update(String id, OrderRequest request) {
-        CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        String currentUserId = getCurrentUserId();
 
-        Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), userDetail.getId())
-                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST,
-                        "Đơn hàng không tồn tại hoặc bạn không có quyền truy cập"));
+        Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), currentUserId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
 
         ProductResponse product = getProductInfo(order.getProductId());
         if (product.getRemaining() < 1) {
@@ -103,16 +100,13 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id) {
         Order order = orderRepository.findByIdAndStatus(id, Status.ACTIVE.name())
-                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Đơn hàng không tồn tại..."));
+                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, ORDER_NOT_FOUND));
 
-        CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-        if (!userDetail.getId().equals(order.getCustomerId())
-                && userDetail.getId().equals(order.getSellerId())
-                && userDetail.getGrantedAuthorities().get(0).equals("USER")) {
-            throw new APIException(HttpStatus.UNAUTHORIZED, "Không được phép truy cập");
+        String currentUserId = getCurrentUserId();
+        if (!currentUserId.equals(order.getCustomerId())
+                && currentUserId.equals(order.getSellerId())
+                && getCurrentUser().getGrantedAuthorities().get(0).equals(Constants.USER_ROLE)) {
+            throw new APIException(HttpStatus.UNAUTHORIZED, ACCESS_DENIED);
         }
 
         OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
@@ -125,22 +119,65 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity<BaseResponse<String>> cancel(String id) {
-        CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        String currentUserId = getCurrentUserId();
 
-        Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), userDetail.getId())
-                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST,
-                        "Đơn hàng không tồn tại hoặc không có quyền truy cập"));
+        Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), currentUserId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
 
         if (!order.getOrderStatus().equals(OrderStatus.PENDING.name())) {
-            throw new APIException(HttpStatus.BAD_REQUEST, "Không thể huỷ đơn.");
+            throw new APIException(HttpStatus.BAD_REQUEST, ORDER_CANCEL_FAILED);
         }
 
         order.setOrderStatus(OrderStatus.CANCEL.name());
         orderRepository.save(order);
-        return responseFactory.success("Sucess", "Huỷ đơn hàng thành công.");
+        return responseFactory.success("Sucess", ORDER_CANCEL_SUCCESS);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<String>> accept(String id) {
+        return sellerAction(id,
+                Status.ACTIVE,
+                OrderStatus.PENDING,
+                ORDER_CANNOT_ACCEPT,
+                OrderStatus.ACCEPTED,
+                ORDER_ACCEPTED);
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<String>> reject(String id) {
+        return sellerAction(id,
+                Status.ACTIVE,
+                OrderStatus.PENDING,
+                ORDER_CANNOT_REJECT,
+                OrderStatus.REJECTED,
+                ORDER_REJECTED);
+    }
+
+    private ResponseEntity<BaseResponse<String>> sellerAction(String orderId, Status objectStatus, OrderStatus currentOrderStatus,
+                                                              String throwMessage, OrderStatus targetStatus, String responseMessage) {
+        String currentUserId = getCurrentUserId();
+
+        Order order = orderRepository.findByIdAndStatusAndSellerId(orderId, objectStatus.name(), currentUserId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
+
+        if (!order.getOrderStatus().equals(currentOrderStatus.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, throwMessage);
+        }
+
+        order.setOrderStatus(targetStatus.name());
+        orderRepository.save(order);
+        return responseFactory.success("Success", responseMessage);
+    }
+
+    private CustomUserDetail getCurrentUser() {
+        return  (CustomUserDetail) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+    }
+
+    private String getCurrentUserId() {
+        return getCurrentUser().getId();
     }
 
     private ProductResponse getProductInfo(String id) {
