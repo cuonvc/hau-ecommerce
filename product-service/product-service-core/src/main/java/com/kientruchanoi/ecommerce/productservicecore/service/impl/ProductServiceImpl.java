@@ -259,7 +259,7 @@ public class ProductServiceImpl implements ProductService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> productPage = productRepository.findByUserId(pageable, userDetail.getId(), Status.ACTIVE);
+        Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userDetail.getId(), Status.ACTIVE);
 
         return responseFactory.success("Success", paging(productPage));
     }
@@ -271,7 +271,7 @@ public class ProductServiceImpl implements ProductService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> productPage = productRepository.findByUserId(pageable, userId, Status.ACTIVE);
+        Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userId, Status.ACTIVE);
 
         return responseFactory.success("Success", paging(productPage));
     }

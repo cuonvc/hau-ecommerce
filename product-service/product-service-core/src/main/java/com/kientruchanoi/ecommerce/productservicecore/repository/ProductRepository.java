@@ -21,7 +21,7 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     Page<Product> findByIsActive(Pageable pageable, Status status);
 
-    Page<Product> findByUserId(Pageable pageable, String userId, Status status);
+    Page<Product> findAllByUserIdAndIsActive(Pageable pageable, String userId, Status status);
 
     List<Product> findByNameMatchesRegexOrBrandMatchesRegex(String nameKeyWord, String desKeyword);
 
