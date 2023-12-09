@@ -39,6 +39,9 @@ public class Order {
     @Field("amount")
     private double amount;
 
+    @Field("wallet_id")
+    private String walletId;
+
     @Field("source_address")
     private String sourceAddress;
 

@@ -46,7 +46,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/auth/moderator/*").hasAnyAuthority("ROOT", "ADMIN", "MODERATOR")
                         .requestMatchers("/api/auth/admin/*").hasAnyAuthority("ROOT", "ADMIN")
                         .requestMatchers("/api/auth/root/*").hasAnyAuthority("ROOT")
-                        .requestMatchers(HttpMethod.GET, "/api/auth/account/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/account/*", "/api/auth/delivery/view/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/token/renew").permitAll()
                         .anyRequest()
                         .authenticated())
