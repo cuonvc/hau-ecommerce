@@ -44,11 +44,17 @@ public class CartServiceImpl implements CartService {
                 );
 
         ProductResponse product = commonService.getProductInfo(productId); //checking product id
-        if (product.getUser().getId().equals(currentUserId)) {
+        if (quantity < 1) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm phải lớn hơn 0");
+        } else if (product.getRemaining() < 1) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm đã hết.");
+        } else if (product.getRemaining() < quantity) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm không đủ");
+        } else if (product.getUser().getId().equals(currentUserId)) {
             throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể tự tăng traffic cho sản phẩm của mình =))");
         }
-        cart.getProductMapQuantity().put(productId, quantity);
 
+        cart.getProductMapQuantity().put(productId, quantity);
         return responseFactory.success("Success", buildResponse(cartRepository.save(cart)));
     }
 
