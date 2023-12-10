@@ -10,6 +10,7 @@ import com.kientruchanoi.ecommerce.orderservicecore.exception.APIException;
 import com.kientruchanoi.ecommerce.orderservicecore.exception.ResourceNotFoundException;
 import com.kientruchanoi.ecommerce.orderservicecore.mapper.OrderMapper;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
+import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.OrderService;
 import com.kientruchanoi.ecommerce.orderservicecore.utils.Constants;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
@@ -41,13 +42,13 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
-    private final RestTemplate restTemplate;
     private final ResponseFactory responseFactory;
+    private final CommonService commonService;
 
     @Override
     public ResponseEntity<BaseResponse<OrderResponse>> create(OrderRequest request) {
-        ProductResponse product = getProductInfo(request.getProductId());
-        String currentUserId = getCurrentUserId();
+        ProductResponse product = commonService.getProductInfo(request.getProductId());
+        String currentUserId = commonService.getCurrentUserId();
 
         if (product.getRemaining() < 1) {
             throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm đã hết.");
@@ -62,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
                         .amount(product.getStandardPrice() * request.getQuantity())
                         .sellerId(product.getUser().getId())
                         .customerId(currentUserId)
-                        .sourceAddress(getUserInfo(product.getUser().getId()).getDetailAddress())
+                        .sourceAddress(commonService.getUserInfo(product.getUser().getId()).getDetailAddress())
                         .destinationAddress(request.getDestinationAddress())
                         .createdDate(LocalDateTime.now())
                         .status(Status.ACTIVE.name())
@@ -77,12 +78,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ResponseEntity<BaseResponse<OrderResponse>> update(String id, OrderRequest request) {
-        String currentUserId = getCurrentUserId();
+        String currentUserId = commonService.getCurrentUserId();
 
         Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), currentUserId)
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
 
-        ProductResponse product = getProductInfo(order.getProductId());
+        ProductResponse product = commonService.getProductInfo(order.getProductId());
         if (product.getRemaining() < 1) {
             throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm đã hết.");
         } else if (product.getRemaining() < request.getQuantity()) {
@@ -102,24 +103,24 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findByIdAndStatus(id, Status.ACTIVE.name())
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, ORDER_NOT_FOUND));
 
-        String currentUserId = getCurrentUserId();
+        String currentUserId = commonService.getCurrentUserId();
         if (!currentUserId.equals(order.getCustomerId())
                 && currentUserId.equals(order.getSellerId())
-                && getCurrentUser().getGrantedAuthorities().get(0).equals(Constants.USER_ROLE)) {
+                && commonService.getCurrentUser().getGrantedAuthorities().get(0).equals(Constants.USER_ROLE)) {
             throw new APIException(HttpStatus.UNAUTHORIZED, ACCESS_DENIED);
         }
 
         OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
-        detail.setCustomer(getUserInfo(order.getCustomerId()));
-        detail.setSeller(getUserInfo(order.getSellerId()));
-        detail.setProduct(getProductInfo(order.getProductId()));
+        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
+        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
+        detail.setProduct(commonService.getProductInfo(order.getProductId()));
 
         return responseFactory.success("Success", detail);
     }
 
     @Override
     public ResponseEntity<BaseResponse<String>> cancel(String id) {
-        String currentUserId = getCurrentUserId();
+        String currentUserId = commonService.getCurrentUserId();
 
         Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), currentUserId)
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
@@ -155,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
 
     private ResponseEntity<BaseResponse<String>> sellerAction(String orderId, Status objectStatus, OrderStatus currentOrderStatus,
                                                               String throwMessage, OrderStatus targetStatus, String responseMessage) {
-        String currentUserId = getCurrentUserId();
+        String currentUserId = commonService.getCurrentUserId();
 
         Order order = orderRepository.findByIdAndStatusAndSellerId(orderId, objectStatus.name(), currentUserId)
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
@@ -169,38 +170,4 @@ public class OrderServiceImpl implements OrderService {
         return responseFactory.success("Success", responseMessage);
     }
 
-    private CustomUserDetail getCurrentUser() {
-        return  (CustomUserDetail) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
-    }
-
-    private String getCurrentUserId() {
-        return getCurrentUser().getId();
-    }
-
-    private ProductResponse getProductInfo(String id) {
-        return Optional.ofNullable(
-                Objects.requireNonNull(restTemplate.exchange(
-                        "http://PRODUCT-SERVICE/api/internal/product/" + id,
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<BaseResponse<ProductResponse>>() {
-                        }
-                ).getBody()).getData()
-        ).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
-    }
-
-    private UserResponse getUserInfo(String userId) {
-        return Optional.ofNullable(
-                Objects.requireNonNull(restTemplate.exchange(
-                        "http://AUTH-SERVICE/api/auth/account/" + userId,
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<BaseResponse<UserResponse>>() {
-                        }
-                ).getBody()).getData()
-        ).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
-    }
 }
