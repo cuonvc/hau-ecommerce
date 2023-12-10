@@ -5,8 +5,7 @@ networks:
 
 services:
   eureka-server:
-    image: eureka-server-hau
-    build: ./eureka-server
+    image: cuonvc/eureka-server-hau:v1.0
     container_name: eureka-server-hau
     networks:
       - ecommerce-network
@@ -48,19 +47,9 @@ services:
       - ./redis-config/redis.conf:/tmp/redis.conf
     command: redis-server
 
-  #  base-service:
-  #    image: base-service
-  #    networks:
-  #      - ecommerce-network
-  #    build: ./base-service/
-  #    container_name: base-service
-  #    ports:
-  #      - "8088:8088"
-
   api-gateway:
     container_name: api-gateway-hau
-    image: api-gateway-hau
-    build: ./api-gateway
+    image: cuonvc/api-gateway-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -69,8 +58,7 @@ services:
 
   auth-service:
     container_name: auth-service-hau
-    image: auth-service-hau
-    build: ./auth-service/auth-service-core
+    image: cuonvc/auth-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -89,8 +77,7 @@ services:
 
   product-service:
     container_name: product-service-hau
-    image: product-service-hau
-    build: ./product-service/product-service-core
+    image: cuonvc/product-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -101,10 +88,19 @@ services:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
       SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-product-db
 
+  order-service:
+    container_name: order-service-hau
+    image: cuonvc/order-service-hau:v1.0
+    networks:
+      - ecommerce-network
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-order-db
+
   mail-service:
     container_name: mail-service-hau
-    image: mail-service-hau
-    build: ./mail-service
+    image: cuonvc/mail-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -116,19 +112,6 @@ services:
     depends_on:
       - kafka
       - zookeeper
-
-  resource-service:
-    container_name: resource-service-hau
-    image: resource-service-hau
-    build: ./resource-service
-    networks:
-      - ecommerce-network
-    ports:
-      - "8083:8083"
-    environment:
-      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-    depends_on:
-      - kafka
 
 volumes:
   redis_data:
