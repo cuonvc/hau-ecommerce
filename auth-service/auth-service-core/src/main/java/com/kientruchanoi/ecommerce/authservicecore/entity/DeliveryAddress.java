@@ -30,6 +30,12 @@ public class DeliveryAddress {
     @Field("detail")
     private String detail;
 
+    @Field("phone")
+    private String phone;
+
+    @Field("recipient_name")
+    private String recipientName;
+
     @Field("user_id")
     private String userId;
 }

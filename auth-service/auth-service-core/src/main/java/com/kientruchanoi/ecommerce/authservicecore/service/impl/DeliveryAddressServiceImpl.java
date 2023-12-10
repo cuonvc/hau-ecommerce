@@ -29,6 +29,8 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
                 .district(address.getDistrict())
                 .ward(address.getWard())
                 .detail(address.getDetail())
+                .phone(address.getPhone())
+                .recipientName(address.getRecipientName())
                 .userId(getCurrentUserId())
                 .build());
         return responseFactory.success("Success", deliveryAddress);
@@ -47,6 +49,8 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
         deliveryAddress.setDistrict(address.getDistrict());
         deliveryAddress.setWard(address.getWard());
         deliveryAddress.setDetail(address.getDetail());
+        deliveryAddress.setPhone(address.getPhone());
+        deliveryAddress.setRecipientName(address.getRecipientName());
         return responseFactory.success("Success", repository.save(deliveryAddress));
     }
 
