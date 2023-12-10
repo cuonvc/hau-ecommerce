@@ -11,4 +11,6 @@ public interface CommonService {
 
     UserResponse getUserInfo(String userId);
     ProductResponse getProductInfo(String productId);
+
+    ProductResponse getProductInfoNotUser(String productId);
 }

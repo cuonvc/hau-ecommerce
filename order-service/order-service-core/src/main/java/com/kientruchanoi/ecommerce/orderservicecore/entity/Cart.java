@@ -9,7 +9,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Document(collection = "cart_clt")
 @Data
@@ -24,6 +26,6 @@ public class Cart {
     @Field("user_Id")
     private String userId;
 
-    @Field("product_ids")
-    private List<String> productIds = new ArrayList<>();
+    @Field("product_map_quantity")
+    private Map<String, Integer> productMapQuantity = new HashMap<>();
 }

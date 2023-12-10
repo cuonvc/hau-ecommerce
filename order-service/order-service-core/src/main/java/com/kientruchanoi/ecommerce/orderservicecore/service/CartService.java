@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CartService {
 
-    ResponseEntity<BaseResponse<CartResponse>> addItem(String productId);
+    ResponseEntity<BaseResponse<CartResponse>> addItem(String productId, int quantity);
 
     ResponseEntity<BaseResponse<CartResponse>> deleteItem(String productId);
 

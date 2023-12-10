@@ -16,9 +16,10 @@ public class CartController {
 
     private final CartService cartService;
 
-    @PostMapping("/insert/{productId}")
-    public ResponseEntity<BaseResponse<CartResponse>> insert(@PathVariable("productId") String productId) {
-        return cartService.addItem(productId);
+    @PostMapping("/insert")
+    public ResponseEntity<BaseResponse<CartResponse>> insert(@RequestParam("productId") String productId,
+                                                             @RequestParam("quantity") int quantity) {
+        return cartService.addItem(productId, quantity);
     }
 
     @DeleteMapping("/delete/{productId}")

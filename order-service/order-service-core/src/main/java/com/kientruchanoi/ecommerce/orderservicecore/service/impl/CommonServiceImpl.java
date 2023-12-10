@@ -37,7 +37,7 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public ProductResponse getProductInfo(String id) {
-        return Optional.ofNullable(
+        ProductResponse response = Optional.ofNullable(
                 Objects.requireNonNull(restTemplate.exchange(
                         "http://PRODUCT-SERVICE/api/internal/product/" + id,
                         HttpMethod.GET,
@@ -46,6 +46,16 @@ public class CommonServiceImpl implements CommonService {
                         }
                 ).getBody()).getData()
         ).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+
+        response.setUser(getUserInfo(response.getUser().getId()));
+        return response;
+    }
+
+    @Override
+    public ProductResponse getProductInfoNotUser(String productId) {
+        ProductResponse response = getProductInfo(productId);
+        response.setUser(null);
+        return response;
     }
 
     @Override
