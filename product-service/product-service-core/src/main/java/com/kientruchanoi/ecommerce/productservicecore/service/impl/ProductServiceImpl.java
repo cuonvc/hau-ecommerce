@@ -217,7 +217,13 @@ public class ProductServiceImpl implements ProductService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> productPage = productRepository.findByIsActive(pageable, Status.ACTIVE);
+        Page<Product> productPage;
+        if (isAnonymousUser()) {
+            productPage = productRepository.findByIsActive(pageable, Status.ACTIVE);
+        } else {
+            productPage = productRepository.findAllByIsActiveAndUserIdNotIn(pageable,
+                    Status.ACTIVE, getCurrentUserId());
+        }
 
         return responseFactory.success("Success", paging(productPage));
     }
@@ -236,7 +242,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<BaseResponse<List<ProductResponse>>> filterByKeyword(String keyword) {
-        List<Product> resultSearch = productRepository.findByNameMatchesRegexOrBrandMatchesRegex(keyword, keyword);
+        List<Product> resultSearch;
+        if (isAnonymousUser()) {
+            resultSearch = productRepository.findByNameMatchesRegexOrBrandMatchesRegexAndIsActive(keyword, keyword, Status.ACTIVE);
+        } else {
+            resultSearch = productRepository.findByNameMatchesRegexOrBrandMatchesRegexAndIsActiveAndUserIdNotIn(keyword, keyword, Status.ACTIVE, List.of(getCurrentUserId()));
+        }
 
         List<ProductResponse> responses = resultSearch.stream()
                 .map(product -> {
@@ -274,6 +285,19 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userId, Status.ACTIVE);
 
         return responseFactory.success("Success", paging(productPage));
+    }
+
+    private boolean isAnonymousUser() {
+        return SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal().toString().equals("anonymousUser");
+    }
+
+    private String getCurrentUserId() {
+        CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        return userDetail.getId();
     }
 
     private PageResponseProduct paging(Page<Product> productPage) {

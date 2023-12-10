@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,13 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     Page<Product> findAllByUserIdAndIsActive(Pageable pageable, String userId, Status status);
 
-    List<Product> findByNameMatchesRegexOrBrandMatchesRegex(String nameKeyWord, String desKeyword);
+    Page<Product> findAllByIsActiveAndUserIdNotIn(Pageable pageable, Status status, String userId);
+
+    List<Product> findByNameMatchesRegexOrBrandMatchesRegexAndIsActiveAndUserIdNotIn(
+            String name, String brand, Status isActive, Collection<String> userIds);
+
+    List<Product> findByNameMatchesRegexOrBrandMatchesRegexAndIsActive(
+            String nameKeyWord, String brandKeyword, Status status);
 
     List<Product> findByNameRegexOrBrandRegex(String name, String brand);
 
