@@ -22,7 +22,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/order/moderator/*").hasAnyAuthority("ROOT", "ADMIN", "MODERATOR")
                         .requestMatchers("/api/order/admin/*").hasAnyAuthority("ROOT", "ADMIN")
                         .requestMatchers("/api/order/root/*").hasAnyAuthority("ROOT")
-                        .requestMatchers("/api/order/view/*").permitAll()
+                        .requestMatchers("/api/order/view/*", "/api/order/payment/receive").permitAll()
                         .anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
