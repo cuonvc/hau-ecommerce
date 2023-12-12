@@ -29,10 +29,13 @@ public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByNameMatchesRegexOrBrandMatchesRegexAndIsActiveAndUserIdNotIn(
             String name, String brand, Status isActive, Collection<String> userIds);
 
-    List<Product> findByNameMatchesRegexOrBrandMatchesRegexAndIsActive(
-            String nameKeyWord, String brandKeyword, Status status);
+    List<Product> findByNameRegexOrBrandRegexAndIsActive(String name, String brand, Status isActive);
 
-    List<Product> findByNameRegexOrBrandRegex(String name, String brand);
+    @Query("{$or: [ { 'name': { $regex: ?0, $options: 'i' } }, { 'brand': { $regex: ?0, $options: 'i' } } ], 'is_active': ?1 }")
+    List<Product> findByNameOrBrand(String keyword, String status);
+
+    @Query("{$or: [ { 'name': { $regex: ?0, $options: 'i' } }, { 'brand': { $regex: ?0, $options: 'i' } } ], 'is_active': ?1, 'user_id':  {$ne: ?2} }")
+    List<Product> findByNameOrBrandNotOwner(String keyword, String status, String userId);
 
     Optional<Product> findByResources(ProductResource productResource);
 

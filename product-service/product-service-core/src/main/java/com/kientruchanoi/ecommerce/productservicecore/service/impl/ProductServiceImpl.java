@@ -243,11 +243,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ResponseEntity<BaseResponse<List<ProductResponse>>> filterByKeyword(String keyword) {
         List<Product> resultSearch;
-        keyword = keyword.toLowerCase().trim();
         if (isAnonymousUser()) {
-            resultSearch = productRepository.findByNameMatchesRegexOrBrandMatchesRegexAndIsActive(keyword, keyword, Status.ACTIVE);
+            resultSearch = productRepository.findByNameOrBrand(keyword, Status.ACTIVE.name());
         } else {
-            resultSearch = productRepository.findByNameMatchesRegexOrBrandMatchesRegexAndIsActiveAndUserIdNotIn(keyword, keyword, Status.ACTIVE, List.of(getCurrentUserId()));
+            resultSearch = productRepository.findByNameOrBrandNotOwner(keyword, Status.ACTIVE.name(), getCurrentUserId());
         }
 
         List<ProductResponse> responses = resultSearch.stream()
