@@ -271,7 +271,7 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "error"));
         user.setAvatarUrl(url);
         return responseFactory.success("Cập nhật ảnh đại diện thành công.",
-                userMapper.entityToResponse(user));
+                userMapper.entityToResponse(userRepository.save(user)));
     }
 
     @Override
