@@ -36,23 +36,4 @@ public class CustomerController {
         return orderService.cancel(id);
     }
 
-    @PostMapping("/payment/receive")
-//    public ResponseEntity<String> receivePayment(@RequestParam(value = "phone", required = false) String phone,
-//                                                 @RequestParam(value = "amount", required = false) Long amount,
-//                                                 @RequestParam(value = "UniqueId", required = false) String uniqueId,
-//                                                 @RequestParam(value = "Sim", required = false) String sim,
-//                                                 @RequestParam(value = "Name", required = false) String name,
-//                                                 @RequestParam(value = "Content", required = false) String message) {
-//
-//        log.info("RECEIVED - phone: {} - amount: {}", phone, amount);
-//        log.info("UniqueId - {}", uniqueId);
-//        log.info("Sim - {}", sim);
-//        log.info("Name - {}", name);
-//        log.info("Content - {}", message);
-//        return ResponseEntity.ok("Thanh toán thành công");
-//    }
-    public ResponseEntity<String> receivePayment(@RequestBody PaymentSMS paymentSMS) {
-        log.info("RECEIVED ON SERVER - {}", paymentSMS);
-        return ResponseEntity.ok("Success");
-    }
 }

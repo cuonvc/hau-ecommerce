@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.orderservicecore.entity;
 
+import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.WalletStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,8 +27,17 @@ public class Wallet {
     @Field("balance")
     private Long balance;
 
+    @Field("balance_temporary")
+    private Long balanceTemporary;
+
     @Field("total_amount_paid")
     private Long totalAmountPaid;
+
+    @Field("sms_format")
+    private String smsFormat;
+
+    @Field("status")
+    private String status = WalletStatus.DEPOSIT_PAID.name();
 
     @Field("created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
