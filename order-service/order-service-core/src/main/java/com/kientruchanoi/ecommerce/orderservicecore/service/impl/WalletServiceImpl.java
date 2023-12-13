@@ -54,6 +54,7 @@ public class WalletServiceImpl implements WalletService {
         String currentUserId = commonService.getCurrentUserId();
         Wallet wallet = walletRepository.findByUserId(currentUserId)
                 .orElse(walletBuilder(currentUserId));
+        wallet = walletRepository.save(wallet);
 
         String message;
         if (wallet.getStatus().equals(WalletStatus.DEPOSIT_PENDING.name())) {
@@ -76,7 +77,8 @@ public class WalletServiceImpl implements WalletService {
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống..."));
 
         if (amount == wallet.getBalanceTemporary()) {
-            wallet.setBalance(amount);
+
+            wallet.setBalance(wallet.getBalance() + amount);
             wallet.setBalanceTemporary(0L);
             wallet.setSmsFormat(null);
             wallet.setStatus(WalletStatus.DEPOSIT_PAID.name());
@@ -87,7 +89,8 @@ public class WalletServiceImpl implements WalletService {
                     Transaction.builder()
                             .walletId(wallet.getId())
                             .type(TransactionType.DEPOSIT.name())
-                            .amount(Long.parseLong(message[1]))
+                            .amount(amount)
+                            .balance(wallet.getBalance())
                             .description("Nạp tiền vào ví")
                             .createdDate(LocalDateTime.now())
                             .build()
@@ -103,21 +106,44 @@ public class WalletServiceImpl implements WalletService {
 
         Wallet wallet = walletRepository.findByUserId(userId)
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Tài khoản không tồn tại"));
-        wallet.setBalance(wallet.getBalanceTemporary());
+
+        long newAmount = wallet.getBalanceTemporary();
+        wallet.setBalance(wallet.getBalance() + newAmount);
         wallet.setBalanceTemporary(0L);
         wallet.setStatus(WalletStatus.DEPOSIT_PAID.name());
         wallet.setSmsFormat(null);
         wallet.setModifiedDate(LocalDateTime.now());
 
+        transactionRepository.save(
+                Transaction.builder()
+                        .walletId(wallet.getId())
+                        .type(TransactionType.DEPOSIT.name())
+                        .amount(newAmount)
+                        .balance(wallet.getBalance())
+                        .description("Nạp tiền vào ví")
+                        .createdDate(LocalDateTime.now())
+                        .build()
+        );
+
         return responseFactory.success("Đã xác nhận nạp tiền.", walletRepository.save(wallet));
     }
 
-    private Wallet walletBuilder(String userId) {
+    @Override
+    public ResponseEntity<BaseResponse<Wallet>> detail() {
+        String userId = commonService.getCurrentUserId();
+        Wallet wallet = walletRepository.findByUserId(userId)
+                .orElse(walletBuilder(userId));
+        return responseFactory.success("Success", walletRepository.save(wallet));
+    }
+
+    @Override
+    public Wallet walletBuilder(String userId) {
         return Wallet.builder()
                 .userId(userId)
                 .balance(0L)
                 .balanceTemporary(0L)
                 .totalAmountPaid(0L)
+                .status(WalletStatus.DEPOSIT_PAID.name())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .build();

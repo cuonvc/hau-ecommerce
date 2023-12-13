@@ -27,6 +27,9 @@ public class Transaction {
     @Field("amount")
     private long amount;
 
+    @Field("balance")
+    private long balance;
+
     @Field("type")
     private String type = TransactionType.INIT.name(); //default
 

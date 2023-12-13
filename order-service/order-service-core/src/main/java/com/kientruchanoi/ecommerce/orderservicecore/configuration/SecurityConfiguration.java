@@ -19,7 +19,7 @@ public class SecurityConfiguration {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/order/moderator/*").hasAnyAuthority("ROOT", "ADMIN", "MODERATOR")
+                        .requestMatchers("/api/order/moderator/*", "/api/order/moderator/**").hasAnyAuthority("ROOT", "ADMIN", "MODERATOR")
                         .requestMatchers("/api/order/admin/*").hasAnyAuthority("ROOT", "ADMIN")
                         .requestMatchers("/api/order/root/*").hasAnyAuthority("ROOT")
                         .requestMatchers("/api/order/view/*", "/api/order/wallet/deposit/submit").permitAll()

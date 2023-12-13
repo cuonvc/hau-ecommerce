@@ -29,4 +29,9 @@ public class WalletController {
     public ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(@PathVariable("userId") String userId) {
         return walletService.manualSubmitDeposit(userId);
     }
+
+    @GetMapping("/detail")
+    public ResponseEntity<BaseResponse<Wallet>> detail() {
+        return walletService.detail();
+    }
 }
