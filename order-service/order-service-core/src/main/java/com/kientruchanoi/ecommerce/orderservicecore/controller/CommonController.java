@@ -2,14 +2,14 @@ package com.kientruchanoi.ecommerce.orderservicecore.controller;
 
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.orderservicecore.service.OrderService;
+import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
 import jakarta.ws.rs.GET;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
@@ -21,5 +21,10 @@ public class CommonController {
     @GetMapping("/detail/{id}")
     public ResponseEntity<BaseResponse<OrderResponseDetail>> orderDetail(@PathVariable("id") String id) {
         return orderService.detail(id);
+    }
+
+    @GetMapping("/owner/list")
+    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(@RequestParam(value = "status", required = false) String status) {
+        return orderService.listByOwner(status);
     }
 }

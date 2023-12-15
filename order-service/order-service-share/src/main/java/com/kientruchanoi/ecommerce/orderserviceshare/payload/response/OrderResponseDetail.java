@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.orderserviceshare.payload.response;
 
+import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import lombok.*;
@@ -24,9 +25,9 @@ public class OrderResponseDetail {
 
     private int amount;
 
-    private String sourceAddress;
+    private DeliveryAddressResponse destinationInfo;
 
-    private String destinationAddress;
+    private String note;
 
     private String paymentType;
 

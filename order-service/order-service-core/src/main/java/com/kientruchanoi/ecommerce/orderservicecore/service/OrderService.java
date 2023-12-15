@@ -9,11 +9,11 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface OrderService {
-    ResponseEntity<BaseResponse<List<OrderResponse>>> create(OrderRequest request);
+    ResponseEntity<BaseResponse<List<OrderResponseDetail>>> create(OrderRequest request);
 
-//    ResponseEntity<BaseResponse<OrderResponse>> update(String id, OrderRequest request);
-//
     ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
+
+    ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status);
 //
 //    ResponseEntity<BaseResponse<String>> cancel(String id);
 //

@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public ResponseEntity<BaseResponse<List<OrderResponse>>> create(OrderRequest request) {
+    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> create(OrderRequest request) {
         Cart cart = validCartMapProduct(request.getCartId(), request.getProductIds());
 
         List<ProductResponse> products = request.getProductIds().stream()
@@ -97,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
 
 
         //save orders
-        List<OrderResponse> responses = products.stream().map(p -> {
+        List<OrderResponseDetail> responses = products.stream().map(p -> {
             try {
                 DeliveryAddressResponse deliverySource = commonService.getDeliveryInfo(request.getDeliverySourceId());
                 DeliveryAddressResponse deliveryDestination = commonService.getDeliveryInfo(request.getDeliveryDestinationId());
@@ -117,7 +118,12 @@ public class OrderServiceImpl implements OrderService {
                         .quantity(cart.getProductMapQuantity().get(p.getId()))
                         .build());
 
-                return orderMapper.entityToResponse(order);
+                OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
+                detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
+                detail.setSeller(commonService.getUserInfo(order.getSellerId()));
+                detail.setProduct(commonService.getProductInfo(order.getProductId()));
+
+                return detail;
             } catch (APIException exception) {
                 throw new APIException(HttpStatus.BAD_REQUEST, exception.getMessage());
             }
@@ -132,7 +138,7 @@ public class OrderServiceImpl implements OrderService {
         transactionService.create(
                 TransactionType.BUY,
                 "Mua hàng",
-                responses.stream().map(OrderResponse::getId).toList(),
+                responses.stream().map(OrderResponseDetail::getId).toList(),
                 walletRepository.findByUserId(currentUserId).get().getBalance(), amount);
 
         //delete cart
@@ -195,7 +201,34 @@ public class OrderServiceImpl implements OrderService {
 
         return responseFactory.success("Success", detail);
     }
-//
+
+    @Override
+    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status) {
+        String currentUserId = commonService.getCurrentUserId();
+        List<Order> orders = new ArrayList<>();
+        if (status == null) {
+            orders = orderRepository.findAllByCustomerIdOrSellerId(currentUserId, currentUserId);
+        } else {
+            try {
+                OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
+                orders = orderRepository.findAllByUserIdAndOrderStatus(orderStatus.name(), currentUserId);
+            } catch (Exception exception) {
+                throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
+            }
+        }
+
+        List<OrderResponseDetail> detailList = orders.stream().map(entity -> {
+            OrderResponseDetail detail = orderMapper.entityToResponseDetail(entity);
+            detail.setCustomer(commonService.getUserInfo(entity.getCustomerId()));
+            detail.setSeller(commonService.getUserInfo(entity.getSellerId()));
+            detail.setProduct(commonService.getProductInfo(entity.getProductId()));
+            return detail;
+        }).toList();
+
+        return responseFactory.success("Succes", detailList);
+    }
+
+    //
 //    @Override
 //    public ResponseEntity<BaseResponse<String>> cancel(String id) {
 //        String currentUserId = commonService.getCurrentUserId();
