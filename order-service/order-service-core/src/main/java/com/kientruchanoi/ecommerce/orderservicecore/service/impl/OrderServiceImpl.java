@@ -77,6 +77,9 @@ public class OrderServiceImpl implements OrderService {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm không đủ");
             } else if (p.getUser().getId().equals(currentUserId)) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể tự tăng traffic sản phẩm của mình =))");
+            } else if (!request.getPaymentType().equals(PaymentType.WALLET)
+                    && !request.getPaymentType().equals(PaymentType.CASH)) {
+                throw new APIException(HttpStatus.BAD_REQUEST, "Phương thức thanh toán không hợp lệ");
             }
         });
 
