@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.orderserviceshare.payload.response;
 
+import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
@@ -26,9 +27,11 @@ public class OrderResponse {
 
     private int amount;
 
-    private String sourceAddress;
+    private DeliveryAddressResponse sourceInfo;
 
-    private String destinationAddress;
+    private DeliveryAddressResponse destinationInfo;
+
+    private String note;
 
     private String paymentType;
 

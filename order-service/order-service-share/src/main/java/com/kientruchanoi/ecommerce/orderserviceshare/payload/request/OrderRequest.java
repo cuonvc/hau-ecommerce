@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,14 +15,16 @@ import lombok.*;
 public class OrderRequest {
 
     @NotNull
-    private String productId;
-
-    @Size(min = 1, message = "Số lượng phải lớn hơn 0")
-    private int quantity;
+    private String cartId;
 
     @NotNull
-    @NotBlank
-    private String destinationAddress;
+    private List<String> productIds;
+
+    @NotNull
+    private String deliverySourceId;
+
+    @NotNull
+    private String deliveryDestinationId;
 
     private String note;
 

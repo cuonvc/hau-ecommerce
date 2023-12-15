@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.orderservicecore.service.impl;
 
+import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.orderservicecore.configuration.CustomUserDetail;
@@ -33,6 +34,20 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public String getCurrentUserId() {
         return getCurrentUser().getId();
+    }
+
+    @Override
+    public DeliveryAddressResponse getDeliveryInfo(String id) {
+        DeliveryAddressResponse response = Optional.ofNullable(
+                Objects.requireNonNull(restTemplate.exchange(
+                        "http://AUTH-SERVICE/api/auth/delivery/view/" + id,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<BaseResponse<DeliveryAddressResponse>>() {
+                        }
+                ).getBody()).getData()
+        ).orElseThrow(() -> new ResourceNotFoundException("Delivery information", "id", id));
+        return response;
     }
 
     @Override

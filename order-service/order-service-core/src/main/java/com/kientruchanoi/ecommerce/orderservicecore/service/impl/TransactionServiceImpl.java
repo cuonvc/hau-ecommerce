@@ -3,15 +3,18 @@ package com.kientruchanoi.ecommerce.orderservicecore.service.impl;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.PageResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
+import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.exception.APIException;
 import com.kientruchanoi.ecommerce.orderservicecore.mapper.TransactionMapper;
+import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.TransactionRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.WalletRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.TransactionService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.WalletService;
+import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.PageResponseTransaction;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.TransactionResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.PageResponseProduct;
@@ -38,16 +41,31 @@ public class TransactionServiceImpl implements TransactionService {
     private final WalletRepository walletRepository;
     private final TransactionMapper transactionMapper;
     private final WalletService walletService;
+    private final OrderRepository orderRepository;
+
+    @Override
+    public void create(TransactionType type, String des, List<String> orderIds, double balance, double amount) {
+        transactionRepository.save(
+                Transaction.builder()
+                        .orderIds(orderIds)
+                        .type(type.name())
+                        .balance(balance)
+                        .amount(amount)
+                        .description(des)
+                        .build()
+        );
+    }
 
     @Override
     public ResponseEntity<BaseResponse<TransactionResponse>> detail(String id) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Không tìm thấy lịch sử giao dịch"));
 
-        Wallet wallet = walletRepository.findById(transaction.getWalletId())
+        Order order = orderRepository.findById(transaction.getOrderIds().get(0))
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống"));
 
-        if (!commonService.getCurrentUserId().equals(wallet.getUserId())) {
+        String currentUserId = commonService.getCurrentUserId();
+        if (!currentUserId.equals(order.getSellerId()) && !currentUserId.equals(order.getCustomerId())) {
             throw new APIException(HttpStatus.UNAUTHORIZED, "Không được phép truy cập.");
         }
 

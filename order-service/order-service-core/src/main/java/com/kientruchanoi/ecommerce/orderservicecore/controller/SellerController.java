@@ -13,13 +13,13 @@ public class SellerController {
 
     private final OrderService orderService;
 
-    @PutMapping("/accept/{id}")
-    public ResponseEntity<BaseResponse<String>> accept(@PathVariable("id") String id) {
-        return orderService.accept(id);
-    }
-
-    @PutMapping("/reject/{id}")
-    public ResponseEntity<BaseResponse<String>> reject(@PathVariable("id") String id) {
-        return orderService.reject(id);
-    }
+//    @PutMapping("/accept/{id}")
+//    public ResponseEntity<BaseResponse<String>> accept(@PathVariable("id") String id) {
+//        return orderService.accept(id);
+//    }
+//
+//    @PutMapping("/reject/{id}")
+//    public ResponseEntity<BaseResponse<String>> reject(@PathVariable("id") String id) {
+//        return orderService.reject(id);
+//    }
 }

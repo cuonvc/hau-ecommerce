@@ -2,6 +2,7 @@ package com.kientruchanoi.ecommerce.authservicecore.controller;
 
 import com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress;
 import com.kientruchanoi.ecommerce.authservicecore.service.DeliveryAddressService;
+import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class DeliveryController {
     }
 
     @GetMapping("/view/{id}")
-    public ResponseEntity<BaseResponse<DeliveryAddress>> detail(@PathVariable("id") String id) {
+    public ResponseEntity<BaseResponse<DeliveryAddressResponse>> detail(@PathVariable("id") String id) {
         return deliveryAddressService.detail(id);
     }
 

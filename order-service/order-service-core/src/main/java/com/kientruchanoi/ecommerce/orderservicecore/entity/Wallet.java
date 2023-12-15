@@ -25,13 +25,13 @@ public class Wallet {
     private String userId;
 
     @Field("balance")
-    private Long balance;
+    private Double balance;
 
     @Field("balance_temporary")
-    private Long balanceTemporary;
+    private Double balanceTemporary;
 
     @Field("total_amount_paid")
-    private Long totalAmountPaid;
+    private Double totalAmountPaid;
 
     @Field("sms_format")
     private String smsFormat;

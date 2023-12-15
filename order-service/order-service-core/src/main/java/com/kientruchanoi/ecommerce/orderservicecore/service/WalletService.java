@@ -5,6 +5,8 @@ import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.request.PaymentSMS;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface WalletService {
 
     ResponseEntity<BaseResponse<Wallet>> deposit(Long amount);
@@ -18,4 +20,7 @@ public interface WalletService {
     ResponseEntity<BaseResponse<Wallet>> detail();
 
     Wallet walletBuilder(String userId);
+
+    void reduceBalanceByOrder(String userId, Double amount, List<String> orderIds);
+    void plusBalanceByOrder(String userId, Double amount);
 }

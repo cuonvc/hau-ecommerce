@@ -6,16 +6,18 @@ import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderRespo
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 public interface OrderService {
-    ResponseEntity<BaseResponse<OrderResponse>> create(OrderRequest request);
+    ResponseEntity<BaseResponse<List<OrderResponse>>> create(OrderRequest request);
 
-    ResponseEntity<BaseResponse<OrderResponse>> update(String id, OrderRequest request);
-
-    ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
-
-    ResponseEntity<BaseResponse<String>> cancel(String id);
-
-    ResponseEntity<BaseResponse<String>> accept(String id);
-
-    ResponseEntity<BaseResponse<String>> reject(String id);
+//    ResponseEntity<BaseResponse<OrderResponse>> update(String id, OrderRequest request);
+//
+//    ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
+//
+//    ResponseEntity<BaseResponse<String>> cancel(String id);
+//
+//    ResponseEntity<BaseResponse<String>> accept(String id);
+//
+//    ResponseEntity<BaseResponse<String>> reject(String id);
 }

@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -21,14 +22,17 @@ public class Transaction {
     @Id
     private String id;
 
+    @Field("order_ids")
+    private List<String> orderIds; //using for order production
+
     @Field("wallet_id")
-    private String walletId;
+    private String walletId;  //using for withdraw, deposit
 
     @Field("amount")
-    private long amount;
+    private double amount;
 
     @Field("balance")
-    private long balance;
+    private double balance;
 
     @Field("type")
     private String type = TransactionType.INIT.name(); //default

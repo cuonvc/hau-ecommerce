@@ -78,17 +78,24 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public ResponseEntity<BaseResponse<Integer>> sizeOfCart() {
-        return responseFactory.success("Success",
-                cartRepository.findByUserId(commonService.getCurrentUserId())
-                        .orElse(new Cart())
-                        .getProductMapQuantity().size()
-        );
+        Cart cart = cartRepository.findByUserId(commonService.getCurrentUserId())
+                .orElse(Cart.builder()
+                        .userId(commonService.getCurrentUserId())
+                        .productMapQuantity(new HashMap<>())
+                        .build());
+        cartRepository.save(cart);
+
+        return responseFactory.success("Success", cart.getProductMapQuantity().size());
     }
 
     @Override
     public ResponseEntity<BaseResponse<CartResponse>> listItem() {
         Cart cart = cartRepository.findByUserId(commonService.getCurrentUserId())
-                .orElse(new Cart());
+                .orElse(Cart.builder()
+                        .userId(commonService.getCurrentUserId())
+                        .productMapQuantity(new HashMap<>())
+                        .build());
+        cartRepository.save(cart);
 
         return responseFactory.success("Success", buildResponse(cart));
     }
@@ -108,5 +115,14 @@ public class CartServiceImpl implements CartService {
                 .user(commonService.getUserInfo(cart.getUserId()))
                 .items(responseList)
                 .build();
+    }
+
+    @Override
+    public void deleteProducts(String userId) {
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống, không thể xoá giỏ hàng"));
+
+        cart.setProductMapQuantity(new HashMap<>());
+        cartRepository.save(cart);
     }
 }

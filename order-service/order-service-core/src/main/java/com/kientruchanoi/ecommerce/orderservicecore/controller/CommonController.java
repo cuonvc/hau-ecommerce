@@ -18,8 +18,8 @@ public class CommonController {
 
     private final OrderService orderService;
 
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<BaseResponse<OrderResponseDetail>> orderDetail(@PathVariable("id") String id) {
-        return orderService.detail(id);
-    }
+//    @GetMapping("/detail/{id}")
+//    public ResponseEntity<BaseResponse<OrderResponseDetail>> orderDetail(@PathVariable("id") String id) {
+//        return orderService.detail(id);
+//    }
 }

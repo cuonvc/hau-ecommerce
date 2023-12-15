@@ -3,8 +3,10 @@ package com.kientruchanoi.ecommerce.authservicecore.service.impl;
 import com.kientruchanoi.ecommerce.authservicecore.config.CustomUserDetail;
 import com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress;
 import com.kientruchanoi.ecommerce.authservicecore.exception.APIException;
+import com.kientruchanoi.ecommerce.authservicecore.mapper.DeliveryMapper;
 import com.kientruchanoi.ecommerce.authservicecore.repository.DeliveryAddressRepository;
 import com.kientruchanoi.ecommerce.authservicecore.service.DeliveryAddressService;
+import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
 
     private final DeliveryAddressRepository repository;
     private final ResponseFactory responseFactory;
+    private final DeliveryMapper deliveryMapper;
 
     @Override
     public ResponseEntity<BaseResponse<DeliveryAddress>> insert(DeliveryAddress address) {
@@ -64,9 +67,11 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<DeliveryAddress>> detail(String id) {
-        return responseFactory.success("Success", repository.findById(id)
-                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Địa chỉ không tồn tại")));
+    public ResponseEntity<BaseResponse<DeliveryAddressResponse>> detail(String id) {
+        return responseFactory.success("Success", deliveryMapper.entityToResponse(
+                repository.findById(id)
+                        .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Địa chỉ không tồn tại"))
+        ));
     }
 
     @Override

@@ -17,4 +17,6 @@ public interface CartService {
     ResponseEntity<BaseResponse<Integer>> sizeOfCart();
 
     ResponseEntity<BaseResponse<CartResponse>> listItem();
+
+    void deleteProducts(String userId);
 }

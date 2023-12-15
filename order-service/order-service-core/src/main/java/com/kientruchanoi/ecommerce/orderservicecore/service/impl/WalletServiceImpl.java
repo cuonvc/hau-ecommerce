@@ -5,14 +5,17 @@ import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserRespons
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.orderservicecore.configuration.CustomUserDetail;
+import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.exception.APIException;
+import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.TransactionRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.WalletRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.request.PaymentSMS;
 import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.WalletService;
+import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.WalletStatus;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +35,7 @@ public class WalletServiceImpl implements WalletService {
     private final CommonService commonService;
     private final ResponseFactory responseFactory;
     private final TransactionRepository transactionRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public ResponseEntity<BaseResponse<Wallet>> deposit(Long amount) {
@@ -42,7 +47,7 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = walletRepository.findByUserId(currentUserId)
                 .orElse(walletBuilder(currentUserId));
 
-        wallet.setBalanceTemporary(amount);
+        wallet.setBalanceTemporary((double) amount);
         wallet.setStatus(WalletStatus.DEPOSIT_PENDING.name());
         wallet.setSmsFormat(currentUserId + "_" + amount);
         return responseFactory.success("Nạp tiền thanh công, vui lòng chuyển " + amount + "VNĐ cho quản trị viên",
@@ -79,7 +84,7 @@ public class WalletServiceImpl implements WalletService {
         if (amount == wallet.getBalanceTemporary()) {
 
             wallet.setBalance(wallet.getBalance() + amount);
-            wallet.setBalanceTemporary(0L);
+            wallet.setBalanceTemporary(0D);
             wallet.setSmsFormat(null);
             wallet.setStatus(WalletStatus.DEPOSIT_PAID.name());
             wallet.setModifiedDate(LocalDateTime.now());
@@ -107,9 +112,9 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = walletRepository.findByUserId(userId)
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Tài khoản không tồn tại"));
 
-        long newAmount = wallet.getBalanceTemporary();
+        double newAmount = wallet.getBalanceTemporary();
         wallet.setBalance(wallet.getBalance() + newAmount);
-        wallet.setBalanceTemporary(0L);
+        wallet.setBalanceTemporary(0D);
         wallet.setStatus(WalletStatus.DEPOSIT_PAID.name());
         wallet.setSmsFormat(null);
         wallet.setModifiedDate(LocalDateTime.now());
@@ -118,7 +123,7 @@ public class WalletServiceImpl implements WalletService {
                 Transaction.builder()
                         .walletId(wallet.getId())
                         .type(TransactionType.DEPOSIT.name())
-                        .amount(newAmount)
+                        .amount((long) newAmount)
                         .balance(wallet.getBalance())
                         .description("Nạp tiền vào ví")
                         .createdDate(LocalDateTime.now())
@@ -137,12 +142,36 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public void reduceBalanceByOrder(String userId, Double amount, List<String> orderIds) {
+        Wallet wallet = walletRepository.findByUserId(userId)
+                .orElse(walletBuilder(userId));
+        wallet.setBalance(wallet.getBalance() - amount);
+        wallet.setTotalAmountPaid(wallet.getTotalAmountPaid() + amount);
+        walletRepository.save(wallet);
+
+        orderIds.forEach(id -> {
+            Order order = orderRepository.findById(id)
+                    .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống....hm"));
+            order.setPaymentStatus(PaymentStatus.PAID.name());
+            orderRepository.save(order);
+        });
+    }
+
+    @Override
+    public void plusBalanceByOrder(String userId, Double amount) {
+        Wallet wallet = walletRepository.findByUserId(userId)
+                .orElse(walletBuilder(userId));
+        wallet.setBalance(wallet.getBalance() + amount);
+        walletRepository.save(wallet);
+    }
+
+    @Override
     public Wallet walletBuilder(String userId) {
         return Wallet.builder()
                 .userId(userId)
-                .balance(0L)
-                .balanceTemporary(0L)
-                .totalAmountPaid(0L)
+                .balance(0D)
+                .balanceTemporary(0D)
+                .totalAmountPaid(0D)
                 .status(WalletStatus.DEPOSIT_PAID.name())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())

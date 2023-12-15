@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.orderservicecore.entity;
 
+import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
@@ -42,11 +43,17 @@ public class Order {
     @Field("wallet_id")
     private String walletId;
 
-    @Field("source_address")
-    private String sourceAddress;
+    @Field("source_info")
+    private DeliveryAddressResponse sourceInfo;
 
-    @Field("destination_address")
-    private String destinationAddress;
+    @Field("destination_info")
+    private DeliveryAddressResponse destinationInfo;
+
+//    @Field("source_address")
+//    private String sourceAddress;
+//
+//    @Field("destination_address")
+//    private String destinationAddress;
 
     @Field("note")
     private String note;
