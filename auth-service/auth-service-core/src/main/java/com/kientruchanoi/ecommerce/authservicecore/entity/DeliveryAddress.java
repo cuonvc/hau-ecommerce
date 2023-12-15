@@ -38,4 +38,7 @@ public class DeliveryAddress {
 
     @Field("user_id")
     private String userId;
+
+    @Field("is_default")
+    private boolean isDefault = false;
 }

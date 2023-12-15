@@ -28,6 +28,11 @@ public class DeliveryController {
         return deliveryAddressService.update(id, address);
     }
 
+    @PutMapping("/default-set/{id}")
+    public ResponseEntity<BaseResponse<DeliveryAddress>> setDefault(@PathVariable("id") String id) {
+        return deliveryAddressService.setDefault(id);
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<BaseResponse<String>> delete(@PathVariable("id") String id) {
         return deliveryAddressService.delete(id);

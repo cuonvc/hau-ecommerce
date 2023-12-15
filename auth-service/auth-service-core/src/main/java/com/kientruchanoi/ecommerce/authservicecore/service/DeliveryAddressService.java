@@ -14,6 +14,8 @@ public interface DeliveryAddressService {
 
     ResponseEntity<BaseResponse<DeliveryAddress>> update(String id, DeliveryAddress address);
 
+    ResponseEntity<BaseResponse<DeliveryAddress>> setDefault(String id);
+
     ResponseEntity<BaseResponse<String>> delete(String id);
 
     ResponseEntity<BaseResponse<DeliveryAddressResponse>> detail(String id);

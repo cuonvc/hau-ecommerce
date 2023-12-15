@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +56,22 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
         deliveryAddress.setPhone(address.getPhone());
         deliveryAddress.setRecipientName(address.getRecipientName());
         return responseFactory.success("Success", repository.save(deliveryAddress));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<DeliveryAddress>> setDefault(String id) {
+
+        DeliveryAddress deliveryAddress = repository.findByDefaultIsAndUserId(getCurrentUserId());
+        if (deliveryAddress != null) {
+            deliveryAddress.setDefault(false);
+            repository.save(deliveryAddress);
+        }
+
+        DeliveryAddress newDefault = repository.findByIdAndUserId(id, getCurrentUserId())
+                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Địa chỉ không tồn tại"));
+        newDefault.setDefault(true);
+
+        return responseFactory.success("Success", repository.save(newDefault));
     }
 
     @Override
