@@ -173,25 +173,25 @@ public class OrderServiceImpl implements OrderService {
 //        return responseFactory.success("Success", orderMapper.entityToResponse(orderRepository.save(order)));
 //    }
 //
-//    @Override
-//    public ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id) {
-//        Order order = orderRepository.findByIdAndStatus(id, Status.ACTIVE.name())
-//                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, ORDER_NOT_FOUND));
-//
-//        String currentUserId = commonService.getCurrentUserId();
-//        if (!currentUserId.equals(order.getCustomerId())
-//                && currentUserId.equals(order.getSellerId())
-//                && commonService.getCurrentUser().getGrantedAuthorities().get(0).equals(Constants.USER_ROLE)) {
-//            throw new APIException(HttpStatus.UNAUTHORIZED, ACCESS_DENIED);
-//        }
-//
-//        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
-//        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
-//        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
-//        detail.setProduct(commonService.getProductInfo(order.getProductId()));
-//
-//        return responseFactory.success("Success", detail);
-//    }
+    @Override
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id) {
+        Order order = orderRepository.findByIdAndStatus(id, Status.ACTIVE.name())
+                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, ORDER_NOT_FOUND));
+
+        String currentUserId = commonService.getCurrentUserId();
+        if (!currentUserId.equals(order.getCustomerId())
+                && currentUserId.equals(order.getSellerId())
+                && commonService.getCurrentUser().getGrantedAuthorities().get(0).equals(Constants.USER_ROLE)) {
+            throw new APIException(HttpStatus.UNAUTHORIZED, ACCESS_DENIED);
+        }
+
+        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
+        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
+        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
+        detail.setProduct(commonService.getProductInfo(order.getProductId()));
+
+        return responseFactory.success("Success", detail);
+    }
 //
 //    @Override
 //    public ResponseEntity<BaseResponse<String>> cancel(String id) {

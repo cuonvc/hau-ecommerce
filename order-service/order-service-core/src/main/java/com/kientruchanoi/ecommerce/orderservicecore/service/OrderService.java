@@ -13,7 +13,7 @@ public interface OrderService {
 
 //    ResponseEntity<BaseResponse<OrderResponse>> update(String id, OrderRequest request);
 //
-//    ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
+    ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
 //
 //    ResponseEntity<BaseResponse<String>> cancel(String id);
 //
