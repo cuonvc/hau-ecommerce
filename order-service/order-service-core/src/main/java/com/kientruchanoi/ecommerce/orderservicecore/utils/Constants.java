@@ -19,5 +19,7 @@ public class Constants {
         public static String ORDER_ACCEPTED = "Đã tiếp nhận đơn hàng";
         public static String ORDER_CANNOT_REJECT = "Không thể từ chối đơn hàng do không trong trạng thái chờ.";
         public static String ORDER_REJECTED = "Đã từ chối đơn hàng";
+        public static String ORDER_CANNOT_DELIVERING = "Tiếp nhận đơn hàng trước khi giao";
+        public static String ORDER_CANNOT_RECEIVE = "Đơn hàng không trong trạng thái đang giao";
     }
 }

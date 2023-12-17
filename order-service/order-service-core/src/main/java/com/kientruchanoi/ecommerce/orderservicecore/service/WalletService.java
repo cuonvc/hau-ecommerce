@@ -18,6 +18,8 @@ public interface WalletService {
 
     Wallet customerRefund(Order order);
 
+    Wallet sellerPay(Order order);
+
     ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(String userId);
 
     ResponseEntity<BaseResponse<Wallet>> detail();

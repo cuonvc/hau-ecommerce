@@ -126,12 +126,7 @@ public class OrderServiceImpl implements OrderService {
                         .quantity(cart.getProductMapQuantity().get(p.getId()))
                         .build());
 
-                OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
-                detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
-                detail.setSeller(commonService.getUserInfo(order.getSellerId()));
-                detail.setProduct(commonService.getProductInfo(order.getProductId()));
-
-                return detail;
+                return buildResponseDetail(order);
             } catch (APIException exception) {
                 throw new APIException(HttpStatus.BAD_REQUEST, exception.getMessage());
             }
@@ -202,12 +197,7 @@ public class OrderServiceImpl implements OrderService {
             throw new APIException(HttpStatus.UNAUTHORIZED, ACCESS_DENIED);
         }
 
-        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
-        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
-        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
-        detail.setProduct(commonService.getProductInfo(order.getProductId()));
-
-        return responseFactory.success("Success", detail);
+        return responseFactory.success("Success", buildResponseDetail(order));
     }
 
     @Override
@@ -225,13 +215,8 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
-        List<OrderResponseDetail> detailList = orders.stream().map(entity -> {
-            OrderResponseDetail detail = orderMapper.entityToResponseDetail(entity);
-            detail.setCustomer(commonService.getUserInfo(entity.getCustomerId()));
-            detail.setSeller(commonService.getUserInfo(entity.getSellerId()));
-            detail.setProduct(commonService.getProductInfo(entity.getProductId()));
-            return detail;
-        }).toList();
+        List<OrderResponseDetail> detailList = orders.stream()
+                .map(this::buildResponseDetail).toList();
 
         return responseFactory.success("Succes", detailList);
     }
@@ -258,7 +243,7 @@ public class OrderServiceImpl implements OrderService {
                     "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet.getBalance(), order.getAmount());
         }
 
-        return responseFactory.success("Sucess", ORDER_CANCEL_SUCCESS);
+        return responseFactory.success("Đã huỷ đơn hàng " + order.getId(), ORDER_CANCEL_SUCCESS);
     }
 
     @Override
@@ -275,11 +260,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
 
         streamBridge.send(ORDER_REDUCE_PRODUCT_QUANTITY, message);
-        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
-        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
-        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
-        detail.setProduct(commonService.getProductInfo(order.getProductId()));
-        return responseFactory.success("Success", detail);
+        return responseFactory.success("Đã tiếp nhận đơn hàng", buildResponseDetail(order));
     }
 
     @Override
@@ -297,11 +278,42 @@ public class OrderServiceImpl implements OrderService {
                     "Hoàn tiền cho do hàng bị từ chối", List.of(order.getId()), wallet.getBalance(), order.getAmount());
         }
 
-        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
-        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
-        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
-        detail.setProduct(commonService.getProductInfo(order.getProductId()));
-        return responseFactory.success("Success", detail);
+        return responseFactory.success("Bạn đã từ chối đơn hàng", buildResponseDetail(order));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> delivering(String id) {
+        Order order = sellerAction(id,
+                Status.ACTIVE,
+                OrderStatus.ACCEPTED,
+                ORDER_CANNOT_DELIVERING,
+                OrderStatus.DELIVERING);
+        orderRepository.save(order);
+        return responseFactory.success("Đơn hàng đang trên đường vận chuyển.", buildResponseDetail(order));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> done(String id) {
+        String currentUserId = commonService.getCurrentUserId();
+
+        Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), currentUserId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
+
+        if (!order.getOrderStatus().equals(OrderStatus.DELIVERING.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, ORDER_CANNOT_RECEIVE);
+        }
+
+        order.setOrderStatus(OrderStatus.DONE.name());
+        order = orderRepository.save(order);
+
+        //pay for seller
+        if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+            Wallet wallet = walletService.sellerPay(order);
+            transactionService.create(TransactionType.SELL,
+                    "Thu tiền sản phẩm", List.of(order.getId()), wallet.getBalance(), order.getAmount());
+        }
+
+        return responseFactory.success("Đã nhận được hàng", buildResponseDetail(order));
     }
 
     private Order sellerAction(String orderId, Status objectStatus,
@@ -318,6 +330,15 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderStatus(targetStatus.name());
         return orderRepository.save(order);
+    }
+
+    private OrderResponseDetail buildResponseDetail(Order order) {
+        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
+        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
+        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
+        detail.setProduct(commonService.getProductInfo(order.getProductId()));
+
+        return detail;
     }
 
 }

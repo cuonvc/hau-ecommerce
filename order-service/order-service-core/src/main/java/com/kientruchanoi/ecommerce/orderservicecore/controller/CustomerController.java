@@ -39,4 +39,9 @@ public class CustomerController {
         return orderService.cancel(id);
     }
 
+    @PutMapping("/done/{id}")
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> received(@PathVariable("id") String id) {
+        return orderService.done(id);
+    }
+
 }

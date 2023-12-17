@@ -20,4 +20,8 @@ public interface OrderService {
     ResponseEntity<BaseResponse<OrderResponseDetail>> accept(String id);
 
     ResponseEntity<BaseResponse<OrderResponseDetail>> reject(String id);
+
+    ResponseEntity<BaseResponse<OrderResponseDetail>> delivering(String id);
+
+    ResponseEntity<BaseResponse<OrderResponseDetail>> done(String id);
 }

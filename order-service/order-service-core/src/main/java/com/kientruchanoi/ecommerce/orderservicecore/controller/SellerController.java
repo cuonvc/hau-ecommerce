@@ -23,4 +23,9 @@ public class SellerController {
     public ResponseEntity<BaseResponse<OrderResponseDetail>> reject(@PathVariable("id") String id) {
         return orderService.reject(id);
     }
+
+    @PutMapping("/delivering/{id}")
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> delivering(@PathVariable("id") String id) {
+        return orderService.delivering(id);
+    }
 }

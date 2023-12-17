@@ -115,6 +115,17 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public Wallet sellerPay(Order order) {
+        Wallet wallet = walletRepository.findByUserId(order.getSellerId())
+                .orElse(walletBuilder(order.getSellerId()));
+
+        wallet.setBalance(wallet.getBalance() + order.getAmount());
+        wallet.setModifiedDate(LocalDateTime.now());
+
+        return walletRepository.save(wallet);
+    }
+
+    @Override
     public ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(String userId) {
         if (commonService.getCurrentUser().getGrantedAuthorities().get(0).equals("USER")) {
             throw new APIException(HttpStatus.UNAUTHORIZED, "Không được phép truy cập.");
