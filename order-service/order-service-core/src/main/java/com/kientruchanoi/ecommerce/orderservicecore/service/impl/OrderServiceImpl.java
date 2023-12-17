@@ -273,17 +273,25 @@ public class OrderServiceImpl implements OrderService {
         detail.setProduct(commonService.getProductInfo(order.getProductId()));
         return responseFactory.success("Success", detail);
     }
-//
-//    @Override
-//    public ResponseEntity<BaseResponse<String>> reject(String id) {
-//        return sellerAction(id,
-//                Status.ACTIVE,
-//                OrderStatus.PENDING,
-//                ORDER_CANNOT_REJECT,
-//                OrderStatus.REJECTED,
-//                ORDER_REJECTED);
-//    }
-//
+
+    @Override
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> reject(String id) {
+        Order order = sellerAction(id,
+                Status.ACTIVE,
+                OrderStatus.PENDING,
+                ORDER_CANNOT_REJECT,
+                OrderStatus.REJECTED);
+
+        //refund for customer
+        walletService.customerRefund(order);
+
+        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
+        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
+        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
+        detail.setProduct(commonService.getProductInfo(order.getProductId()));
+        return responseFactory.success("Success", detail);
+    }
+
     private Order sellerAction(String orderId, Status objectStatus,
                                OrderStatus currentOrderStatus, String throwMessage,
                                OrderStatus targetStatus) {

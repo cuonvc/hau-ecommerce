@@ -1,6 +1,7 @@
 package com.kientruchanoi.ecommerce.orderservicecore.service;
 
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
+import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.request.PaymentSMS;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ public interface WalletService {
     ResponseEntity<BaseResponse<String>> pendingAmountDeposit();
 
     void confirmPayment(PaymentSMS sms);
+
+    void customerRefund(Order order);
 
     ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(String userId);
 

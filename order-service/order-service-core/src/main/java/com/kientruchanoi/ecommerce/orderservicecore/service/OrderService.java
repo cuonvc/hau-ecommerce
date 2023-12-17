@@ -18,6 +18,6 @@ public interface OrderService {
 //    ResponseEntity<BaseResponse<String>> cancel(String id);
 
     ResponseEntity<BaseResponse<OrderResponseDetail>> accept(String id);
-//
-//    ResponseEntity<BaseResponse<String>> reject(String id);
+
+    ResponseEntity<BaseResponse<OrderResponseDetail>> reject(String id);
 }

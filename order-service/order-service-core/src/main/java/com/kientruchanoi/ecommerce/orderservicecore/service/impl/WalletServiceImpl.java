@@ -104,6 +104,16 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    public void customerRefund(Order order) {
+        Wallet wallet = walletRepository.findByUserId(order.getCustomerId())
+                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Lỗi hệ thống - không tìm thấy ví khách hanng"));
+        wallet.setBalance(wallet.getBalance() + order.getAmount());
+        wallet.setTotalAmountPaid(wallet.getTotalAmountPaid() - order.getAmount());
+        wallet.setModifiedDate(LocalDateTime.now());
+        walletRepository.save(wallet);
+    }
+
+    @Override
     public ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(String userId) {
         if (commonService.getCurrentUser().getGrantedAuthorities().get(0).equals("USER")) {
             throw new APIException(HttpStatus.UNAUTHORIZED, "Không được phép truy cập.");

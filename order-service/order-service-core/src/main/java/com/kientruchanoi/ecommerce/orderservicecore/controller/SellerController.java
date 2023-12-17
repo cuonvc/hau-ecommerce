@@ -19,8 +19,8 @@ public class SellerController {
         return orderService.accept(id);
     }
 
-//    @PutMapping("/reject/{id}")
-//    public ResponseEntity<BaseResponse<String>> reject(@PathVariable("id") String id) {
-//        return orderService.reject(id);
-//    }
+    @PutMapping("/reject/{id}")
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> reject(@PathVariable("id") String id) {
+        return orderService.reject(id);
+    }
 }
