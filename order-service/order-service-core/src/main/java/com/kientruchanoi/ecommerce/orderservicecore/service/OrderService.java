@@ -16,8 +16,8 @@ public interface OrderService {
     ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status);
 //
 //    ResponseEntity<BaseResponse<String>> cancel(String id);
-//
-//    ResponseEntity<BaseResponse<String>> accept(String id);
+
+    ResponseEntity<BaseResponse<OrderResponseDetail>> accept(String id);
 //
 //    ResponseEntity<BaseResponse<String>> reject(String id);
 }

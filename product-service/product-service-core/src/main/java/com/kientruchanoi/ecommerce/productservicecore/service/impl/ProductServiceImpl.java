@@ -22,6 +22,7 @@ import com.kientruchanoi.ecommerce.productserviceshare.payload.request.ProductRe
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.PageResponseProduct;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.errors.ApiException;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -141,6 +142,14 @@ public class ProductServiceImpl implements ProductService {
 
         return responseFactory.success("Cập nhật thành công",
                 productMapper.entityToResponse(productRepository.save(product)));
+    }
+
+    @Override
+    public void reduceQuantity(String id, int quantity) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi Kafka hệ thống"));
+        product.setRemaining(product.getRemaining() - quantity);
+        productRepository.save(product);
     }
 
     private boolean isBase64Image(String data) {

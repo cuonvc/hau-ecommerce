@@ -16,6 +16,8 @@ public interface ProductService {
 
     ResponseEntity<BaseResponse<ProductResponse>> update(String id, ProductRequest request);
 
+    void reduceQuantity(String id, int quantity);
+
     ResponseEntity<BaseResponse<ProductResponse>> getById(String id);
 
     ResponseEntity<BaseResponse<String>> deleteById(String id);

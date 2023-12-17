@@ -21,15 +21,20 @@ import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentType;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.kafka.OrderReduceProduct;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +63,9 @@ public class OrderServiceImpl implements OrderService {
     private final WalletService walletService;
     private final TransactionService transactionService;
     private final CartService cartService;
+    private final StreamBridge streamBridge;
+
+    private static final String ORDER_REDUCE_PRODUCT_QUANTITY = "order.reduce.prduct.quantity";
 
     @Override
     @Transactional
@@ -245,15 +253,26 @@ public class OrderServiceImpl implements OrderService {
 //        return responseFactory.success("Sucess", ORDER_CANCEL_SUCCESS);
 //    }
 //
-//    @Override
-//    public ResponseEntity<BaseResponse<String>> accept(String id) {
-//        return sellerAction(id,
-//                Status.ACTIVE,
-//                OrderStatus.PENDING,
-//                ORDER_CANNOT_ACCEPT,
-//                OrderStatus.ACCEPTED,
-//                ORDER_ACCEPTED);
-//    }
+    @Override
+    public ResponseEntity<BaseResponse<OrderResponseDetail>> accept(String id) {
+        Order order = sellerAction(id,
+                Status.ACTIVE,
+                OrderStatus.PENDING, //old status
+                ORDER_CANNOT_ACCEPT,
+                OrderStatus.ACCEPTED); //current status
+
+        //reduce product quantity
+        Message<Integer> message = MessageBuilder.withPayload(order.getQuantity())
+                .setHeader(KafkaHeaders.KEY, order.getProductId().getBytes())
+                .build();
+
+        streamBridge.send(ORDER_REDUCE_PRODUCT_QUANTITY, message);
+        OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
+        detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
+        detail.setSeller(commonService.getUserInfo(order.getSellerId()));
+        detail.setProduct(commonService.getProductInfo(order.getProductId()));
+        return responseFactory.success("Success", detail);
+    }
 //
 //    @Override
 //    public ResponseEntity<BaseResponse<String>> reject(String id) {
@@ -265,20 +284,20 @@ public class OrderServiceImpl implements OrderService {
 //                ORDER_REJECTED);
 //    }
 //
-//    private ResponseEntity<BaseResponse<String>> sellerAction(String orderId, Status objectStatus, OrderStatus currentOrderStatus,
-//                                                              String throwMessage, OrderStatus targetStatus, String responseMessage) {
-//        String currentUserId = commonService.getCurrentUserId();
-//
-//        Order order = orderRepository.findByIdAndStatusAndSellerId(orderId, objectStatus.name(), currentUserId)
-//                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
-//
-//        if (!order.getOrderStatus().equals(currentOrderStatus.name())) {
-//            throw new APIException(HttpStatus.BAD_REQUEST, throwMessage);
-//        }
-//
-//        order.setOrderStatus(targetStatus.name());
-//        orderRepository.save(order);
-//        return responseFactory.success("Success", responseMessage);
-//    }
+    private Order sellerAction(String orderId, Status objectStatus,
+                               OrderStatus currentOrderStatus, String throwMessage,
+                               OrderStatus targetStatus) {
+        String currentUserId = commonService.getCurrentUserId();
+
+        Order order = orderRepository.findByIdAndStatusAndSellerId(orderId, objectStatus.name(), currentUserId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
+
+        if (!order.getOrderStatus().equals(currentOrderStatus.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, throwMessage);
+        }
+
+        order.setOrderStatus(targetStatus.name());
+        return orderRepository.save(order);
+    }
 
 }
