@@ -16,7 +16,7 @@ public interface WalletService {
 
     void confirmPayment(PaymentSMS sms);
 
-    void customerRefund(Order order);
+    Wallet customerRefund(Order order);
 
     ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(String userId);
 

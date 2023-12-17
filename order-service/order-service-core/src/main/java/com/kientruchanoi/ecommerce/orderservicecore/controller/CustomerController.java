@@ -34,9 +34,9 @@ public class CustomerController {
 //        return orderService.update(id,request);
 //    }
 //
-//    @PutMapping("/cancel/{id}")
-//    public ResponseEntity<BaseResponse<String>> cancel(@PathVariable("id") String id) {
-//        return orderService.cancel(id);
-//    }
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity<BaseResponse<String>> cancel(@PathVariable("id") String id) {
+        return orderService.cancel(id);
+    }
 
 }

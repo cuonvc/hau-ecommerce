@@ -236,23 +236,31 @@ public class OrderServiceImpl implements OrderService {
         return responseFactory.success("Succes", detailList);
     }
 
-    //
-//    @Override
-//    public ResponseEntity<BaseResponse<String>> cancel(String id) {
-//        String currentUserId = commonService.getCurrentUserId();
-//
-//        Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), currentUserId)
-//                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
-//
-//        if (!order.getOrderStatus().equals(OrderStatus.PENDING.name())) {
-//            throw new APIException(HttpStatus.BAD_REQUEST, ORDER_CANCEL_FAILED);
-//        }
-//
-//        order.setOrderStatus(OrderStatus.CANCEL.name());
-//        orderRepository.save(order);
-//        return responseFactory.success("Sucess", ORDER_CANCEL_SUCCESS);
-//    }
-//
+
+    @Override
+    public ResponseEntity<BaseResponse<String>> cancel(String id) {
+        String currentUserId = commonService.getCurrentUserId();
+
+        Order order = orderRepository.findByIdAndStatusAndCustomerId(id, Status.ACTIVE.name(), currentUserId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ORDER_NOT_FOUND));
+
+        if (!order.getOrderStatus().equals(OrderStatus.PENDING.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, ORDER_CANCEL_FAILED);
+        }
+
+        order.setOrderStatus(OrderStatus.CANCEL.name());
+        orderRepository.save(order);
+
+        //refund to wallet
+        if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+            Wallet wallet = walletService.customerRefund(order);
+            transactionService.create(TransactionType.REFUND,
+                    "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet.getBalance(), order.getAmount());
+        }
+
+        return responseFactory.success("Sucess", ORDER_CANCEL_SUCCESS);
+    }
+
     @Override
     public ResponseEntity<BaseResponse<OrderResponseDetail>> accept(String id) {
         Order order = sellerAction(id,
@@ -283,7 +291,11 @@ public class OrderServiceImpl implements OrderService {
                 OrderStatus.REJECTED);
 
         //refund for customer
-        walletService.customerRefund(order);
+        if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+            Wallet wallet = walletService.customerRefund(order);
+            transactionService.create(TransactionType.REFUND,
+                    "Hoàn tiền cho do hàng bị từ chối", List.of(order.getId()), wallet.getBalance(), order.getAmount());
+        }
 
         OrderResponseDetail detail = orderMapper.entityToResponseDetail(order);
         detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
