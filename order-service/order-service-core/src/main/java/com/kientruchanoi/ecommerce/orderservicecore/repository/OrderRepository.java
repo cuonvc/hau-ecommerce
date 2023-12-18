@@ -18,10 +18,17 @@ public interface OrderRepository extends MongoRepository<Order, String> {
 
     List<Order> findAllByStatusAndCustomerIdOrSellerId(String status, String customerId, String sellerId);
 
-    @Query("{'order_status': ?0, $or: [{'customer_id': ?1}, {'seller_id': ?1}]}")
-    List<Order> findAllByUserIdAndOrderStatus(String status, String userId);
+    List<Order> findAllBySellerIdAndStatus(String sellerId, String status);
+
+    List<Order> findAllByCustomerIdAndStatus(String customerId, String status);
+
+
 
     List<Order> findAllByCustomerIdOrSellerId(String customerId, String sellerId);
+
+    List<Order> findAllBySellerId(String sellerId);
+
+    List<Order> findAllByCustomerId(String customerId);
 
     Optional<Order> findByIdAndStatusAndCustomerId(String id, String status, String customerId);
 

@@ -24,7 +24,8 @@ public class CommonController {
     }
 
     @GetMapping("/owner/list")
-    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(@RequestParam(value = "status", required = false) String status) {
-        return orderService.listByOwner(status);
+    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(@RequestParam(value = "status", required = false) String status,
+                                                                               @RequestParam(value = "type") String type) {
+        return orderService.listByOwner(status, type.trim().toUpperCase());
     }
 }

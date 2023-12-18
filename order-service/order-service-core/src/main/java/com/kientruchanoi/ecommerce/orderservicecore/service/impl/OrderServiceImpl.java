@@ -17,10 +17,7 @@ import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.WalletRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.service.*;
 import com.kientruchanoi.ecommerce.orderservicecore.utils.Constants;
-import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
-import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
-import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentType;
-import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
+import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.*;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.kafka.OrderReduceProduct;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
@@ -66,6 +63,8 @@ public class OrderServiceImpl implements OrderService {
     private final StreamBridge streamBridge;
 
     private static final String ORDER_REDUCE_PRODUCT_QUANTITY = "order.reduce.prduct.quantity";
+    private static final String ORDER_TYPE_SELL = "SELL";
+    private static final String ORDER_TYPE_BUY = "BUY";
 
     @Override
     @Transactional
@@ -201,19 +200,50 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status) {
+    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status, String type) {
+
         String currentUserId = commonService.getCurrentUserId();
         List<Order> orders = new ArrayList<>();
-        if (status == null) {
-            orders = orderRepository.findAllByCustomerIdOrSellerId(currentUserId, currentUserId);
-        } else {
-            try {
-                OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
-                orders = orderRepository.findAllByUserIdAndOrderStatus(orderStatus.name(), currentUserId);
-            } catch (Exception exception) {
-                throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
+
+        switch (type) {
+            case ORDER_TYPE_SELL -> {
+                if (status == null) {
+                    orders = orderRepository.findAllBySellerId(currentUserId);
+                } else {
+                    try {
+                        OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
+                        orders = orderRepository.findAllBySellerIdAndStatus(currentUserId, orderStatus.name());
+                    } catch (Exception exception) {
+                        throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
+                    }
+                }
             }
+            case ORDER_TYPE_BUY -> {
+                if (status == null) {
+                    orders = orderRepository.findAllByCustomerId(currentUserId);
+                } else {
+                    try {
+                        OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
+                        orders = orderRepository.findAllByCustomerIdAndStatus(currentUserId, orderStatus.name());
+                    } catch (Exception exception) {
+                        throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
+                    }
+                }
+            }
+            default -> throw new APIException(HttpStatus.BAD_REQUEST, "Type không hợp lệ");
         }
+
+
+//        if (status == null) {
+//            orders = orderRepository.findAllByCustomerIdOrSellerId(currentUserId, currentUserId);
+//        } else {
+//            try {
+//                OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
+//                orders = orderRepository.findAllByUserIdAndOrderStatus(orderStatus.name(), currentUserId);
+//            } catch (Exception exception) {
+//                throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
+//            }
+//        }
 
         List<OrderResponseDetail> detailList = orders.stream()
                 .map(this::buildResponseDetail).toList();

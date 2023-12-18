@@ -13,7 +13,7 @@ public interface OrderService {
 
     ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
 
-    ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status);
+    ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status, String type);
 
     ResponseEntity<BaseResponse<String>> cancel(String id);
 
