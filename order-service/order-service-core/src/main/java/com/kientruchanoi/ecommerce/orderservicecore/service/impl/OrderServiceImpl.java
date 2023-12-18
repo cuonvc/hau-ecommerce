@@ -107,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
         //save orders
         List<OrderResponseDetail> responses = products.stream().map(p -> {
             try {
-                DeliveryAddressResponse deliverySource = commonService.getDeliveryInfo(request.getDeliverySourceId());
+//                DeliveryAddressResponse deliverySource = commonService.getDeliveryInfo(request.getDeliverySourceId());
                 DeliveryAddressResponse deliveryDestination = commonService.getDeliveryInfo(request.getDeliveryDestinationId());
 
                 Order order = orderRepository.save(Order.builder()
@@ -115,7 +115,6 @@ public class OrderServiceImpl implements OrderService {
                         .amount(p.getStandardPrice() * cart.getProductMapQuantity().get(p.getId()))
                         .sellerId(p.getUser().getId())
                         .customerId(currentUserId)
-                        .sourceInfo(deliverySource)
                         .destinationInfo(deliveryDestination)
                         .createdDate(LocalDateTime.now())
                         .status(Status.ACTIVE.name())
@@ -141,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
                 TransactionType.BUY,
                 "Mua hàng",
                 responses.stream().map(OrderResponseDetail::getId).toList(),
-                walletRepository.findByUserId(currentUserId).get().getBalance(), amount);
+                walletRepository.findByUserId(currentUserId).get(), amount);
 
         //delete cart
         cartService.deleteProducts(currentUserId);
@@ -233,18 +232,6 @@ public class OrderServiceImpl implements OrderService {
             default -> throw new APIException(HttpStatus.BAD_REQUEST, "Type không hợp lệ");
         }
 
-
-//        if (status == null) {
-//            orders = orderRepository.findAllByCustomerIdOrSellerId(currentUserId, currentUserId);
-//        } else {
-//            try {
-//                OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
-//                orders = orderRepository.findAllByUserIdAndOrderStatus(orderStatus.name(), currentUserId);
-//            } catch (Exception exception) {
-//                throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
-//            }
-//        }
-
         List<OrderResponseDetail> detailList = orders.stream()
                 .map(this::buildResponseDetail).toList();
 
@@ -270,7 +257,7 @@ public class OrderServiceImpl implements OrderService {
         if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
             Wallet wallet = walletService.customerRefund(order);
             transactionService.create(TransactionType.REFUND,
-                    "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet.getBalance(), order.getAmount());
+                    "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet, order.getAmount());
         }
 
         return responseFactory.success("Đã huỷ đơn hàng " + order.getId(), ORDER_CANCEL_SUCCESS);
@@ -305,7 +292,7 @@ public class OrderServiceImpl implements OrderService {
         if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
             Wallet wallet = walletService.customerRefund(order);
             transactionService.create(TransactionType.REFUND,
-                    "Hoàn tiền cho do hàng bị từ chối", List.of(order.getId()), wallet.getBalance(), order.getAmount());
+                    "Hoàn tiền cho do hàng bị từ chối", List.of(order.getId()), wallet, order.getAmount());
         }
 
         return responseFactory.success("Bạn đã từ chối đơn hàng", buildResponseDetail(order));
@@ -340,7 +327,7 @@ public class OrderServiceImpl implements OrderService {
         if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
             Wallet wallet = walletService.sellerPay(order);
             transactionService.create(TransactionType.SELL,
-                    "Thu tiền sản phẩm", List.of(order.getId()), wallet.getBalance(), order.getAmount());
+                    "Thu tiền sản phẩm", List.of(order.getId()), wallet, order.getAmount());
         }
 
         return responseFactory.success("Đã nhận được hàng", buildResponseDetail(order));

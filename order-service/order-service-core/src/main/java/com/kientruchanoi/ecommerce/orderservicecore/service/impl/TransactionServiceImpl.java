@@ -44,12 +44,13 @@ public class TransactionServiceImpl implements TransactionService {
     private final OrderRepository orderRepository;
 
     @Override
-    public void create(TransactionType type, String des, List<String> orderIds, double balance, double amount) {
+    public void create(TransactionType type, String des, List<String> orderIds, Wallet wallet, double amount) {
         transactionRepository.save(
                 Transaction.builder()
                         .orderIds(orderIds)
                         .type(type.name())
-                        .balance(balance)
+                        .walletId(wallet.getId())
+                        .balance(wallet.getBalance())
                         .amount(amount)
                         .description(des)
                         .build()

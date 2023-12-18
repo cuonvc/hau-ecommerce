@@ -21,9 +21,6 @@ public class OrderRequest {
     private List<String> productIds;
 
     @NotNull
-    private String deliverySourceId;
-
-    @NotNull
     private String deliveryDestinationId;
 
     private String note;

@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface TransactionService {
 
-    void create(TransactionType type, String des, List<String> orderId, double balance, double amount);
+    void create(TransactionType type, String des, List<String> orderId, Wallet wallet, double amount);
 
     ResponseEntity<BaseResponse<TransactionResponse>> detail(String id);
 
