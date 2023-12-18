@@ -71,8 +71,8 @@ public class Order {
     private String orderStatus = OrderStatus.PENDING.name();
 
     @Field("created_date")
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
     @Field("modified_date")
-    private LocalDateTime modifiedDate;
+    private LocalDateTime modifiedDate = LocalDateTime.now();
 }

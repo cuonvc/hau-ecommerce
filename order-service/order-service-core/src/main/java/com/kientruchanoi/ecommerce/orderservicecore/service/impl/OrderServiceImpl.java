@@ -22,6 +22,7 @@ import com.kientruchanoi.ecommerce.orderserviceshare.payload.kafka.OrderReducePr
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.TransactionResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -38,10 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.kientruchanoi.ecommerce.orderservicecore.utils.Constants.HttpMessage.ACCESS_DENIED;
@@ -211,7 +209,7 @@ public class OrderServiceImpl implements OrderService {
                 } else {
                     try {
                         OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
-                        orders = orderRepository.findAllBySellerIdAndStatus(currentUserId, orderStatus.name());
+                        orders = orderRepository.findAllBySellerIdAndOrderStatus(currentUserId, orderStatus.name());
                     } catch (Exception exception) {
                         throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
                     }
@@ -223,7 +221,7 @@ public class OrderServiceImpl implements OrderService {
                 } else {
                     try {
                         OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
-                        orders = orderRepository.findAllByCustomerIdAndStatus(currentUserId, orderStatus.name());
+                        orders = orderRepository.findAllByCustomerIdAndOrderStatus(currentUserId, orderStatus.name());
                     } catch (Exception exception) {
                         throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
                     }
@@ -235,6 +233,8 @@ public class OrderServiceImpl implements OrderService {
         List<OrderResponseDetail> detailList = orders.stream()
                 .map(this::buildResponseDetail).toList();
 
+        detailList.sort(Comparator.comparing(OrderResponseDetail::getCreatedDate));
+        Collections.reverse(detailList);
         return responseFactory.success("Succes", detailList);
     }
 

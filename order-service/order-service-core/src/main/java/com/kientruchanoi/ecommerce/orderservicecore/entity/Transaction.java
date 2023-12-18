@@ -43,6 +43,6 @@ public class Transaction {
     @Field("created_date")
     //khi người mua thanh toán, 2 transaction được tạo (type.SELL  cho người bán, type.BUY cho người mua)
     //cần phải set thời điểm tạo 2 tránsaction cùng lúc cho hai dòng lệnh (-> tạo biến local)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdDate = LocalDateTime.now();
 
 }

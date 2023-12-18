@@ -14,6 +14,12 @@ public interface WalletService {
 
     ResponseEntity<BaseResponse<String>> pendingAmountDeposit();
 
+    ResponseEntity<BaseResponse<Wallet>> withdrawRequest(long amount);
+
+    ResponseEntity<BaseResponse<Wallet>> submitWithdraw(String userId);
+
+    ResponseEntity<BaseResponse<Wallet>> confirmWithdraw();
+
     void confirmPayment(PaymentSMS sms);
 
     Wallet customerRefund(Order order);

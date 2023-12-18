@@ -28,6 +28,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +54,7 @@ public class TransactionServiceImpl implements TransactionService {
                         .type(type.name())
                         .walletId(wallet.getId())
                         .balance(wallet.getBalance())
+                        .createdDate(LocalDateTime.now())
                         .amount(amount)
                         .description(des)
                         .build()
@@ -84,6 +88,8 @@ public class TransactionServiceImpl implements TransactionService {
                 .stream().map(t -> transactionMapper.entityToResponse(t))
                 .collect(Collectors.toList());
 
+        response.sort(Comparator.comparing(TransactionResponse::getCreatedDate));
+        Collections.reverse(response);
         return responseFactory.success("Success", response);
     }
 
@@ -102,6 +108,8 @@ public class TransactionServiceImpl implements TransactionService {
         List<TransactionResponse> transactions = page.getContent().stream()
                 .map(t -> transactionMapper.entityToResponse(t))
                 .toList();
+        transactions.sort(Comparator.comparing(TransactionResponse::getCreatedDate));
+        Collections.reverse(transactions);
 
         return (PageResponseTransaction) PageResponseTransaction.builder()
                 .pageNo(page.getNumber())

@@ -47,6 +47,10 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = walletRepository.findByUserId(currentUserId)
                 .orElse(walletBuilder(currentUserId));
 
+        if (!wallet.getStatus().equals(WalletStatus.NORMAL.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể nạp tiền do ví đang trong trạng thái chờ duyệt");
+        }
+
         wallet.setBalanceTemporary((double) amount);
         wallet.setStatus(WalletStatus.DEPOSIT_PENDING.name());
         wallet.setSmsFormat(currentUserId + "_" + amount);
@@ -66,7 +70,11 @@ public class WalletServiceImpl implements WalletService {
             message = "Bạn chưa xác nhận nạp tiền, nhắn tin (chuyển khoản) theo cú pháp "
                     + wallet.getSmsFormat()
                     + " để hoàn tất quá trình nap tiền và mua sắp với nhiều ưu đãi tại HAU-Ecommerce";
-        } else  {
+        } else if (wallet.getStatus().equals(WalletStatus.WITHDRAW_REQUEST.name())) {
+            message = "Bạn đang yêu cầu rút " + wallet.getBalanceTemporary() + "đ";
+        } else if (wallet.getStatus().equals(WalletStatus.WITHDRAW_CONFIRM.name())) {
+            message = "Hệ thống đã thực hiện yêu cầu rút " + wallet.getBalanceTemporary() + "đ của bạn, vui lòng xác nhận.";
+        } else {
             message = "Hãy nạp tiền vào tài khoản để trải nghiệm mua sắm trực tuyến tại HAU-Ecommerce";
         }
         return responseFactory.success("Success", message);
@@ -86,7 +94,7 @@ public class WalletServiceImpl implements WalletService {
             wallet.setBalance(wallet.getBalance() + amount);
             wallet.setBalanceTemporary(0D);
             wallet.setSmsFormat(null);
-            wallet.setStatus(WalletStatus.DEPOSIT_PAID.name());
+            wallet.setStatus(WalletStatus.NORMAL.name());
             wallet.setModifiedDate(LocalDateTime.now());
             wallet = walletRepository.save(wallet);
 
@@ -101,6 +109,60 @@ public class WalletServiceImpl implements WalletService {
                             .build()
             );
         }
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<Wallet>> withdrawRequest(long amount) {
+        Wallet wallet = walletRepository.findByUserId(commonService.getCurrentUserId())
+                .orElse(walletBuilder(commonService.getCurrentUserId()));
+        wallet = walletRepository.save(wallet); //if happen for else case
+
+        if (amount % 10 != 0 || amount <= 0) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Số tiền rút phải là bội của 10");
+        } else if (amount > wallet.getBalance()) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Số dư không đủ");
+        } else if (!wallet.getStatus().equals(WalletStatus.NORMAL.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể thực hiện rút tiền do ví đang trong trạng thái chờ duyệt");
+        }
+
+        wallet.setStatus(WalletStatus.WITHDRAW_REQUEST.name());
+        wallet.setBalance(wallet.getBalance() - (double) amount);
+        wallet.setBalanceTemporary(wallet.getBalanceTemporary() + amount);
+        wallet.setModifiedDate(LocalDateTime.now());
+        return responseFactory.success("Đã yêu cầu rút số tiền " + amount + "đ", walletRepository.save(wallet));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<Wallet>> submitWithdraw(String userId) {
+        Wallet wallet = walletRepository.findByUserId(userId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Không tìm thấy ví"));
+
+        if (commonService.getCurrentUser().getGrantedAuthorities().get(0).equals("USER")) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Không được phép truy cập");
+        }
+
+        if (!wallet.getStatus().equals(WalletStatus.WITHDRAW_REQUEST.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Ví không có trong trạng thái yêu cầu rút");
+        }
+        wallet.setModifiedDate(LocalDateTime.now());
+        wallet.setStatus(WalletStatus.WITHDRAW_CONFIRM.name());
+        return responseFactory.success("Chờ người dùng xác nhận.", walletRepository.save(wallet));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<Wallet>> confirmWithdraw() {
+        String currentUserId = commonService.getCurrentUserId();
+        Wallet wallet = walletRepository.findByUserId(currentUserId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống, ví không tồn tại"));
+
+        if (!wallet.getStatus().equals(WalletStatus.WITHDRAW_CONFIRM.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Không thể xác nhận không không trong trạng thái chờ xác nhận :v");
+        }
+
+        wallet.setStatus(WalletStatus.NORMAL.name());
+        wallet.setBalanceTemporary(0D);
+        wallet.setModifiedDate(LocalDateTime.now());
+        return responseFactory.success("Đã xác nhận rút tiền thành công.", walletRepository.save(wallet));
     }
 
     @Override
@@ -134,10 +196,13 @@ public class WalletServiceImpl implements WalletService {
         Wallet wallet = walletRepository.findByUserId(userId)
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Tài khoản không tồn tại"));
 
+        if (!wallet.getStatus().equals(WalletStatus.DEPOSIT_PENDING.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Lỗi - ví người dùng không trong trạng thái chờ nạp tiền");
+        }
         double newAmount = wallet.getBalanceTemporary();
         wallet.setBalance(wallet.getBalance() + newAmount);
         wallet.setBalanceTemporary(0D);
-        wallet.setStatus(WalletStatus.DEPOSIT_PAID.name());
+        wallet.setStatus(WalletStatus.NORMAL.name());
         wallet.setSmsFormat(null);
         wallet.setModifiedDate(LocalDateTime.now());
 
@@ -194,7 +259,7 @@ public class WalletServiceImpl implements WalletService {
                 .balance(0D)
                 .balanceTemporary(0D)
                 .totalAmountPaid(0D)
-                .status(WalletStatus.DEPOSIT_PAID.name())
+                .status(WalletStatus.NORMAL.name())
                 .createdDate(LocalDateTime.now())
                 .modifiedDate(LocalDateTime.now())
                 .build();

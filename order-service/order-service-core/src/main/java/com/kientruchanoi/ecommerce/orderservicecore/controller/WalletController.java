@@ -21,15 +21,32 @@ public class WalletController {
         return walletService.deposit(amount);
     }
 
-    //số tiền cần thanh toán để hoàn tất nạp tiền vào ví
-    @GetMapping("/deposit/pending")
+    //số tiền cần thanh toán để hoàn tất nạp tiền vào ví hoặc số tiền yêu cầu rút
+    @GetMapping("/pending")
     public ResponseEntity<BaseResponse<String>> pending() {
         return walletService.pendingAmountDeposit();
     }
 
+    //admin
     @PutMapping("/deposit/manual_submit/{userId}")
     public ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(@PathVariable("userId") String userId) {
         return walletService.manualSubmitDeposit(userId);
+    }
+
+    @PostMapping("/withdraw/request")
+    public ResponseEntity<BaseResponse<Wallet>> withdrawRequest(@RequestParam("amount") long amount) {
+        return walletService.withdrawRequest(amount);
+    }
+
+    //admin
+    @PutMapping("/withdraw/submit/{userId}")
+    public ResponseEntity<BaseResponse<Wallet>> submitWithdraw(@PathVariable String userId) {
+        return walletService.submitWithdraw(userId);
+    }
+
+    @PutMapping("/withdraw/confirm")
+    public ResponseEntity<BaseResponse<Wallet>> confirmWithdraw() {
+        return walletService.confirmWithdraw();
     }
 
     @GetMapping("/detail")

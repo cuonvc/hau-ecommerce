@@ -37,7 +37,7 @@ public class Wallet {
     private String smsFormat;
 
     @Field("status")
-    private String status = WalletStatus.DEPOSIT_PAID.name();
+    private String status = WalletStatus.NORMAL.name();
 
     @Field("created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
