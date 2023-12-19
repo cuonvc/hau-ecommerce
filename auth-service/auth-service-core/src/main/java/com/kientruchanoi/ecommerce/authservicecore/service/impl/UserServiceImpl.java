@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<BaseResponse<String>> register(RegRequest request) {
 
+        request.setEmail(request.getEmail().trim().toLowerCase());
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             return responseFactory.fail(HttpStatus.BAD_REQUEST, "Tài khoản đã tồn tại", null);
         }
@@ -104,6 +105,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<BaseResponse<UserResponse>> validate(RegRequest request, String code) {
+        request.setEmail(request.getEmail().trim().toLowerCase());
+
         String activeCode = redisTemplateObject.opsForValue().get(request);
         if (activeCode == null) {
             return responseFactory.fail(HttpStatus.UNAUTHORIZED, "Mã xác nhận đã hết hạn, vui lòng xác thực lại!", null);
@@ -124,6 +127,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<BaseResponse<TokenObjectResponse>> login(LoginRequest request) {
+        request.setEmail(request.getEmail().trim().toLowerCase());
+
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User", "email", request.getEmail()));
 
