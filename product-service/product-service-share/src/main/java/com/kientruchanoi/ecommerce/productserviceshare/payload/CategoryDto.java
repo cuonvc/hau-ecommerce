@@ -28,7 +28,7 @@ public class CategoryDto {
     @NotNull
     @NotBlank(message = "Ảnh không được để trống")
     @NotEmpty
-    private MultipartFile multipartFile;
+    private String imageValue;
 
     private Status isActive;
 }

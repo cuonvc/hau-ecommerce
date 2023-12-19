@@ -132,7 +132,7 @@ public class CategoryServiceImpl implements CategoryService {
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Category> categories = categoryRepository.findAll(pageable);
 
-        return responseFactory.success("Success", paging(categories));
+        return responseFactory.success("Success", paging(categories));i
     }
 
     @Override

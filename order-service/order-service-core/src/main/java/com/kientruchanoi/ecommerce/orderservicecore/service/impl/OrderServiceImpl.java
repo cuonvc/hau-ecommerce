@@ -131,14 +131,14 @@ public class OrderServiceImpl implements OrderService {
         //change balance for customer
         if (request.getPaymentType().equals(PaymentType.WALLET)) {
             walletService.reduceBalanceByOrder(currentUserId, amount, responses.stream().map(o -> o.getId()).toList());
-        }
 
-        //create transactions for customer (one transaction map to many order)
-        transactionService.create(
-                TransactionType.BUY,
-                "Mua hàng",
-                responses.stream().map(OrderResponseDetail::getId).toList(),
-                walletRepository.findByUserId(currentUserId).get(), amount);
+            //create transactions for customer (one transaction map to many order)
+            transactionService.create(
+                    TransactionType.BUY,
+                    "Mua hàng",
+                    responses.stream().map(OrderResponseDetail::getId).toList(),
+                    walletRepository.findByUserId(currentUserId).get(), amount);
+        }
 
         //delete cart
         cartService.deleteProducts(currentUserId);
