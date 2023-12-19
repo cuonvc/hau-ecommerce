@@ -1,6 +1,7 @@
 package com.kientruchanoi.ecommerce.authserviceshare.payload.response;
 
 import ch.qos.logback.core.status.Status;
+import com.kientruchanoi.ecommerce.authserviceshare.payload.dto.BankAccount;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Gender;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Role;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private String email;
+    private BankAccount bankAccount;
     private String gender;
     private String avatarUrl;
     private String about;

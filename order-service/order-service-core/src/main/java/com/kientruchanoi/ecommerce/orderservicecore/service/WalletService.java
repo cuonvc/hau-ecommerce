@@ -4,6 +4,7 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.request.PaymentSMS;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.WalletCustomResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public interface WalletService {
     Wallet sellerPay(Order order);
 
     ResponseEntity<BaseResponse<Wallet>> manualSubmitDeposit(String userId);
+
+    ResponseEntity<BaseResponse<List<WalletCustomResponse>>> walletManage(String status);
 
     ResponseEntity<BaseResponse<Wallet>> detail();
 

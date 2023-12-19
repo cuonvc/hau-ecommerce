@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginRequest {
 
-    @NotNull
-    @NotBlank(message = "Email can't blank")
-    @NotEmpty
     @Email
+    @NotNull
+    @NotBlank(message = "Email không được để trống")
+    @NotEmpty
     private String email;
 
-    @NotNull
-    @NotBlank(message = "Password can't blank")
     @NotEmpty
-    @Size(min = 8, max = 20, message = "Password must be minimum 8 characters and maximum 20 characters")
+    @NotNull
+    @NotBlank(message = "Mật khẩu không được để trống")
+    @Size(min = 8, max = 20, message = "Mật khẩu phải có từ 8 đến 20 ký tự")
     private String password;
 
 }

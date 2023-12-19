@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.authserviceshare.payload.request;
 
+import com.kientruchanoi.ecommerce.authserviceshare.payload.dto.BankAccount;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,27 +16,27 @@ import java.io.Serializable;
 public class RegRequest implements Serializable {
 
     @NotNull
-    @NotBlank(message = "Firt name can't blank")
+    @NotBlank(message = "Họ không được để trống")
     @NotEmpty
-    @Size(min = 1, max = 6, message = "First name must be minimum 3 characters and maximum 6 characters")
+    @Size(min = 1, max = 6, message = "Họ phải có từ 3 đến 6 ký tự")
     private String firstName;
 
     @NotNull
-    @NotBlank(message = "Last name can't blank")
+    @NotBlank(message = "Tên không được để trống")
     @NotEmpty
-    @Size(min = 1, max = 6, message = "Last name must be minimum 3 characters and maximum 6 characters")
+    @Size(min = 1, max = 6, message = "Tên phải có từ 3 đến 6 ký tự")
     private String lastName;
 
     @Email
     @NotNull
-    @NotBlank(message = "Email can't blank")
+    @NotBlank(message = "Email không được để trống")
     @NotEmpty
     private String email;
 
     @NotEmpty
     @NotNull
-    @NotBlank(message = "Password can't blank")
-    @Size(min = 8, max = 20, message = "Password must be minimum 8 characters and maximum 20 characters")
+    @NotBlank(message = "Mật khẩu không được để trống")
+    @Size(min = 8, max = 20, message = "Mật khẩu phải có từ 8 đến 20 ký tự")
     private String password;
 
 }

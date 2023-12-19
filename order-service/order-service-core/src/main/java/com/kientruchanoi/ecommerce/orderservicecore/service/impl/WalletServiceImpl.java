@@ -9,15 +9,18 @@ import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.exception.APIException;
+import com.kientruchanoi.ecommerce.orderservicecore.mapper.WalletMapper;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.TransactionRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.WalletRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.request.PaymentSMS;
 import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.WalletService;
+import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.WalletStatus;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.WalletCustomResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.http.HttpStatus;
@@ -36,6 +39,7 @@ public class WalletServiceImpl implements WalletService {
     private final ResponseFactory responseFactory;
     private final TransactionRepository transactionRepository;
     private final OrderRepository orderRepository;
+    private final WalletMapper walletMapper;
 
     @Override
     public ResponseEntity<BaseResponse<Wallet>> deposit(Long amount) {
@@ -218,6 +222,29 @@ public class WalletServiceImpl implements WalletService {
         );
 
         return responseFactory.success("Đã xác nhận nạp tiền.", walletRepository.save(wallet));
+    }
+
+    @Override
+    public ResponseEntity<BaseResponse<List<WalletCustomResponse>>> walletManage(String status) {
+        if (commonService.getCurrentUser().getGrantedAuthorities().get(0).equals("USER")) {
+            throw new APIException(HttpStatus.UNAUTHORIZED, "Không được phép truy cập");
+        }
+
+        try {
+            WalletStatus walletStatus = WalletStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
+            List<WalletCustomResponse> walletList = walletRepository.findAllByStatus(walletStatus.name())
+                    .stream().map(e -> {
+                        UserResponse userinfo = commonService.getUserInfo(e.getUserId());
+                        WalletCustomResponse response = walletMapper.entityToResponse(e);
+                        response.setName(userinfo.getFirstName() + " " + userinfo.getLastName());
+                        response.setBankAccount(userinfo.getBankAccount());
+                        return response;
+                    }).toList();
+
+            return responseFactory.success("Success", walletList);
+        } catch (Exception e) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Status không hợp lệ.");
+        }
     }
 
     @Override

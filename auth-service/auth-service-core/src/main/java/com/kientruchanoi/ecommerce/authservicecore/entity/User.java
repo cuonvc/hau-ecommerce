@@ -2,6 +2,7 @@ package com.kientruchanoi.ecommerce.authservicecore.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.kientruchanoi.ecommerce.authserviceshare.payload.dto.BankAccount;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Gender;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Role;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.UserProvider;
@@ -37,6 +38,9 @@ public class User {
 
     @Field("password")
     private String password;
+
+    @Field("bank_account")
+    private BankAccount bankAccount;
 
     @Field(name = "gender")
     private String gender = Gender.UNDEFINE.toString();

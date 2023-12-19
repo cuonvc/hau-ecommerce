@@ -1,7 +1,10 @@
 package com.kientruchanoi.ecommerce.authserviceshare.payload.request;
 
+import com.kientruchanoi.ecommerce.authserviceshare.payload.dto.BankAccount;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Gender;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,18 +17,24 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 public class ProfileRequest {
 
-    @NotBlank(message = "Firt name can't blank")
-    @Size(min = 3, max = 6, message = "First name must be minimum 3 characters and maximum 6 characters")
+    @NotNull
+    @NotBlank(message = "Họ không được để trống")
+    @NotEmpty
+    @Size(min = 1, max = 6, message = "Họ phải có từ 3 đến 6 ký tự")
     private String firstName;
 
-    @NotBlank(message = "Last name can't blank")
-    @Size(min = 3, max = 6, message = "Last name must be minimum 3 characters and maximum 6 characters")
+    @NotNull
+    @NotBlank(message = "Tên không được để trống")
+    @NotEmpty
+    @Size(min = 1, max = 6, message = "Tên phải có từ 3 đến 6 ký tự")
     private String lastName;
+
+    private BankAccount bankAccount;
 
 //    @NotBlank
     private String gender;
 
-    @Size(min = 1, max = 100, message = "About me must be minimum 1 characters and maximum 100 characters")
+    @Size(min = 1, max = 100, message = "Mô tả phải có từ 1 tới 100 ký tự")
     private String about;
 
     private String country;

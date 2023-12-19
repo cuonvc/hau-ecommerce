@@ -4,9 +4,12 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.WalletService;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.WalletCustomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order/wallet")
@@ -52,5 +55,11 @@ public class WalletController {
     @GetMapping("/detail")
     public ResponseEntity<BaseResponse<Wallet>> detail() {
         return walletService.detail();
+    }
+
+    //admin
+    @GetMapping("/manage")
+    public ResponseEntity<BaseResponse<List<WalletCustomResponse>>> walletManage(@RequestParam("status") String status) {
+        return walletService.walletManage(status);
     }
 }
