@@ -231,10 +231,13 @@ public class OrderServiceImpl implements OrderService {
         }
 
         List<OrderResponseDetail> detailList = orders.stream()
-                .map(this::buildResponseDetail).toList();
+                .map(this::buildResponseDetail)
+                .sorted(Comparator.comparing(OrderResponseDetail::getCreatedDate).reversed())
+                .collect(Collectors.toList());
 
-        detailList.sort(Comparator.comparing(OrderResponseDetail::getCreatedDate));
-        Collections.reverse(detailList);
+//        detailList.sort(Comparator.comparing(OrderResponseDetail::getCreatedDate));
+//        Collections.sort(detailList, (o1, o2) -> (o1.getCreatedDate().compareTo(o2.getCreatedDate())));
+//        Collections.reverse(detailList);
         return responseFactory.success("Succes", detailList);
     }
 

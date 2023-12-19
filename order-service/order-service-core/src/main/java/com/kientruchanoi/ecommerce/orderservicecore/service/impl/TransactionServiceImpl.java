@@ -15,6 +15,7 @@ import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.TransactionService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.WalletService;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.PageResponseTransaction;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.TransactionResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.PageResponseProduct;
@@ -86,10 +87,11 @@ public class TransactionServiceImpl implements TransactionService {
 
         List<TransactionResponse> response = transactionRepository.findAllByWalletId(wallet.getId())
                 .stream().map(t -> transactionMapper.entityToResponse(t))
+                .sorted(Comparator.comparing(TransactionResponse::getCreatedDate).reversed())
                 .collect(Collectors.toList());
 
-        response.sort(Comparator.comparing(TransactionResponse::getCreatedDate));
-        Collections.reverse(response);
+//        response.sort(Comparator.comparing(TransactionResponse::getCreatedDate));
+//        Collections.reverse(response);
         return responseFactory.success("Success", response);
     }
 
@@ -107,9 +109,8 @@ public class TransactionServiceImpl implements TransactionService {
     private PageResponseTransaction paging(Page<Transaction> page) {
         List<TransactionResponse> transactions = page.getContent().stream()
                 .map(t -> transactionMapper.entityToResponse(t))
-                .toList();
-        transactions.sort(Comparator.comparing(TransactionResponse::getCreatedDate));
-        Collections.reverse(transactions);
+                .sorted(Comparator.comparing(TransactionResponse::getCreatedDate).reversed())
+                .collect(Collectors.toList());
 
         return (PageResponseTransaction) PageResponseTransaction.builder()
                 .pageNo(page.getNumber())
