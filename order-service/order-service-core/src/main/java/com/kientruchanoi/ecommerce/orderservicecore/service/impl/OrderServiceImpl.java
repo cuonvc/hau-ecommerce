@@ -111,6 +111,7 @@ public class OrderServiceImpl implements OrderService {
                 Order order = orderRepository.save(Order.builder()
                         .productId(p.getId())
                         .amount(p.getStandardPrice() * cart.getProductMapQuantity().get(p.getId()))
+                        .note(request.getNote())
                         .sellerId(p.getUser().getId())
                         .customerId(currentUserId)
                         .destinationInfo(deliveryDestination)
