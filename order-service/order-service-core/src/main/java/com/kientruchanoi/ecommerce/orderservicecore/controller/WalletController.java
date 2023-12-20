@@ -42,6 +42,7 @@ public class WalletController {
     }
 
     //admin
+    //bước này admin sẽ chuyển khoản cho user sau đó click submit (chuyển bằng cơm, hệ thống không  liên quan)
     @PutMapping("/withdraw/submit/{userId}")
     public ResponseEntity<BaseResponse<Wallet>> submitWithdraw(@PathVariable String userId) {
         return walletService.submitWithdraw(userId);
