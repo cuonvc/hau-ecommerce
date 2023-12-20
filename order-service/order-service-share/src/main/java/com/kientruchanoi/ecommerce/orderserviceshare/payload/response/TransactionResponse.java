@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,9 +17,13 @@ public class TransactionResponse {
 
     private String id;
 
+    private List<String> orderIds;
+
     private String walletId;
 
-    private long amount;
+    private double amount;
+
+    private double balance;
 
     private String type;
 

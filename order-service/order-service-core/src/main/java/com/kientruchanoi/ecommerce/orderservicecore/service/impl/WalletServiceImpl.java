@@ -131,7 +131,7 @@ public class WalletServiceImpl implements WalletService {
 
         wallet.setStatus(WalletStatus.WITHDRAW_REQUEST.name());
         wallet.setBalance(wallet.getBalance() - (double) amount);
-        wallet.setBalanceTemporary(wallet.getBalanceTemporary() + amount);
+        wallet.setBalanceTemporary((double) amount);
         wallet.setModifiedDate(LocalDateTime.now());
         return responseFactory.success("Đã yêu cầu rút số tiền " + amount + "đ", walletRepository.save(wallet));
     }
@@ -163,10 +163,24 @@ public class WalletServiceImpl implements WalletService {
             throw new APIException(HttpStatus.BAD_REQUEST, "Không thể xác nhận không không trong trạng thái chờ xác nhận :v");
         }
 
+        double amount = wallet.getBalanceTemporary();  //caching before reset to 0
+
         wallet.setStatus(WalletStatus.NORMAL.name());
         wallet.setBalanceTemporary(0D);
         wallet.setModifiedDate(LocalDateTime.now());
-        return responseFactory.success("Đã xác nhận rút tiền thành công.", walletRepository.save(wallet));
+        wallet = walletRepository.save(wallet);
+
+        transactionRepository.save(
+                Transaction.builder()
+                        .walletId(wallet.getId())
+                        .type(TransactionType.WITHDRAW.name())
+                        .amount(amount)
+                        .balance(wallet.getBalance())
+                        .description("Rút tiền từ ví")
+                        .createdDate(LocalDateTime.now())
+                        .build()
+        );
+        return responseFactory.success("Đã xác nhận rút tiền thành công.", wallet);
     }
 
     @Override
