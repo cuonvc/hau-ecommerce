@@ -20,6 +20,8 @@ public interface ProductRepository extends MongoRepository<Product, String> {
 
     Optional<Product> findByIdAndUserId(String id, String userId);
 
+    Integer countAllByUserId(String userId);
+
     Page<Product> findByIsActive(Pageable pageable, Status status);
 
     Page<Product> findAllByUserIdAndIsActive(Pageable pageable, String userId, Status status);

@@ -21,6 +21,7 @@ public class UserResponse {
     private String lastName;
     private String email;
     private BankAccount bankAccount;
+    private int products;
     private String gender;
     private String avatarUrl;
     private String about;

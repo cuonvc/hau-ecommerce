@@ -2,6 +2,7 @@ package com.kientruchanoi.ecommerce.authservicecore.config;
 
 import com.kientruchanoi.ecommerce.authserviceshare.payload.request.RegRequest;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -40,6 +41,7 @@ public class BeanConfiguration {
 //    }
 
     @Bean
+    @LoadBalanced
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }

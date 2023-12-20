@@ -12,6 +12,7 @@ import com.kientruchanoi.ecommerce.authservicecore.payload.request.PasswordChang
 import com.kientruchanoi.ecommerce.authservicecore.payload.request.RenewPasswordRequest;
 import com.kientruchanoi.ecommerce.authservicecore.repository.RefreshTokenRepository;
 import com.kientruchanoi.ecommerce.authservicecore.repository.UserRepository;
+import com.kientruchanoi.ecommerce.authservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.authservicecore.service.FileImageService;
 import com.kientruchanoi.ecommerce.authservicecore.service.TokenService;
 import com.kientruchanoi.ecommerce.authservicecore.service.UserService;
@@ -74,6 +75,7 @@ public class UserServiceImpl implements UserService {
     private final RedisTemplate<RegRequest, String> redisTemplateObject;
     private final RedisTemplate<String, String> redisTemplateString;
     private final FileImageService fileImageService;
+    private final CommonService commonService;
 
     @Override
     public ResponseEntity<BaseResponse<String>> register(RegRequest request) {
@@ -138,11 +140,13 @@ public class UserServiceImpl implements UserService {
 
         String accessToken = jwtTokenProvider.generateToken(request.getEmail());
         RefreshToken refreshToken = tokenService.generateTokenObject(user);
+        UserResponse userResponse = userMapper.entityToResponse(user);
+        userResponse.setProducts(commonService.getProductsByUser(userResponse.getId()));
         TokenObjectResponse response = TokenObjectResponse.builder()
                 .accessToken(accessToken)
                 .tokenType("Bearer")
                 .refreshToken(tokenMapper.mapToDto(refreshToken))
-                .userResponse(userMapper.entityToResponse(user))
+                .userResponse(userResponse)
                 .build();
 
         return responseFactory.success("Success", response);
@@ -223,6 +227,7 @@ public class UserServiceImpl implements UserService {
         user = userMapper.profileToEntity(request, user);
         user.setModifiedDate(LocalDateTime.now());
         UserResponse response = userMapper.entityToResponse(userRepository.save(user));
+        response.setProducts(commonService.getProductsByOwner());
         return responseFactory.success("Cập nhập trang cá nhân thành công!", response);
     }
 
@@ -252,8 +257,10 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseResponse<UserResponse>> getById(String userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        UserResponse response = userMapper.entityToResponse(user);
+        response.setProducts(commonService.getProductsByUser(user.getId()));
 
-        return responseFactory.success("Success", userMapper.entityToResponse(user));
+        return responseFactory.success("Success", response);
     }
 
     @Override
@@ -295,7 +302,11 @@ public class UserServiceImpl implements UserService {
 
     private PageResponseUsers paging(Page<User> users) {
         List<UserResponse> userList = users.getContent()
-                .stream().map(userMapper::entityToResponse)
+                .stream().map(entity -> {
+                    UserResponse response = userMapper.entityToResponse(entity);
+                    response.setProducts(commonService.getProductsByUser(response.getId()));
+                    return response;
+                })
                 .toList();
 
         return (PageResponseUsers) PageResponseUsers.builder()

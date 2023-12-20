@@ -44,4 +44,10 @@ public class InternalController {
                 .build());
         return responseFactory.success("Success", response);
     }
+
+    @GetMapping("/products/{userId}")
+    public ResponseEntity<BaseResponse<Integer>> getProducts(@PathVariable("userId") String userId) {
+        Integer count = productRepository.countAllByUserId(userId);
+        return responseFactory.success("Success", count);
+    }
 }
