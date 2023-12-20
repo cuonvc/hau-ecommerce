@@ -43,7 +43,11 @@ public class Product {
     @Field("sale_expire_at")
     private LocalDateTime saleExpireAt;
 
+    @Field("remaining")
     private Integer remaining = 0;
+
+    @Field("sold")
+    private Integer sold = 0;
 
     @Field("is_active")
     private Status isActive = Status.ACTIVE;

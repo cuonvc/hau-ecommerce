@@ -149,6 +149,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi Kafka hệ thống"));
         product.setRemaining(product.getRemaining() - quantity);
+        product.setSold(quantity);
         productRepository.save(product);
     }
 
