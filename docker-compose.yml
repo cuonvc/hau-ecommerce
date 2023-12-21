@@ -113,5 +113,18 @@ services:
       - kafka
       - zookeeper
 
+  notification-service:
+    container_name: notification-service-hau
+    image: cuonvc/notification-service-hau:v1.0
+    networks:
+      - ecommerce-network
+    ports:
+      - "8085:8085"
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
+      SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-notification-db
+
 volumes:
   redis_data:
