@@ -1,4 +1,4 @@
-package com.kientruchanoi.ecommerce.notificationserviceshare.payload.response;
+package com.kientruchanoi.ecommerce.notificationserviceshare.payload.kafka;
 
 import com.kientruchanoi.ecommerce.notificationserviceshare.enumerate.NotificationType;
 import lombok.AllArgsConstructor;
@@ -6,20 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class NotificationResponse {
+public class NotificationBuilder {
 
-    private String id;
     private String title;
     private String content;
     private List<String> recipients;
     private NotificationType type;
-    private boolean seen;
-    private LocalDateTime createdDate;
+    private Object resource;
 }

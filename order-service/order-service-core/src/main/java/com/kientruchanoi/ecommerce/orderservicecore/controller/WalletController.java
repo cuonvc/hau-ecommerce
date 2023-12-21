@@ -27,7 +27,7 @@ public class WalletController {
     //số tiền cần thanh toán để hoàn tất nạp tiền vào ví hoặc số tiền yêu cầu rút
     @GetMapping("/pending")
     public ResponseEntity<BaseResponse<String>> pending() {
-        return walletService.pendingAmountDeposit();
+        return walletService.pendingAmount();
     }
 
     //admin

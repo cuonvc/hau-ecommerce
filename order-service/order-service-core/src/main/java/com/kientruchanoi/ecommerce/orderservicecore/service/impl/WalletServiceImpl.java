@@ -4,6 +4,7 @@ import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Role;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
+import com.kientruchanoi.ecommerce.notificationserviceshare.enumerate.NotificationType;
 import com.kientruchanoi.ecommerce.orderservicecore.configuration.CustomUserDetail;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction;
@@ -58,12 +59,18 @@ public class WalletServiceImpl implements WalletService {
         wallet.setBalanceTemporary((double) amount);
         wallet.setStatus(WalletStatus.DEPOSIT_PENDING.name());
         wallet.setSmsFormat(currentUserId + "_" + amount);
+        wallet = walletRepository.save(wallet);
+
+        commonService.sendNotification(NotificationType.WALLET_REQUIRE_DEPOSIT,
+                "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu nạp số tiền " + amount + "đ",
+                commonService.getAllAdminId());
+
         return responseFactory.success("Nạp tiền thanh công, vui lòng chuyển " + amount + "VNĐ cho quản trị viên",
-                walletRepository.save(wallet));
+                wallet);
     }
 
     @Override
-    public ResponseEntity<BaseResponse<String>> pendingAmountDeposit() {
+    public ResponseEntity<BaseResponse<String>> pendingAmount() {
         String currentUserId = commonService.getCurrentUserId();
         Wallet wallet = walletRepository.findByUserId(currentUserId)
                 .orElse(walletBuilder(currentUserId));
@@ -112,6 +119,10 @@ public class WalletServiceImpl implements WalletService {
                             .createdDate(LocalDateTime.now())
                             .build()
             );
+
+            commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
+                    "Đã nạp thành công " + amount + "vnđ vào ví.",
+                    List.of(wallet.getUserId()));
         }
     }
 
@@ -133,7 +144,13 @@ public class WalletServiceImpl implements WalletService {
         wallet.setBalance(wallet.getBalance() - (double) amount);
         wallet.setBalanceTemporary((double) amount);
         wallet.setModifiedDate(LocalDateTime.now());
-        return responseFactory.success("Đã yêu cầu rút số tiền " + amount + "đ", walletRepository.save(wallet));
+        wallet = walletRepository.save(wallet);
+
+        commonService.sendNotification(NotificationType.WALLET_REQUIRE_WITHDRAW,
+                "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu rút số tiền " + amount + "đ",
+                commonService.getAllAdminId());
+
+        return responseFactory.success("Đã yêu cầu rút số tiền " + amount + "đ", wallet);
     }
 
     @Override
@@ -150,7 +167,13 @@ public class WalletServiceImpl implements WalletService {
         }
         wallet.setModifiedDate(LocalDateTime.now());
         wallet.setStatus(WalletStatus.WITHDRAW_CONFIRM.name());
-        return responseFactory.success("Chờ người dùng xác nhận.", walletRepository.save(wallet));
+        wallet = walletRepository.save(wallet);
+
+        commonService.sendNotification(NotificationType.WALLET_REQUIRE_WITHDRAW,
+                "Rút tiền thành công",
+                List.of(wallet.getId()));
+
+        return responseFactory.success("Chờ người dùng xác nhận.", wallet);
     }
 
     @Override
@@ -234,8 +257,13 @@ public class WalletServiceImpl implements WalletService {
                         .createdDate(LocalDateTime.now())
                         .build()
         );
+        wallet = walletRepository.save(wallet);
 
-        return responseFactory.success("Đã xác nhận nạp tiền.", walletRepository.save(wallet));
+        commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
+                "Đã nạp thành công " + newAmount + "vnđ vào ví.",
+                List.of(wallet.getUserId()));
+
+        return responseFactory.success("Đã xác nhận nạp tiền.", wallet);
     }
 
     @Override

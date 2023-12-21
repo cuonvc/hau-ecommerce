@@ -5,6 +5,8 @@ import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserRespons
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
+import com.kientruchanoi.ecommerce.notificationserviceshare.enumerate.NotificationType;
+import com.kientruchanoi.ecommerce.notificationserviceshare.payload.kafka.NotificationBuilder;
 import com.kientruchanoi.ecommerce.orderservicecore.configuration.CustomUserDetail;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Cart;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
@@ -144,6 +146,12 @@ public class OrderServiceImpl implements OrderService {
         //delete cart
         cartService.deleteProducts(currentUserId);
 
+        //push notification
+        responses.forEach(o -> commonService.sendNotification(NotificationType.ORDER_CREATED,
+                "Bạn có đơn hàng " + o.getProduct().getName() + " mới.",
+                List.of(o.getSeller().getId()))
+        );
+
         return responseFactory.success(ORDER_CREATE_SUCCESS, responses);
     }
 
@@ -262,7 +270,15 @@ public class OrderServiceImpl implements OrderService {
             Wallet wallet = walletService.customerRefund(order);
             transactionService.create(TransactionType.REFUND,
                     "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet, order.getAmount());
+
+            commonService.sendNotification(NotificationType.WALLET_REFUND,
+                    "Hoàn tiền do đơn hàng " + order.getId() + " bị huỷ.",
+                    List.of(order.getCustomerId()));
         }
+
+        commonService.sendNotification(NotificationType.ORDER_CANCEL,
+                "Đơn hàng " + order.getId() + " đã bị huỷ.",
+                List.of(order.getSellerId()));
 
         return responseFactory.success("Đã huỷ đơn hàng " + order.getId(), ORDER_CANCEL_SUCCESS);
     }
@@ -279,8 +295,12 @@ public class OrderServiceImpl implements OrderService {
         Message<Integer> message = MessageBuilder.withPayload(order.getQuantity())
                 .setHeader(KafkaHeaders.KEY, order.getProductId().getBytes())
                 .build();
-
         streamBridge.send(ORDER_REDUCE_PRODUCT_QUANTITY, message);
+
+        commonService.sendNotification(NotificationType.ORDER_ACCEPTED,
+                "Đơn hàng " + order.getId() + " đã được tiếp nhận.",
+                List.of(order.getCustomerId()));
+
         return responseFactory.success("Đã tiếp nhận đơn hàng", buildResponseDetail(order));
     }
 
@@ -299,6 +319,10 @@ public class OrderServiceImpl implements OrderService {
                     "Hoàn tiền cho do hàng bị từ chối", List.of(order.getId()), wallet, order.getAmount());
         }
 
+        commonService.sendNotification(NotificationType.ORDER_REJECTED,
+                "Đơn hàng " + order.getId() + " đã bị từ chối",
+                List.of(order.getCustomerId()));
+
         return responseFactory.success("Bạn đã từ chối đơn hàng", buildResponseDetail(order));
     }
 
@@ -310,6 +334,11 @@ public class OrderServiceImpl implements OrderService {
                 ORDER_CANNOT_DELIVERING,
                 OrderStatus.DELIVERING);
         orderRepository.save(order);
+
+        commonService.sendNotification(NotificationType.ORDER_DELIVERY,
+                "Đơn hàng " + order.getId() + " đang trên đường vận chuyển.",
+                List.of(order.getCustomerId()));
+
         return responseFactory.success("Đơn hàng đang trên đường vận chuyển.", buildResponseDetail(order));
     }
 
@@ -333,6 +362,10 @@ public class OrderServiceImpl implements OrderService {
             transactionService.create(TransactionType.SELL,
                     "Thu tiền sản phẩm", List.of(order.getId()), wallet, order.getAmount());
         }
+
+        commonService.sendNotification(NotificationType.ORDER_DONE,
+                "Đơn hàng " + order.getId() + " đã được giao thành công.",
+                List.of(order.getCustomerId()));
 
         return responseFactory.success("Đã nhận được hàng", buildResponseDetail(order));
     }

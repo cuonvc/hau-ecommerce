@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth/internal")
@@ -29,6 +30,14 @@ public class InternalController {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailService customUserDetailService;
     private final UserRepository userRepository;
+
+    @GetMapping("/admins")
+    public ResponseEntity<List<String>> getAllAdmin() {
+        List<String> respose =  userRepository.findAllByRole("ADMIN")
+                .stream().map(u -> u.getId())
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(respose);
+    }
 
     @GetMapping("/check")
     public ResponseEntity<CustomUserDetailResponse> validateToken(@RequestParam("token") String token) {

@@ -1,0 +1,33 @@
+server:
+  port: 8084
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_CLIENT_HOST}:${EUREKA_CLIENT_PORT}/eureka/
+
+spring:
+  application:
+    name: NOTIFICATION-SERVICE
+  data:
+    mongodb:
+      uri: mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}
+
+  kafka:
+    consumer:
+      auto-offset-reset: latest
+  cloud:
+    function:
+      definition:
+        "orderNotificationHandle"
+    stream:
+      bindings:
+        orderNotificationHandle-in-0:
+          destination: order.notify.action
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: ${KAFKA_HOST}:${KAFKA_PORT}
+
+    compatibility-verifier:
+      enabled: false

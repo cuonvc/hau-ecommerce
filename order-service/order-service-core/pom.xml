@@ -62,6 +62,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.kientruchanoi.ecommerce</groupId>
+			<artifactId>notification-service-share</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kientruchanoi.ecommerce</groupId>
 			<artifactId>product-service-share</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

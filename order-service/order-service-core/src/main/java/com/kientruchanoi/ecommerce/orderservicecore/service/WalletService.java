@@ -13,7 +13,7 @@ public interface WalletService {
 
     ResponseEntity<BaseResponse<Wallet>> deposit(Long amount);
 
-    ResponseEntity<BaseResponse<String>> pendingAmountDeposit();
+    ResponseEntity<BaseResponse<String>> pendingAmount();
 
     ResponseEntity<BaseResponse<Wallet>> withdrawRequest(long amount);
 

@@ -1,0 +1,9 @@
+EUREKA_CLIENT_HOST: eureka-server
+EUREKA_CLIENT_PORT: 8761
+
+DB_HOST: host.docker.internal
+DB_PORT: 27017
+DB_NAME: ecommerce-notification-db
+
+KAFKA_HOST: kafka
+KAFKA_PORT: 9092
