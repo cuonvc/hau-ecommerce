@@ -26,6 +26,8 @@ import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserRespons
 import com.kientruchanoi.ecommerce.baseservice.payload.request.FileObjectRequest;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
+import com.kientruchanoi.ecommerce.notificationserviceshare.enumerate.NotificationType;
+import com.kientruchanoi.ecommerce.notificationserviceshare.payload.kafka.NotificationBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -77,6 +79,8 @@ public class UserServiceImpl implements UserService {
     private final FileImageService fileImageService;
     private final CommonService commonService;
 
+    private static final String ORDER_NOTIFY_ACTION = "order.notify.action";
+
     @Override
     public ResponseEntity<BaseResponse<String>> register(RegRequest request) {
 
@@ -124,6 +128,17 @@ public class UserServiceImpl implements UserService {
         tokenService.initRefreshToken(user);
         UserResponse response = userMapper.entityToResponse(saved);
         redisTemplateObject.delete(request);
+
+        Message<NotificationBuilder> message = MessageBuilder.withPayload(
+                NotificationBuilder.builder()
+                        .type(NotificationType.USER_CREATED)
+                        .title(NotificationType.USER_CREATED.getMessage())
+                        .content("Tài khoản " + user.getEmail() + " vừa mới đăng ký.")
+                        .recipients(userRepository.findAllByRole("ADMIN").stream().map(u -> u.getId()).toList())
+                        .build()
+        ).build();
+        streamBridge.send(ORDER_NOTIFY_ACTION, message);
+
         return responseFactory.success("Kích hoạt tài khoản thành công, vui lòng đăng nhập lại!", response);
     }
 
