@@ -26,7 +26,7 @@ public class NotificationController {
         service.markReadAll();
     }
 
-    @PutMapping("/all")
+    @GetMapping("/all")
     public ResponseEntity<BaseResponse<List<Notification>>> getAll() {
         return service.getAll();
     }

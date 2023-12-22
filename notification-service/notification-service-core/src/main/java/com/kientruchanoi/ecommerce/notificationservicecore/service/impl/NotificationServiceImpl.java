@@ -40,7 +40,12 @@ public class NotificationServiceImpl implements NotificationService {
 //        } catch (Exception e) {
 //            throw new APIException(HttpStatus.BAD_REQUEST, "Type khong hpo le");
 //        }
-        repository.updateAllSeenByUserId(getCurrentUserId());
+        List<Notification> list = repository.findAllByRecipient(getCurrentUserId())
+                        .stream().map(n -> {
+                            n.setSeen(true);
+                            return n;
+                 }).toList();
+        repository.saveAll(list);
     }
 
     @Override

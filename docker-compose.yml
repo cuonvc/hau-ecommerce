@@ -96,6 +96,7 @@ services:
     ports:
       - "8083:8083"
     environment:
+      SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
       SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-order-db
 
   mail-service:
