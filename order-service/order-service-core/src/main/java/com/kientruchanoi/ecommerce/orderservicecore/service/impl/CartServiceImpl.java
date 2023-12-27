@@ -125,4 +125,14 @@ public class CartServiceImpl implements CartService {
         cart.setProductMapQuantity(new HashMap<>());
         cartRepository.save(cart);
     }
+
+    @Override
+    public void initCart(String userId) {
+        cartRepository.save(
+                Cart.builder()
+                        .userId(userId)
+                        .productMapQuantity(new HashMap<>())
+                        .build()
+        );
+    }
 }
