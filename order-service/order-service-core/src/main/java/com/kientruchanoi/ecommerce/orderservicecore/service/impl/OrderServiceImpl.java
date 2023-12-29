@@ -365,7 +365,7 @@ public class OrderServiceImpl implements OrderService {
 
         commonService.sendNotification(NotificationType.ORDER_DONE,
                 "Đơn hàng " + order.getId() + " đã được giao thành công.",
-                List.of(order.getCustomerId()));
+                List.of(order.getSellerId()));
 
         return responseFactory.success("Đã nhận được hàng", buildResponseDetail(order));
     }

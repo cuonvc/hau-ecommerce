@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.notificationservicecore.service.impl;
 
+import com.kientruchanoi.ecommerce.authserviceshare.payload.response.PageResponseUsers;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
@@ -7,22 +8,31 @@ import com.kientruchanoi.ecommerce.notificationservicecore.configuration.CustomU
 import com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification;
 import com.kientruchanoi.ecommerce.notificationservicecore.exception.APIException;
 import com.kientruchanoi.ecommerce.notificationservicecore.exception.ResourceNotFoundException;
+import com.kientruchanoi.ecommerce.notificationservicecore.mapper.NotificationMapper;
 import com.kientruchanoi.ecommerce.notificationservicecore.payload.PushNotification;
 import com.kientruchanoi.ecommerce.notificationservicecore.payload.PushNotificationResponse;
 import com.kientruchanoi.ecommerce.notificationservicecore.repository.NotificationRepository;
 import com.kientruchanoi.ecommerce.notificationservicecore.service.NotificationService;
 import com.kientruchanoi.ecommerce.notificationserviceshare.payload.kafka.NotificationBuilder;
+import com.kientruchanoi.ecommerce.notificationserviceshare.payload.response.NotificationResponse;
+import com.kientruchanoi.ecommerce.notificationserviceshare.payload.response.PageResponseNotification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,6 +42,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository repository;
     private final ResponseFactory responseFactory;
     private final RestTemplate restTemplate;
+    private final NotificationMapper notificationMapper;
 
     private static final String EXPO_PUSH_NOTI_URL = "https://exp.host/--/api/v2/push/send";
 
@@ -60,9 +71,35 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<List<Notification>>> getAll() {
-        List<Notification> notifications = repository.findAllByRecipient(getCurrentUserId());
-        return responseFactory.success("Success", notifications);
+    public ResponseEntity<BaseResponse<PageResponseNotification>> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        Page<Notification> notifications = repository.findAllByRecipient(getCurrentUserId(), pageable);
+        return responseFactory.success("Success", paging(notifications));
+    }
+
+    private PageResponseNotification paging(Page<Notification> notifications) {
+        List<NotificationResponse> notificationList = notifications.getContent()
+                .stream().map(entity -> {
+                    NotificationResponse response = notificationMapper.entityToResponse(entity);
+                    response.setRecipients(List.of(entity.getRecipient()));
+                    return response;
+                })
+                .sorted(Comparator.comparing(NotificationResponse::getCreatedDate).reversed())
+                .collect(Collectors.toList());
+
+        return (PageResponseNotification) PageResponseNotification.builder()
+                .pageNo(notifications.getNumber())
+                .pageSize(notificationList.size())
+                .content(notificationList)
+                .totalPages(notifications.getTotalPages())
+                .totalItems((int) notifications.getTotalElements())
+                .last(notifications.isLast())
+                .build();
     }
 
     @Override
