@@ -10,6 +10,7 @@ import com.kientruchanoi.ecommerce.authservicecore.payload.response.CustomUserDe
 import com.kientruchanoi.ecommerce.authservicecore.repository.DeviceTokenRepository;
 import com.kientruchanoi.ecommerce.authservicecore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/auth/internal")
 @RequiredArgsConstructor
+@Slf4j
 public class InternalController {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -65,8 +67,10 @@ public class InternalController {
         DeviceToken deviceToken = deviceTokenRepository.findByUserId(userId)
                 .orElse(null);
 
+        log.info("DEVICE_TOKEN_TRIGGER - {}", deviceToken);
+
         if (deviceToken == null) {
-            ResponseEntity.ok("");
+            return ResponseEntity.ok("");
         }
         return ResponseEntity.ok(deviceToken.getToken());
     }

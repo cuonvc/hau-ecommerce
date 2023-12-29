@@ -189,8 +189,7 @@ public class UserServiceImpl implements UserService {
                 .getContext().getAuthentication().getPrincipal();
 
         tokenService.clearToken(userDetail.getId());
-        DeviceToken deviceToken = deviceTokenRepository.findByUserId(userDetail.getId()).get();
-        deviceTokenRepository.delete(deviceToken);
+        deviceTokenRepository.findByUserId(userDetail.getId()).ifPresent(deviceTokenRepository::delete);
         return responseFactory.success("Đã đăng xuất", "Success");
     }
 

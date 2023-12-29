@@ -96,9 +96,10 @@ public class NotificationServiceImpl implements NotificationService {
                 .data(notification)
                 .build(), headers);
 
-        log.info("TIGGERRRR - {}", 2);
+        log.info("TIGGERRRR - {}", entity);
 
-        ResponseEntity<String> response = restTemplate.postForEntity(EXPO_PUSH_NOTI_URL, entity, String.class);
+        RestTemplate externalRequest = new RestTemplate();
+        ResponseEntity<String> response = externalRequest.postForEntity(EXPO_PUSH_NOTI_URL, entity, String.class);
 
         log.info("TRIGGERRR - {}", response);
 
