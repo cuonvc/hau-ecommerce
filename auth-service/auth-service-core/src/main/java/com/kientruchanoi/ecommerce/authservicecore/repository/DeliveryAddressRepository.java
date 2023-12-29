@@ -16,4 +16,6 @@ public interface DeliveryAddressRepository extends MongoRepository<DeliveryAddre
 
     @Query("{'is_default': true, 'user_id': ?0}")
     DeliveryAddress findByDefaultIsAndUserId(String userId);
+
+    Integer countByUserId(String userId);
 }

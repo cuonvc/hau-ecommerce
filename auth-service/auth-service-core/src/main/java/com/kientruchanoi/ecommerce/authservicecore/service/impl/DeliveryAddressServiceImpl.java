@@ -2,9 +2,11 @@ package com.kientruchanoi.ecommerce.authservicecore.service.impl;
 
 import com.kientruchanoi.ecommerce.authservicecore.config.CustomUserDetail;
 import com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress;
+import com.kientruchanoi.ecommerce.authservicecore.entity.User;
 import com.kientruchanoi.ecommerce.authservicecore.exception.APIException;
 import com.kientruchanoi.ecommerce.authservicecore.mapper.DeliveryMapper;
 import com.kientruchanoi.ecommerce.authservicecore.repository.DeliveryAddressRepository;
+import com.kientruchanoi.ecommerce.authservicecore.repository.UserRepository;
 import com.kientruchanoi.ecommerce.authservicecore.service.DeliveryAddressService;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
@@ -25,9 +27,15 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     private final DeliveryAddressRepository repository;
     private final ResponseFactory responseFactory;
     private final DeliveryMapper deliveryMapper;
+    private final UserRepository userRepository;
 
     @Override
     public ResponseEntity<BaseResponse<DeliveryAddress>> insert(DeliveryAddress address) {
+        boolean isDefault = false;
+        int count = repository.countByUserId(getCurrentUserId());
+        if (count < 1) {
+            isDefault = true;
+        }
         DeliveryAddress deliveryAddress = repository.save(DeliveryAddress.builder()
                 .province(address.getProvince())
                 .district(address.getDistrict())
@@ -36,7 +44,18 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
                 .phone(address.getPhone())
                 .recipientName(address.getRecipientName())
                 .userId(getCurrentUserId())
+                .isDefault(isDefault)
                 .build());
+
+        if (isDefault) {
+            User user = userRepository.findById(getCurrentUserId())
+                    .orElseThrow(() -> new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "Lỗi hệ thống"));
+            user.setDetailAddress(deliveryAddress.getWard() + ", "
+                    + deliveryAddress.getProvince() + ", "
+                    + deliveryAddress.getDistrict());
+
+            userRepository.save(user);
+        }
         return responseFactory.success("Success", deliveryAddress);
     }
 
@@ -70,8 +89,16 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
         DeliveryAddress newDefault = repository.findByIdAndUserId(id, getCurrentUserId())
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Địa chỉ không tồn tại"));
         newDefault.setDefault(true);
+        newDefault = repository.save(newDefault);
 
-        return responseFactory.success("Success", repository.save(newDefault));
+        User user = userRepository.findById(getCurrentUserId())
+                .orElseThrow(() -> new APIException(HttpStatus.INTERNAL_SERVER_ERROR, "Lỗi hệ thống"));
+        user.setDetailAddress(newDefault.getWard() + ", "
+                + newDefault.getProvince() + ", "
+                + newDefault.getDistrict());
+        userRepository.save(user);
+
+        return responseFactory.success("Success", newDefault);
     }
 
     @Override
