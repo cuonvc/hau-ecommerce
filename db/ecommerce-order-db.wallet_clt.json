@@ -1,0 +1,104 @@
+[{
+  "_id": {
+    "$oid": "6578a87840582961f91723ed"
+  },
+  "user_id": "656eb5b33a2b3c51dd04c172",
+  "balance": 120000,
+  "balance_temporary": 0,
+  "total_amount_paid": 0,
+  "status": "NORMAL",
+  "created_date": {
+    "$date": "2023-12-12T18:37:44.147Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-12T18:38:49.705Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet"
+},
+{
+  "_id": {
+    "$oid": "6578aaa340582961f91723ef"
+  },
+  "user_id": "657048a60e1e5e0609de3187",
+  "balance": 204000,
+  "balance_temporary": 150000,
+  "total_amount_paid": 2796000,
+  "sms_format": "657048a60e1e5e0609de3187_150000",
+  "status": "DEPOSIT_PENDING",
+  "created_date": {
+    "$date": "2023-12-12T18:46:59.623Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-19T02:37:28.549Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet"
+},
+{
+  "_id": {
+    "$oid": "65793a327318652c55fc2d0e"
+  },
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "balance": 70851998,
+  "balance_temporary": 280520,
+  "total_amount_paid": 4130002,
+  "sms_format": "656f5fb861b6f03bbcac3762_280520",
+  "status": "DEPOSIT_PENDING",
+  "created_date": {
+    "$date": "2023-12-13T04:59:30.240Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-18T15:26:01.825Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet"
+},
+{
+  "_id": {
+    "$oid": "657a0b6042b85667e31c66bf"
+  },
+  "user_id": "657a091f53a291001fbe724a",
+  "balance": 386453,
+  "balance_temporary": 0,
+  "total_amount_paid": 0,
+  "status": "NORMAL",
+  "created_date": {
+    "$date": "2023-12-13T19:52:00.665Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-18T15:32:55.802Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet"
+},
+{
+  "_id": {
+    "$oid": "657ad895e0c13e085e8d981d"
+  },
+  "user_id": "6572d9e7f8ad8e1b40c0c391",
+  "balance": 50000,
+  "balance_temporary": 0,
+  "total_amount_paid": 0,
+  "status": "NORMAL",
+  "created_date": {
+    "$date": "2023-12-14T10:27:33.201Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-14T15:49:29.578Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet"
+},
+{
+  "_id": {
+    "$oid": "657b2d77684a6146d456b8e2"
+  },
+  "user_id": "657b2b823fabbf76e22701cb",
+  "balance": 0,
+  "balance_temporary": 0,
+  "total_amount_paid": 0,
+  "status": "NORMAL",
+  "created_date": {
+    "$date": "2023-12-14T16:29:42.975Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-14T16:29:42.975Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet"
+}]

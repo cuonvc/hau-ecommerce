@@ -1,0 +1,10 @@
+[{
+  "_id": {
+    "$oid": "65720f73207ff81b1b7ecf6d"
+  },
+  "name": "Category 2",
+  "description": "description 2",
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+  "is_active": "ACTIVE",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Category"
+}]

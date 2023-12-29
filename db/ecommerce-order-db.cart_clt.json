@@ -1,0 +1,49 @@
+[{
+  "_id": {
+    "$oid": "65754ffe5431f36643efc22d"
+  },
+  "user_Id": "657048a60e1e5e0609de3187",
+  "product_map_quantity": {},
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Cart"
+},
+{
+  "_id": {
+    "$oid": "6579853a21479217a53434d9"
+  },
+  "user_Id": "656f5fb861b6f03bbcac3762",
+  "product_map_quantity": {},
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Cart"
+},
+{
+  "_id": {
+    "$oid": "657a094c42b85667e31c66be"
+  },
+  "user_Id": "657a091f53a291001fbe724a",
+  "product_map_quantity": {
+    "65729e1f24e5c5517f5df656": 1,
+    "65729afb24e5c5517f5df64f": 4
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Cart"
+},
+{
+  "_id": {
+    "$oid": "657ad86fe0c13e085e8d981c"
+  },
+  "user_Id": "6572d9e7f8ad8e1b40c0c391",
+  "product_map_quantity": {
+    "657ad7a749aecd45d7a43c22": 1,
+    "65756be815bb853bae944638": 3,
+    "65729afb24e5c5517f5df64f": 1
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Cart"
+},
+{
+  "_id": {
+    "$oid": "657c20fe25a1c0053c1d2249"
+  },
+  "user_Id": "657b2b823fabbf76e22701cb",
+  "product_map_quantity": {
+    "657ad7a749aecd45d7a43c22": 4
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Cart"
+}]

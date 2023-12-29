@@ -49,7 +49,7 @@ public class AuthController {
 
     @GetMapping("/token/renew")
     public ResponseEntity<BaseResponse<TokenObjectResponse>> renewAccessToken(@RequestParam("refresh_token") String refreshToken) {
-        return userService.renewAccessToken(refreshToken);
+        return userService. renewAccessToken(refreshToken);
     }
 
 }

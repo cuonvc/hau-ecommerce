@@ -1,0 +1,188 @@
+[{
+  "_id": {
+    "$oid": "656eb5b33a2b3c51dd04c172"
+  },
+  "first_name": "Huy",
+  "last_name": "Pham",
+  "email": "cuong.fithau@gmail.com",
+  "password": "$2a$10$3H2.2bKAhbvzw7BnoTYqF.Zs5D97.czzJ95Ip9s3umGPtORup7QMK",
+  "gender": "UNDEFINE",
+  "created_date": {
+    "$date": "2023-12-05T05:31:30.670Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-05T05:31:30.670Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "ADMIN",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "656ebd083a2b3c51dd04c174"
+  },
+  "first_name": "Huy",
+  "last_name": "Pham",
+  "email": "yosefpham03@gmail.com",
+  "password": "$2a$10$Ah575N9HqbDbq1embMriAu/SDvmQc5UsYRUYmPDk9QHyI9q4GJ/Pq",
+  "gender": "UNDEFINE",
+  "created_date": {
+    "$date": "2023-12-05T06:02:48.781Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-05T06:02:48.781Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "USER",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "656f5fb861b6f03bbcac3762"
+  },
+  "first_name": "QRcode",
+  "last_name": "Yosef",
+  "email": "Yosefpham03@gmail.com",
+  "password": "$2a$10$CCD9MBnBZAIzCzBy66FAQuXXBMiIvhwKtHDku4Rp.GP3IBNUgtVl6",
+  "gender": "MALE",
+  "avatar_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/481d3276-2a40-4727-b765-10def8d62ffbpng?alt=media",
+  "about": "I am fine, kìn cha nà dô hẻ",
+  "created_date": {
+    "$date": "2023-12-05T17:36:56.156Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-13T10:24:42.470Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "USER",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "657047910e1e5e0609de3185"
+  },
+  "first_name": "Hehe",
+  "last_name": "Hehe2",
+  "email": "Yosefimage@gmail.com",
+  "password": "$2a$10$OSVwD9J0kufu0d4017TzOO.pQux8gBStdEGZOHZxy9ESVGN4DHPem",
+  "gender": "UNDEFINE",
+  "created_date": {
+    "$date": "2023-12-06T10:06:09.103Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-06T10:06:09.103Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "USER",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "657048a60e1e5e0609de3187"
+  },
+  "first_name": "Phạm",
+  "last_name": "Huy",
+  "email": "Yosefpham@gmail.com",
+  "password": "$2a$10$8g1ggDBEXC5nuTRNG2Gvtu9tNayhkvjlNMqAVmXphtzySQqUtTqv6",
+  "gender": "MALE",
+  "avatar_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/aede413d-ab97-47f4-b615-5fc52c023ef8png?alt=media",
+  "about": "Bán chk xui",
+  "created_date": {
+    "$date": "2023-12-06T10:10:46.839Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-12T18:31:40.612Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "USER",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "6572d9e7f8ad8e1b40c0c391"
+  },
+  "first_name": "Tím❤",
+  "last_name": "Thủy",
+  "email": "Yosef@gmail.com",
+  "password": "$2a$10$Fao.dyQ.ZYaFLiQtb9Vp/O/eAjO5luzFTIShhQ/tPDdR00FBnh..2",
+  "gender": "UNDEFINE",
+  "created_date": {
+    "$date": "2023-12-08T08:55:03.739Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-08T08:55:03.739Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "USER",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "6572debaf8ad8e1b40c0c393"
+  },
+  "first_name": "T",
+  "last_name": "Gt",
+  "email": "Q@gmail.com",
+  "password": "$2a$10$8KWRIAOIxx2luBr/dBvfO.juFimWWGqnN4.tRpfc4FoTdGn/c6kuS",
+  "gender": "UNDEFINE",
+  "created_date": {
+    "$date": "2023-12-08T09:15:38.716Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-08T09:15:38.716Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "USER",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "657a091f53a291001fbe724a"
+  },
+  "first_name": "Nguyễn",
+  "last_name": "Thảo",
+  "email": "Ydai@gmail.com",
+  "password": "$2a$10$Sn4kHxRX1j89m/9NimewQOicqM/9EWr67zqa4DFag50GSdSLiwbte",
+  "gender": "FEMALE",
+  "avatar_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/db75fca9-4378-4ce2-b6b1-21e27118d2c5png?alt=media",
+  "about": "Xinh gái 😍😍😍😍",
+  "created_date": {
+    "$date": "2023-12-13T19:42:23.316Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-14T10:18:27.116Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "USER",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+},
+{
+  "_id": {
+    "$oid": "657b2b823fabbf76e22701cb"
+  },
+  "first_name": "ADMIN",
+  "last_name": "HAU",
+  "email": "Admin@gmail.com",
+  "password": "$2a$10$TosTC1rEOZwpe/cwjE9bfezesI.vB8.pNTnhUmsy/qW6KLtl3xj.S",
+  "gender": "MALE",
+  "avatar_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/be351786-2322-486e-8707-bd89a474c2b9png?alt=media",
+  "about": "ADMIN",
+  "created_date": {
+    "$date": "2023-12-14T16:21:22.729Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-14T16:24:31.499Z"
+  },
+  "status": "ACTIVE",
+  "user_provider": "SYSTEM",
+  "role": "ADMIN",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.User"
+}]

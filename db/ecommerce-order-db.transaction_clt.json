@@ -1,0 +1,398 @@
+[{
+  "_id": {
+    "$oid": "6578a8b940582961f91723ee"
+  },
+  "wallet_id": "6578a87840582961f91723ed",
+  "amount": 120000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-12T18:38:49.754Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6578af0840582961f91723f0"
+  },
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 500000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-12T19:05:44.655Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6579401e7318652c55fc2d0f"
+  },
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 500000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-13T05:24:45.101Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6579d6472b30cc6c4a1fdb42"
+  },
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 5000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-13T16:05:27.041Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6579dc8d42b85667e31c66ba"
+  },
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 54327000,
+  "balance": 54332000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-13T16:32:13.299Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6579f58a42b85667e31c66bb"
+  },
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 50000,
+  "balance": 54382000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-13T18:18:49.982Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6579f93f42b85667e31c66bc"
+  },
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 20000000,
+  "balance": 74382000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-13T18:34:39.361Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6579fa7a42b85667e31c66bd"
+  },
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 600000,
+  "balance": 74982000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-13T18:39:54.795Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "657ad594e0c13e085e8d981b"
+  },
+  "wallet_id": "657a0b6042b85667e31c66bf",
+  "amount": 23453,
+  "balance": 23453,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-14T10:14:43.898Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "657b2409684a6146d456b8e1"
+  },
+  "wallet_id": "657ad895e0c13e085e8d981d",
+  "amount": 50000,
+  "balance": 50000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-14T15:49:29.596Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "657fb1681f35487e04bf0d05"
+  },
+  "order_ids": [
+    "657fb1671f35487e04bf0d04"
+  ],
+  "amount": 363000,
+  "balance": 74619000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "657fb2a21f35487e04bf0d07"
+  },
+  "order_ids": [
+    "657fb2a21f35487e04bf0d06"
+  ],
+  "amount": 600000,
+  "balance": 74019000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "657fb4ee1f35487e04bf0d09"
+  },
+  "order_ids": [
+    "657fb4ee1f35487e04bf0d08"
+  ],
+  "amount": 1573000,
+  "balance": 72446000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "657fc4e11f35487e04bf0d0b"
+  },
+  "order_ids": [
+    "657fc4e11f35487e04bf0d0a"
+  ],
+  "amount": 230000,
+  "balance": 72446000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "657fc58c1f35487e04bf0d0d"
+  },
+  "order_ids": [
+    "657fc58c1f35487e04bf0d0c"
+  ],
+  "amount": 230000,
+  "balance": 72446000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "658052fbbcb19872e477ab1d"
+  },
+  "order_ids": [
+    "658052fbbcb19872e477ab1c"
+  ],
+  "amount": 780001,
+  "balance": 71665999,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "65806489bcb19872e477ab1e"
+  },
+  "order_ids": [
+    "657fb2a21f35487e04bf0d06"
+  ],
+  "amount": 600000,
+  "balance": 72265999,
+  "type": "REFUND",
+  "description": "Hoàn tiền cho do hàng bị huỷ",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "65806627bcb19872e477ab1f"
+  },
+  "order_ids": [
+    "657fb1671f35487e04bf0d04"
+  ],
+  "amount": 363000,
+  "balance": 386453,
+  "type": "SELL",
+  "description": "Thu tiền sản phẩm",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "658071682ca5253f626571b6"
+  },
+  "order_ids": [
+    "658071682ca5253f626571b5"
+  ],
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 780001,
+  "balance": 71485998,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "658074a22ca5253f626571b8"
+  },
+  "order_ids": [
+    "658074a22ca5253f626571b7"
+  ],
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 484000,
+  "balance": 71001998,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6580f598feb13168f5f7b9b4"
+  },
+  "order_ids": [
+    "6580f598feb13168f5f7b9b3"
+  ],
+  "wallet_id": "65793a327318652c55fc2d0e",
+  "amount": 150000,
+  "balance": 70851998,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "created_date": {
+    "$date": "2023-12-19T01:44:56.619Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6580fae5d6a6e952d2db19bb"
+  },
+  "order_ids": [
+    "6580fae4d6a6e952d2db19ba"
+  ],
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 150000,
+  "balance": 350000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "created_date": {
+    "$date": "2023-12-19T02:07:33.055Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6580ff3ed6a6e952d2db19bc"
+  },
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 500000,
+  "balance": 850000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-19T02:26:06.360Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "6581019fa4d87874d21065ac"
+  },
+  "order_ids": [
+    "6580fae4d6a6e952d2db19ba"
+  ],
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 150000,
+  "balance": 1000000,
+  "type": "REFUND",
+  "description": "Hoàn tiền cho do hàng bị huỷ",
+  "created_date": {
+    "$date": "2023-12-19T02:36:15.324Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "658101e8a4d87874d21065ad"
+  },
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 2000000,
+  "balance": 3000000,
+  "type": "DEPOSIT",
+  "description": "Nạp tiền vào ví",
+  "created_date": {
+    "$date": "2023-12-19T02:37:28.602Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "65810207a4d87874d21065af"
+  },
+  "order_ids": [
+    "65810206a4d87874d21065ae"
+  ],
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 2796000,
+  "balance": 204000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "created_date": {
+    "$date": "2023-12-19T02:37:59.090Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "658145ac7524d76a408260f7"
+  },
+  "order_ids": [
+    "658145ac7524d76a408260f6"
+  ],
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 215000,
+  "balance": 204000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "created_date": {
+    "$date": "2023-12-19T07:26:36.142Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+},
+{
+  "_id": {
+    "$oid": "658146017524d76a408260f9"
+  },
+  "order_ids": [
+    "658146017524d76a408260f8"
+  ],
+  "wallet_id": "6578aaa340582961f91723ef",
+  "amount": 16000000,
+  "balance": 204000,
+  "type": "BUY",
+  "description": "Mua hàng",
+  "created_date": {
+    "$date": "2023-12-19T07:28:01.809Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction"
+}]

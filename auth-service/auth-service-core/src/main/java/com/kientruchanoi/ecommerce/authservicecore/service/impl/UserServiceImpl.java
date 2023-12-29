@@ -2,6 +2,7 @@ package com.kientruchanoi.ecommerce.authservicecore.service.impl;
 
 import com.kientruchanoi.ecommerce.authservicecore.config.CustomUserDetail;
 import com.kientruchanoi.ecommerce.authservicecore.config.jwt.JwtTokenProvider;
+import com.kientruchanoi.ecommerce.authservicecore.entity.DeviceToken;
 import com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken;
 import com.kientruchanoi.ecommerce.authservicecore.entity.User;
 import com.kientruchanoi.ecommerce.authservicecore.exception.APIException;
@@ -10,6 +11,7 @@ import com.kientruchanoi.ecommerce.authservicecore.mapper.TokenMapper;
 import com.kientruchanoi.ecommerce.authservicecore.mapper.UserMapper;
 import com.kientruchanoi.ecommerce.authservicecore.payload.request.PasswordChangeRequest;
 import com.kientruchanoi.ecommerce.authservicecore.payload.request.RenewPasswordRequest;
+import com.kientruchanoi.ecommerce.authservicecore.repository.DeviceTokenRepository;
 import com.kientruchanoi.ecommerce.authservicecore.repository.RefreshTokenRepository;
 import com.kientruchanoi.ecommerce.authservicecore.repository.UserRepository;
 import com.kientruchanoi.ecommerce.authservicecore.service.CommonService;
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
     private final RefreshTokenRepository tokenRepository;
+    private final DeviceTokenRepository deviceTokenRepository;
     private final TokenService tokenService;
     private final UserMapper userMapper;
     private final TokenMapper tokenMapper;
@@ -164,6 +167,16 @@ public class UserServiceImpl implements UserService {
                 .userResponse(userResponse)
                 .build();
 
+        DeviceToken deviceToken = deviceTokenRepository.findByUserId(user.getId())
+                .orElse(
+                        DeviceToken.builder()
+                                .token(request.getExpoToken())
+                                .userId(user.getId())
+                                .build()
+                );
+        deviceToken.setToken(request.getExpoToken());
+        deviceTokenRepository.save(deviceToken);
+
         return responseFactory.success("Success", response);
     }
 
@@ -173,6 +186,8 @@ public class UserServiceImpl implements UserService {
                 .getContext().getAuthentication().getPrincipal();
 
         tokenService.clearToken(userDetail.getId());
+        DeviceToken deviceToken = deviceTokenRepository.findByUserId(userDetail.getId()).get();
+        deviceTokenRepository.delete(deviceToken);
         return responseFactory.success("Đã đăng xuất", "Success");
     }
 

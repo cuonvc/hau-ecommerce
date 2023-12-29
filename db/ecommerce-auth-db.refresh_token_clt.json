@@ -1,0 +1,96 @@
+[{
+  "_id": {
+    "$oid": "656eb5b33a2b3c51dd04c173"
+  },
+  "token": "refresh_799574c5-ca45-40ea-b481-d9dd3d5f04a7",
+  "expire_date": {
+    "$date": "2023-12-26T02:06:33.226Z"
+  },
+  "user_id": "656eb5b33a2b3c51dd04c172",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "656ebd083a2b3c51dd04c175"
+  },
+  "token": "refresh_16ab881d-cbd4-4051-9cbe-c831d546364d",
+  "expire_date": {
+    "$date": "2023-12-13T18:10:22.979Z"
+  },
+  "user_id": "656ebd083a2b3c51dd04c174",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "656f5fb861b6f03bbcac3763"
+  },
+  "token": "",
+  "expire_date": {
+    "$date": "2023-12-12T02:06:51.495Z"
+  },
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "657047910e1e5e0609de3186"
+  },
+  "token": "",
+  "expire_date": {
+    "$date": "2023-12-03T08:10:36.634Z"
+  },
+  "user_id": "657047910e1e5e0609de3185",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "657048a60e1e5e0609de3188"
+  },
+  "token": "",
+  "expire_date": {
+    "$date": "2023-12-12T08:01:21.955Z"
+  },
+  "user_id": "657048a60e1e5e0609de3187",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "6572d9e7f8ad8e1b40c0c392"
+  },
+  "token": "",
+  "expire_date": {
+    "$date": "2023-12-07T15:58:34.988Z"
+  },
+  "user_id": "6572d9e7f8ad8e1b40c0c391",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "6572debaf8ad8e1b40c0c394"
+  },
+  "token": "",
+  "user_id": "6572debaf8ad8e1b40c0c393",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "657a091f53a291001fbe724b"
+  },
+  "token": "",
+  "expire_date": {
+    "$date": "2023-12-07T10:24:18.720Z"
+  },
+  "user_id": "657a091f53a291001fbe724a",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+},
+{
+  "_id": {
+    "$oid": "657b2b823fabbf76e22701cc"
+  },
+  "token": "refresh_fde4bf99-d75e-4278-9a5d-9dd2748dad99",
+  "expire_date": {
+    "$date": "2023-12-26T08:01:38.076Z"
+  },
+  "user_id": "657b2b823fabbf76e22701cb",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.RefreshToken"
+}]

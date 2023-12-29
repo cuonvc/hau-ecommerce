@@ -1,0 +1,860 @@
+[{
+  "_id": {
+    "$oid": "65720fcb207ff81b1b7ecf6e"
+  },
+  "name": "Áo đá bank",
+  "description": "Đẹpaf",
+  "brand": "Áo ",
+  "standard_price": 1000,
+  "remaining": 20,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "65720fcc207ff81b1b7ecf6f"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c75acc22-5766-42e7-bd7d-a18d8b139310png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65720fcb207ff81b1b7ecf6e"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572995b24e5c5517f5df649"
+  },
+  "name": "Đồ noel",
+  "description": "Test thôi",
+  "brand": "123",
+  "standard_price": 1000,
+  "remaining": 20,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572996024e5c5517f5df64c"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/f3321f52-1c82-4eb6-9313-ac384fba5c44png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572995b24e5c5517f5df649"
+    },
+    {
+      "_id": {
+        "$oid": "6572995f24e5c5517f5df64a"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/519f6285-cf33-4e34-9145-3d8069dcb63apng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572995b24e5c5517f5df649"
+    },
+    {
+      "_id": {
+        "$oid": "6572996024e5c5517f5df64b"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/90a5595d-f9b6-4e75-ad60-5947009cd6d6png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572995b24e5c5517f5df649"
+    },
+    {
+      "_id": {
+        "$oid": "6572996024e5c5517f5df64d"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/8d3c0cb0-4ab7-4229-8925-d0ec8e3d4e4dpng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572995b24e5c5517f5df649"
+    },
+    {
+      "_id": {
+        "$oid": "6572996524e5c5517f5df64e"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/a8898734-a831-4bef-8255-5aecbf0edc77png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572995b24e5c5517f5df649"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "65729afb24e5c5517f5df64f"
+  },
+  "name": "Lá thông thật",
+  "description": "Fffkfkfkdkdkdkdkdkk",
+  "brand": "Trang trí",
+  "standard_price": 1000,
+  "remaining": 20,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "65729aff24e5c5517f5df651"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c0efd2a7-cd00-473f-886f-fdb2008f6ffcpng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65729afb24e5c5517f5df64f"
+    },
+    {
+      "_id": {
+        "$oid": "65729afd24e5c5517f5df650"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/7137d801-6efa-4f74-a4ab-c2fcd448c814png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65729afb24e5c5517f5df64f"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "65729b9d24e5c5517f5df652"
+  },
+  "name": "Lá thông thật",
+  "description": "Fffkfkfkdkdkdkdkdkk",
+  "brand": "Trang trí",
+  "standard_price": 1000,
+  "remaining": 20,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "65729b9e24e5c5517f5df653"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/64304cec-50a6-45dc-8621-79b3086fee28png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65729b9d24e5c5517f5df652"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "65729bc724e5c5517f5df654"
+  },
+  "name": "Lá thông thật",
+  "description": "Fffkfkfkdkdkdkdkdkk",
+  "brand": "Trang trí",
+  "standard_price": 1000,
+  "remaining": 20,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "65729bc824e5c5517f5df655"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/b54f6f9e-8e77-44dc-8b52-3c3b6e921f70png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65729bc724e5c5517f5df654"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "65729e1f24e5c5517f5df656"
+  },
+  "name": "Cây thông noel",
+  "description": "Sản phẩm quá chất lượng",
+  "brand": "No brand",
+  "standard_price": 16000000,
+  "remaining": 25,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "65729e2024e5c5517f5df657"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/81d97f2f-05f9-418d-bf5c-bfaaeba5e09epng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65729e1f24e5c5517f5df656"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572a49124e5c5517f5df658"
+  },
+  "name": "Bể cá mini để bàn",
+  "description": "Kfidkdkdkđkk",
+  "brand": "No brand",
+  "standard_price": 7272009,
+  "remaining": 28,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572a49424e5c5517f5df659"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/178b7c12-9e42-4a2c-b47c-1d5165994e57png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572a49124e5c5517f5df658"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572a62e24e5c5517f5df65a"
+  },
+  "name": "Test 2",
+  "description": "Đẹp",
+  "brand": "No brand",
+  "standard_price": 4480000,
+  "remaining": 43,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572a63324e5c5517f5df65c"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/99d57314-1b7e-4624-a419-c13173a42e52png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572a62e24e5c5517f5df65a"
+    },
+    {
+      "_id": {
+        "$oid": "6572a63024e5c5517f5df65b"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/8eb83d1a-af80-4a1c-a69c-7a21e1a19002png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572a62e24e5c5517f5df65a"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572a6a724e5c5517f5df65d"
+  },
+  "name": "Áo bóng đá 2023/2024",
+  "description": "Rjk",
+  "brand": "No brand",
+  "standard_price": 7400000,
+  "remaining": 188,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572a6a824e5c5517f5df65e"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/50d1d9e3-8b78-48aa-8d3d-b8c38e28c2c0png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572a6a724e5c5517f5df65d"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572a76524e5c5517f5df65f"
+  },
+  "name": "Xe máy wase 2018",
+  "description": "Jkkk",
+  "brand": "Honda",
+  "standard_price": 1822312000,
+  "remaining": 1,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572a76624e5c5517f5df660"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/75da1e10-0412-4071-ade8-ead738960638png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572a76524e5c5517f5df65f"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572ae5724e5c5517f5df661"
+  },
+  "name": "Dụdj",
+  "description": "Rjrirj",
+  "brand": "No brand",
+  "standard_price": 500000,
+  "remaining": 1,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572ae5a24e5c5517f5df662"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c1bddb45-abcf-43b3-a783-9c7d3f60d975png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572ae5724e5c5517f5df661"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572c58651c9e56da26ccb9d"
+  },
+  "name": "Áo bê tráp",
+  "description": "Kkk",
+  "brand": "No brand",
+  "standard_price": 469000,
+  "remaining": 300,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572c58951c9e56da26ccb9e"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/fd08ae35-88f9-4d00-a567-32cd959cc3d6png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572c58651c9e56da26ccb9d"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572c6a051c9e56da26ccb9f"
+  },
+  "name": "Bộ quần áo Real Madrid 23/24👚",
+  "description": "Jkk",
+  "brand": "No brand",
+  "standard_price": 130000,
+  "remaining": 200,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572c6a151c9e56da26ccba0"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/175f932e-dc6c-4603-b1e3-ae4fd55c24c1png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572c6a051c9e56da26ccb9f"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572c82751c9e56da26ccba1"
+  },
+  "name": "Hồ cá thủy sinh 🍉",
+  "description": "Rkrk",
+  "brand": "No brand",
+  "standard_price": 699000,
+  "remaining": 25,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572c82a51c9e56da26ccba2"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/cb00921e-397d-471d-8e50-1eed1245571fpng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572c82751c9e56da26ccba1"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572ce2851c9e56da26ccba3"
+  },
+  "name": "Cốc hốc cafe",
+  "description": "Kkm",
+  "brand": "No band",
+  "standard_price": 30000,
+  "remaining": 501,
+  "is_active": "INACTIVE",
+  "user_id": "657048a60e1e5e0609de3187",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572ce2951c9e56da26ccba4"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/967d952c-9d5d-4464-b06b-347655dcaa22png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572ce2851c9e56da26ccba3"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6572d6cc51c9e56da26ccba5"
+  },
+  "name": "J",
+  "description": "J",
+  "brand": "Jk",
+  "standard_price": 66,
+  "remaining": 6,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6572d6cd51c9e56da26ccba6"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/5b3d05df-4176-480a-8f11-23f749887634png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6572d6cc51c9e56da26ccba5"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "657545edf8d970037fb65d55"
+  },
+  "name": "Móc khóa đan len",
+  "description": "Fjdjdj",
+  "brand": "No band",
+  "standard_price": 150000,
+  "remaining": 63,
+  "is_active": "ACTIVE",
+  "user_id": "6572d9e7f8ad8e1b40c0c391",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "657545f1f8d970037fb65d56"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/4f9dd2c6-9ccd-4542-9abb-4c2dd42d062fpng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657545edf8d970037fb65d55"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "65756be815bb853bae944638"
+  },
+  "name": "Cốc nhựa uống cà phê",
+  "description": "Combo 120 cái ",
+  "brand": "No banrd",
+  "standard_price": 780001,
+  "remaining": 30,
+  "is_active": "ACTIVE",
+  "user_id": "657048a60e1e5e0609de3187",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "65756bed15bb853bae94463a"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/75ea197f-2888-41a6-9bee-8753c8ba1559png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65756be815bb853bae944638"
+    },
+    {
+      "_id": {
+        "$oid": "65756bec15bb853bae944639"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/2de90b4a-4c56-4703-9f4e-3afd9f97872epng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "65756be815bb853bae944638"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "6578b986521ef76f1f8c0f52"
+  },
+  "name": "Áo thời trang nam nữ",
+  "description": "Dkdkđkk",
+  "brand": "No brand",
+  "standard_price": 230000,
+  "remaining": 20,
+  "is_active": "ACTIVE",
+  "user_id": "657048a60e1e5e0609de3187",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "6578b995521ef76f1f8c0f56"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/b5b34995-db41-4220-91dd-1e3790e84618png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6578b986521ef76f1f8c0f52"
+    },
+    {
+      "_id": {
+        "$oid": "6578b988521ef76f1f8c0f53"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/498ba7c6-7f28-4af3-9779-8bd5aebe17b5png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6578b986521ef76f1f8c0f52"
+    },
+    {
+      "_id": {
+        "$oid": "6578b98d521ef76f1f8c0f55"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/00a38cb2-d4de-4983-a768-44b5964ab850png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6578b986521ef76f1f8c0f52"
+    },
+    {
+      "_id": {
+        "$oid": "6578b98d521ef76f1f8c0f54"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/fb898969-f41a-4e84-a984-0d93da330b17png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "6578b986521ef76f1f8c0f52"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "657ad7a749aecd45d7a43c22"
+  },
+  "name": "Bánh sinh nhật cute mini 😘",
+  "description": "Dhđkdm",
+  "brand": "No band",
+  "standard_price": 121000,
+  "remaining": 500,
+  "is_active": "ACTIVE",
+  "user_id": "657a091f53a291001fbe724a",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "657ad7af49aecd45d7a43c24"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/a230dd87-0058-4d28-806c-ab285ec14e28png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657ad7a749aecd45d7a43c22"
+    },
+    {
+      "_id": {
+        "$oid": "657ad7b949aecd45d7a43c27"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/ed8675d8-be55-4ed2-89bf-da0fcf1f8cb8png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657ad7a749aecd45d7a43c22"
+    },
+    {
+      "_id": {
+        "$oid": "657ad7ac49aecd45d7a43c23"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/3d7bad48-d8c7-4410-9a6d-14c7d7a786d5png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657ad7a749aecd45d7a43c22"
+    },
+    {
+      "_id": {
+        "$oid": "657ad7b349aecd45d7a43c25"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c5bcc157-b2dd-482f-8d3a-5503decfaef7png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657ad7a749aecd45d7a43c22"
+    },
+    {
+      "_id": {
+        "$oid": "657ad7b649aecd45d7a43c26"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/43b5a640-2c4d-46ca-8716-bd1119a5a72dpng?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657ad7a749aecd45d7a43c22"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "657c8e080eb5e05b2e199f60"
+  },
+  "name": "Năn lách Nivea Men Rình chi phái mạnh",
+  "description": "Thơm tho mát mẻo",
+  "brand": "No bảnd",
+  "standard_price": 43000,
+  "remaining": 80,
+  "is_active": "ACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "657c8e0c0eb5e05b2e199f61"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/14646643-3f5f-4a2f-a10b-925ce344c0e1png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657c8e080eb5e05b2e199f60"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+},
+{
+  "_id": {
+    "$oid": "657c8e6d0eb5e05b2e199f62"
+  },
+  "name": "Bàn phím MaTheu K6 layout68 ",
+  "description": "Hãng Sản Xuất: LANGTU\n* Phân phối bởi: Power Now Bàn Phím Cơ\n* Led: Rainbow / Bản Pro Led RGB\n* Sử dụng Golden Switch - dòng Linear Switch của Langtu, đã được Nhà Sản Xuất Lube sẵn. Cho cảm giác gõ mượt mà, ổn định, âm thanh gõ tròn trịa, ít ồn.\n* Bàn phím đã được custom bởi Nhà Sản Xuất Langtu, đã được lót foam.\n* Link Download HDSD ở bên dưới.\n",
+  "brand": "LangTu",
+  "standard_price": 899000,
+  "remaining": 230,
+  "is_active": "INACTIVE",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "resources": [
+    {
+      "_id": {
+        "$oid": "657c8e700eb5e05b2e199f63"
+      },
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/31b38208-0b08-4481-b4f0-4ee2295fbf63png?alt=media",
+      "is_active": "ACTIVE",
+      "product_id": "657c8e6d0eb5e05b2e199f62"
+    }
+  ],
+  "categories": [
+    {
+      "_id": {
+        "$oid": "65720f73207ff81b1b7ecf6d"
+      },
+      "name": "Category 2",
+      "description": "description 2",
+      "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/6a886b3a-b1ae-48bf-a7a3-da7473472b69png?alt=media",
+      "is_active": "ACTIVE"
+    }
+  ],
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.Product"
+}]

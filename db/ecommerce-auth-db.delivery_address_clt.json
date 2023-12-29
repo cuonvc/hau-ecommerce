@@ -1,0 +1,105 @@
+[{
+  "_id": {
+    "$oid": "6577193e16f0450b90b98473"
+  },
+  "province": "Tỉnh Bắc Giang",
+  "district": "Huyện Lạng Giang",
+  "ward": "Xã Quang Thịnh",
+  "detail": "Sân bóng thôn 5",
+  "phone": "0395474001",
+  "recipient_name": "Nguyễn Hiền Thảo",
+  "user_id": "657048a60e1e5e0609de3187",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+},
+{
+  "_id": {
+    "$oid": "657719b116f0450b90b98474"
+  },
+  "province": "Tỉnh Thái Nguyên",
+  "district": "Huyện Định Hóa",
+  "ward": "Xã Định Biên",
+  "detail": "Thôn Uy Bắc",
+  "phone": "0825594655",
+  "recipient_name": "Cường zcoin",
+  "user_id": "657048a60e1e5e0609de3187",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+},
+{
+  "_id": {
+    "$oid": "6577cbaf4b4d6155a56f0aa0"
+  },
+  "province": "Tỉnh Bắc Giang",
+  "district": "Huyện Lạng Giang",
+  "ward": "Thị trấn Vôi",
+  "detail": "Số 3000b đường 10",
+  "phone": "0917281685",
+  "recipient_name": "Thảo keo",
+  "user_id": "657048a60e1e5e0609de3187",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+},
+{
+  "_id": {
+    "$oid": "65782ebc53da6b7376959a24"
+  },
+  "province": "Tỉnh Hà Giang",
+  "district": "Huyện Quản Bạ",
+  "ward": "Xã Bát Đại Sơn",
+  "detail": "Số 39 Quan Nhân",
+  "phone": "0333333318",
+  "recipient_name": "Huy",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+},
+{
+  "_id": {
+    "$oid": "657a0b2b53a291001fbe724c"
+  },
+  "province": "Thành phố Hà Nội",
+  "district": "Quận Hoàn Kiếm",
+  "ward": "Phường Đồng Xuân",
+  "detail": "Cfghnx",
+  "phone": "039555",
+  "recipient_name": "Thtbtbt",
+  "user_id": "657a091f53a291001fbe724a",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+},
+{
+  "_id": {
+    "$oid": "657a0b7153a291001fbe724d"
+  },
+  "province": "Tỉnh Hà Giang",
+  "district": "Huyện Mèo Vạc",
+  "ward": "Xã Pải Lủng",
+  "detail": "Sôegrh",
+  "phone": "00885525",
+  "recipient_name": "Yg",
+  "user_id": "657a091f53a291001fbe724a",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+},
+{
+  "_id": {
+    "$oid": "657ad9428629e12d598e9bc3"
+  },
+  "province": "Tỉnh Lào Cai",
+  "district": "Huyện Mường Khương",
+  "ward": "Xã Tung Chung Phố",
+  "detail": "Số 1000a Ngõ Láng",
+  "phone": "0359566644",
+  "recipient_name": "Thủy Sinh",
+  "user_id": "6572d9e7f8ad8e1b40c0c391",
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+},
+{
+  "_id": {
+    "$oid": "657d62651abfbe5a2e385880"
+  },
+  "province": "Tỉnh Hà Giang",
+  "district": "Huyện Đồng Văn",
+  "ward": "Xã Lũng Cú",
+  "detail": "Số 5 quan nhân",
+  "phone": "0333333312",
+  "recipient_name": "Sơn Hàn",
+  "user_id": "656f5fb861b6f03bbcac3762",
+  "is_default": true,
+  "_class": "com.kientruchanoi.ecommerce.authservicecore.entity.DeliveryAddress"
+}]

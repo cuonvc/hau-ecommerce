@@ -1,0 +1,324 @@
+[{
+  "_id": {
+    "$oid": "65720fcc207ff81b1b7ecf6f"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c75acc22-5766-42e7-bd7d-a18d8b139310png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65720fcb207ff81b1b7ecf6e",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572995f24e5c5517f5df64a"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/519f6285-cf33-4e34-9145-3d8069dcb63apng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572995b24e5c5517f5df649",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572996024e5c5517f5df64b"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/90a5595d-f9b6-4e75-ad60-5947009cd6d6png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572995b24e5c5517f5df649",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572996024e5c5517f5df64c"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/f3321f52-1c82-4eb6-9313-ac384fba5c44png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572995b24e5c5517f5df649",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572996024e5c5517f5df64d"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/8d3c0cb0-4ab7-4229-8925-d0ec8e3d4e4dpng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572995b24e5c5517f5df649",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572996524e5c5517f5df64e"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/a8898734-a831-4bef-8255-5aecbf0edc77png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572995b24e5c5517f5df649",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "65729afd24e5c5517f5df650"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/7137d801-6efa-4f74-a4ab-c2fcd448c814png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65729afb24e5c5517f5df64f",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "65729aff24e5c5517f5df651"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c0efd2a7-cd00-473f-886f-fdb2008f6ffcpng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65729afb24e5c5517f5df64f",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "65729b9e24e5c5517f5df653"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/64304cec-50a6-45dc-8621-79b3086fee28png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65729b9d24e5c5517f5df652",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "65729bc824e5c5517f5df655"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/b54f6f9e-8e77-44dc-8b52-3c3b6e921f70png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65729bc724e5c5517f5df654",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "65729e2024e5c5517f5df657"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/81d97f2f-05f9-418d-bf5c-bfaaeba5e09epng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65729e1f24e5c5517f5df656",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572a49424e5c5517f5df659"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/178b7c12-9e42-4a2c-b47c-1d5165994e57png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572a49124e5c5517f5df658",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572a63024e5c5517f5df65b"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/8eb83d1a-af80-4a1c-a69c-7a21e1a19002png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572a62e24e5c5517f5df65a",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572a63324e5c5517f5df65c"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/99d57314-1b7e-4624-a419-c13173a42e52png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572a62e24e5c5517f5df65a",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572a6a824e5c5517f5df65e"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/50d1d9e3-8b78-48aa-8d3d-b8c38e28c2c0png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572a6a724e5c5517f5df65d",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572a76624e5c5517f5df660"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/75da1e10-0412-4071-ade8-ead738960638png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572a76524e5c5517f5df65f",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572ae5a24e5c5517f5df662"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c1bddb45-abcf-43b3-a783-9c7d3f60d975png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572ae5724e5c5517f5df661",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572c58951c9e56da26ccb9e"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/fd08ae35-88f9-4d00-a567-32cd959cc3d6png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572c58651c9e56da26ccb9d",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572c6a151c9e56da26ccba0"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/175f932e-dc6c-4603-b1e3-ae4fd55c24c1png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572c6a051c9e56da26ccb9f",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572c82a51c9e56da26ccba2"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/cb00921e-397d-471d-8e50-1eed1245571fpng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572c82751c9e56da26ccba1",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572ce2951c9e56da26ccba4"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/967d952c-9d5d-4464-b06b-347655dcaa22png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572ce2851c9e56da26ccba3",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6572d6cd51c9e56da26ccba6"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/5b3d05df-4176-480a-8f11-23f749887634png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6572d6cc51c9e56da26ccba5",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657545f1f8d970037fb65d56"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/4f9dd2c6-9ccd-4542-9abb-4c2dd42d062fpng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657545edf8d970037fb65d55",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "65756bec15bb853bae944639"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/2de90b4a-4c56-4703-9f4e-3afd9f97872epng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65756be815bb853bae944638",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "65756bed15bb853bae94463a"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/75ea197f-2888-41a6-9bee-8753c8ba1559png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "65756be815bb853bae944638",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6578b988521ef76f1f8c0f53"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/498ba7c6-7f28-4af3-9779-8bd5aebe17b5png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6578b986521ef76f1f8c0f52",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6578b98d521ef76f1f8c0f54"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/fb898969-f41a-4e84-a984-0d93da330b17png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6578b986521ef76f1f8c0f52",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6578b98d521ef76f1f8c0f55"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/00a38cb2-d4de-4983-a768-44b5964ab850png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6578b986521ef76f1f8c0f52",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "6578b995521ef76f1f8c0f56"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/b5b34995-db41-4220-91dd-1e3790e84618png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "6578b986521ef76f1f8c0f52",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657ad7ac49aecd45d7a43c23"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/3d7bad48-d8c7-4410-9a6d-14c7d7a786d5png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657ad7af49aecd45d7a43c24"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/a230dd87-0058-4d28-806c-ab285ec14e28png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657ad7b349aecd45d7a43c25"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/c5bcc157-b2dd-482f-8d3a-5503decfaef7png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657ad7b649aecd45d7a43c26"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/43b5a640-2c4d-46ca-8716-bd1119a5a72dpng?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657ad7b949aecd45d7a43c27"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/ed8675d8-be55-4ed2-89bf-da0fcf1f8cb8png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657c8e0c0eb5e05b2e199f61"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/14646643-3f5f-4a2f-a10b-925ce344c0e1png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657c8e080eb5e05b2e199f60",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+},
+{
+  "_id": {
+    "$oid": "657c8e700eb5e05b2e199f63"
+  },
+  "image_url": "https://firebasestorage.googleapis.com/v0/b/lender-394509.appspot.com/o/31b38208-0b08-4481-b4f0-4ee2295fbf63png?alt=media",
+  "is_active": "ACTIVE",
+  "product_id": "657c8e6d0eb5e05b2e199f62",
+  "_class": "com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource"
+}]

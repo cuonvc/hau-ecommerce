@@ -1,0 +1,504 @@
+[{
+  "_id": {
+    "$oid": "6584e77594024a2cc11b13c9"
+  },
+  "title": "Có người đăng ký mới",
+  "content": "Tài khoản bongda24h@gmail.com vừa mới đăng ký.",
+  "type": "USER_CREATED",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T01:33:40.661Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "6584e77594024a2cc11b13ca"
+  },
+  "title": "Có người đăng ký mới",
+  "content": "Tài khoản bongda24h@gmail.com vừa mới đăng ký.",
+  "type": "USER_CREATED",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T01:33:41.719Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658531a4a52c8e43e6d9a33a"
+  },
+  "title": "Có đơn hàng mới",
+  "content": "Bạn có đơn hàng Bộ quần áo Real Madrid 23/24👚 mới.",
+  "type": "ORDER_CREATED",
+  "recipient": "656f5fb861b6f03bbcac3762",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T06:50:11.543Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658536c2a52c8e43e6d9a33b"
+  },
+  "title": "Có đơn hàng mới",
+  "content": "Bạn có đơn hàng Cây thông noel mới.",
+  "type": "ORDER_CREATED",
+  "recipient": "656f5fb861b6f03bbcac3762",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T07:12:02.502Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854a1ca52c8e43e6d9a33c"
+  },
+  "title": "Đơn hàng đã được tếp nhận",
+  "content": "Đơn hàng 658536c1ecb3d778a5dfe1b6 đã được tiếp nhận.",
+  "type": "ORDER_ACCEPTED",
+  "recipient": "6572d9e7f8ad8e1b40c0c391",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:34:36.281Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854a25a52c8e43e6d9a33d"
+  },
+  "title": "Đơn hàng đã được tếp nhận",
+  "content": "Đơn hàng 658531a0ecb3d778a5dfe1b5 đã được tiếp nhận.",
+  "type": "ORDER_ACCEPTED",
+  "recipient": "6572d9e7f8ad8e1b40c0c391",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:34:45.849Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854a80a52c8e43e6d9a33e"
+  },
+  "title": "Đơn hàng đang trên đường giao tới bạn",
+  "content": "Đơn hàng 658536c1ecb3d778a5dfe1b6 đang trên đường vận chuyển.",
+  "type": "ORDER_DELIVERY",
+  "recipient": "6572d9e7f8ad8e1b40c0c391",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:36:16.315Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854b16a52c8e43e6d9a33f"
+  },
+  "title": "Hoàn thành đơn hàng",
+  "content": "Đơn hàng 658536c1ecb3d778a5dfe1b6 đã được giao thành công.",
+  "type": "ORDER_DONE",
+  "recipient": "6572d9e7f8ad8e1b40c0c391",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T08:38:46.116Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854da0a52c8e43e6d9a340"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu nạp số tiền 200000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:49:36.390Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854da0a52c8e43e6d9a341"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu nạp số tiền 200000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:49:36.620Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854dcca52c8e43e6d9a342"
+  },
+  "title": "Tiếp nhận yêu cầu nạp tiền",
+  "content": "Đã nạp thành công 200000.0vnđ vào ví.",
+  "type": "WALLET_ACCEPTED_DEPOSIT",
+  "recipient": "6572d9e7f8ad8e1b40c0c391",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:50:20.900Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854e10a52c8e43e6d9a343"
+  },
+  "title": "Yêu cầu rút tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu rút số tiền 60000đ",
+  "type": "WALLET_REQUIRE_WITHDRAW",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:51:28.725Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854e10a52c8e43e6d9a344"
+  },
+  "title": "Yêu cầu rút tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu rút số tiền 60000đ",
+  "type": "WALLET_REQUIRE_WITHDRAW",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T08:51:28.730Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65854e44a52c8e43e6d9a345"
+  },
+  "title": "Yêu cầu rút tiền",
+  "content": "Rút tiền thành công",
+  "type": "WALLET_REQUIRE_WITHDRAW",
+  "recipient": "657ad895e0c13e085e8d981d",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T08:52:19.999Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65855046a52c8e43e6d9a346"
+  },
+  "title": "Đơn hàng bị huỷ",
+  "content": "Đơn hàng 6584ed547fe46e5fc3491baa đã bị huỷ.",
+  "type": "ORDER_CANCEL",
+  "recipient": "656f5fb861b6f03bbcac3762",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T09:00:54.708Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658551d0a52c8e43e6d9a347"
+  },
+  "title": "Có đơn hàng mới",
+  "content": "Bạn có đơn hàng Áo thời trang nam nữ mới.",
+  "type": "ORDER_CREATED",
+  "recipient": "657048a60e1e5e0609de3187",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T09:07:28.687Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658551e1a52c8e43e6d9a348"
+  },
+  "title": "Hoàn tiền đơn hàng",
+  "content": "Hoàn tiền do đơn hàng 658551d0ecb3d778a5dfe1b9 bị huỷ.",
+  "type": "WALLET_REFUND",
+  "recipient": "656f5fb861b6f03bbcac3762",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T09:07:45.886Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658551e2a52c8e43e6d9a349"
+  },
+  "title": "Đơn hàng bị huỷ",
+  "content": "Đơn hàng 658551d0ecb3d778a5dfe1b9 đã bị huỷ.",
+  "type": "ORDER_CANCEL",
+  "recipient": "657048a60e1e5e0609de3187",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T09:07:45.989Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "6585522ba52c8e43e6d9a34a"
+  },
+  "title": "Có đơn hàng mới",
+  "content": "Bạn có đơn hàng Áo thời trang nam nữ mới.",
+  "type": "ORDER_CREATED",
+  "recipient": "657048a60e1e5e0609de3187",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T09:08:59.519Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658552bfa52c8e43e6d9a34b"
+  },
+  "title": "Đơn hàng bị từ chối",
+  "content": "Đơn hàng 6585522becb3d778a5dfe1bc đã bị từ chối",
+  "type": "ORDER_REJECTED",
+  "recipient": "656f5fb861b6f03bbcac3762",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T09:11:27.956Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "6585549aa52c8e43e6d9a34c"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng bongda24h@gmail.com yêu cầu nạp số tiền 2000000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T09:19:22.005Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "6585549aa52c8e43e6d9a34d"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng bongda24h@gmail.com yêu cầu nạp số tiền 2000000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T09:19:22.244Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65855571a52c8e43e6d9a34e"
+  },
+  "title": "Có người đăng ký mới",
+  "content": "Tài khoản thuyquynh@gmail.com vừa mới đăng ký.",
+  "type": "USER_CREATED",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-22T09:22:57.096Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "65855571a52c8e43e6d9a34f"
+  },
+  "title": "Có người đăng ký mới",
+  "content": "Tài khoản thuyquynh@gmail.com vừa mới đăng ký.",
+  "type": "USER_CREATED",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-22T09:22:57.177Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658ba62dea2b043810fbd296"
+  },
+  "title": "Có đơn hàng mới",
+  "content": "Bạn có đơn hàng Hồ cá thủy sinh 🍉 mới.",
+  "type": "ORDER_CREATED",
+  "recipient": "656f5fb861b6f03bbcac3762",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-27T04:21:01.333Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658ba663ea2b043810fbd297"
+  },
+  "title": "Đơn hàng đã được tếp nhận",
+  "content": "Đơn hàng 658ba628603d0e68f0deb872 đã được tiếp nhận.",
+  "type": "ORDER_ACCEPTED",
+  "recipient": "657048a60e1e5e0609de3187",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-27T04:21:55.831Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658ba707ea2b043810fbd298"
+  },
+  "title": "Đơn hàng đang trên đường giao tới bạn",
+  "content": "Đơn hàng 658ba628603d0e68f0deb872 đang trên đường vận chuyển.",
+  "type": "ORDER_DELIVERY",
+  "recipient": "657048a60e1e5e0609de3187",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-27T04:24:39.135Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658ba736ea2b043810fbd299"
+  },
+  "title": "Hoàn thành đơn hàng",
+  "content": "Đơn hàng 658ba628603d0e68f0deb872 đã được giao thành công.",
+  "type": "ORDER_DONE",
+  "recipient": "657048a60e1e5e0609de3187",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-27T04:25:26.450Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d4036dd54723c55d6b7d3"
+  },
+  "title": "Yêu cầu rút tiền",
+  "content": "Người dùng yosefpham03@gmail.com yêu cầu rút số tiền 20000000đ",
+  "type": "WALLET_REQUIRE_WITHDRAW",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-28T09:30:30.492Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d4036dd54723c55d6b7d4"
+  },
+  "title": "Yêu cầu rút tiền",
+  "content": "Người dùng yosefpham03@gmail.com yêu cầu rút số tiền 20000000đ",
+  "type": "WALLET_REQUIRE_WITHDRAW",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-28T09:30:30.603Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d44f6dd54723c55d6b7d5"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu nạp số tiền 250000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-28T09:50:46.898Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d44f6dd54723c55d6b7d6"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu nạp số tiền 250000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-28T09:50:46.918Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d4690dd54723c55d6b7d7"
+  },
+  "title": "Tiếp nhận yêu cầu nạp tiền",
+  "content": "Đã nạp thành công 250000.0vnđ vào ví.",
+  "type": "WALLET_ACCEPTED_DEPOSIT",
+  "recipient": "6572d9e7f8ad8e1b40c0c391",
+  "seen": true,
+  "created_date": {
+    "$date": "2023-12-28T09:57:36.276Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d46cfdd54723c55d6b7d8"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu nạp số tiền 2500000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "656eb5b33a2b3c51dd04c172",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-28T09:58:39.486Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d46cfdd54723c55d6b7d9"
+  },
+  "title": "Yêu cầu nạp tiền",
+  "content": "Người dùng yosef@gmail.com yêu cầu nạp số tiền 2500000đ",
+  "type": "WALLET_REQUIRE_DEPOSIT",
+  "recipient": "657b2b823fabbf76e22701cb",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-28T09:58:39.498Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+},
+{
+  "_id": {
+    "$oid": "658d4e4add54723c55d6b7da"
+  },
+  "title": "Có đơn hàng mới",
+  "content": "Bạn có đơn hàng Bộ quần áo Real Madrid 23/24👚 mới.",
+  "type": "ORDER_CREATED",
+  "recipient": "656f5fb861b6f03bbcac3762",
+  "seen": false,
+  "created_date": {
+    "$date": "2023-12-28T10:30:34.752Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification"
+}]

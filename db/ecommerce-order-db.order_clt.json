@@ -1,0 +1,471 @@
+[{
+  "_id": {
+    "$oid": "657fb1671f35487e04bf0d04"
+  },
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "657a091f53a291001fbe724a",
+  "quantity": 3,
+  "amount": 363000,
+  "source_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "destination_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "DONE",
+  "created_date": {
+    "$date": "2023-12-18T02:41:43.321Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "657fb2a21f35487e04bf0d06"
+  },
+  "product_id": "657545edf8d970037fb65d55",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "6572d9e7f8ad8e1b40c0c391",
+  "quantity": 4,
+  "amount": 600000,
+  "source_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "destination_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "CANCEL",
+  "created_date": {
+    "$date": "2023-12-18T02:46:58.668Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "657fb4ee1f35487e04bf0d08"
+  },
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "657a091f53a291001fbe724a",
+  "quantity": 13,
+  "amount": 1573000,
+  "source_info": {
+    "_id": {
+      "$oid": "657d62651abfbe5a2e385880"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Đồng Văn",
+    "ward": "Xã Lũng Cú",
+    "detail": "Số 5 quan nhân",
+    "phone": "0333333312",
+    "recipientName": "Sơn Hàn",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "destination_info": {
+    "_id": {
+      "$oid": "657d62651abfbe5a2e385880"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Đồng Văn",
+    "ward": "Xã Lũng Cú",
+    "detail": "Số 5 quan nhân",
+    "phone": "0333333312",
+    "recipientName": "Sơn Hàn",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-18T02:56:46.528Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "657fc4e11f35487e04bf0d0a"
+  },
+  "product_id": "6578b986521ef76f1f8c0f52",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "657048a60e1e5e0609de3187",
+  "quantity": 1,
+  "amount": 230000,
+  "source_info": {
+    "_id": {
+      "$oid": "657d62651abfbe5a2e385880"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Đồng Văn",
+    "ward": "Xã Lũng Cú",
+    "detail": "Số 5 quan nhân",
+    "phone": "0333333312",
+    "recipientName": "Sơn Hàn",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "destination_info": {
+    "_id": {
+      "$oid": "657d62651abfbe5a2e385880"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Đồng Văn",
+    "ward": "Xã Lũng Cú",
+    "detail": "Số 5 quan nhân",
+    "phone": "0333333312",
+    "recipientName": "Sơn Hàn",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "CASH",
+  "payment_status": "UNPAID",
+  "status": "ACTIVE",
+  "order_status": "DONE",
+  "created_date": {
+    "$date": "2023-12-18T04:04:49.109Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "657fc58c1f35487e04bf0d0c"
+  },
+  "product_id": "6578b986521ef76f1f8c0f52",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "657048a60e1e5e0609de3187",
+  "quantity": 1,
+  "amount": 230000,
+  "source_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "destination_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "CASH",
+  "payment_status": "UNPAID",
+  "status": "ACTIVE",
+  "order_status": "CANCEL",
+  "created_date": {
+    "$date": "2023-12-18T04:07:40.667Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "658052fbbcb19872e477ab1c"
+  },
+  "product_id": "65756be815bb853bae944638",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "657048a60e1e5e0609de3187",
+  "quantity": 1,
+  "amount": 780001,
+  "source_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "destination_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-18T14:11:07.175Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "658071682ca5253f626571b5"
+  },
+  "product_id": "65756be815bb853bae944638",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "657048a60e1e5e0609de3187",
+  "quantity": 1,
+  "amount": 780001,
+  "destination_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-18T16:20:56.204Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "658074a22ca5253f626571b7"
+  },
+  "product_id": "657ad7a749aecd45d7a43c22",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "657a091f53a291001fbe724a",
+  "quantity": 4,
+  "amount": 484000,
+  "destination_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-18T16:34:42.735Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "6580f598feb13168f5f7b9b3"
+  },
+  "product_id": "657545edf8d970037fb65d55",
+  "customer_id": "656f5fb861b6f03bbcac3762",
+  "seller_id": "6572d9e7f8ad8e1b40c0c391",
+  "quantity": 1,
+  "amount": 150000,
+  "destination_info": {
+    "_id": {
+      "$oid": "65782ebc53da6b7376959a24"
+    },
+    "province": "Tỉnh Hà Giang",
+    "district": "Huyện Quản Bạ",
+    "ward": "Xã Bát Đại Sơn",
+    "detail": "Số 39 Quan Nhân",
+    "phone": "0333333318",
+    "recipientName": "Huy",
+    "userId": "656f5fb861b6f03bbcac3762"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-19T01:44:56.477Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-19T01:44:56.605Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "6580fae4d6a6e952d2db19ba"
+  },
+  "product_id": "657545edf8d970037fb65d55",
+  "customer_id": "657048a60e1e5e0609de3187",
+  "seller_id": "6572d9e7f8ad8e1b40c0c391",
+  "quantity": 1,
+  "amount": 150000,
+  "destination_info": {
+    "_id": {
+      "$oid": "6577193e16f0450b90b98473"
+    },
+    "province": "Tỉnh Bắc Giang",
+    "district": "Huyện Lạng Giang",
+    "ward": "Xã Quang Thịnh",
+    "detail": "Sân bóng thôn 5",
+    "phone": "0395474001",
+    "recipientName": "Nguyễn Hiền Thảo",
+    "userId": "657048a60e1e5e0609de3187"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "CANCEL",
+  "created_date": {
+    "$date": "2023-12-19T02:07:32.916Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-19T02:07:33.030Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "65810206a4d87874d21065ae"
+  },
+  "product_id": "6572c82751c9e56da26ccba1",
+  "customer_id": "657048a60e1e5e0609de3187",
+  "seller_id": "656f5fb861b6f03bbcac3762",
+  "quantity": 4,
+  "amount": 2796000,
+  "destination_info": {
+    "_id": {
+      "$oid": "6577193e16f0450b90b98473"
+    },
+    "province": "Tỉnh Bắc Giang",
+    "district": "Huyện Lạng Giang",
+    "ward": "Xã Quang Thịnh",
+    "detail": "Sân bóng thôn 5",
+    "phone": "0395474001",
+    "recipientName": "Nguyễn Hiền Thảo",
+    "userId": "657048a60e1e5e0609de3187"
+  },
+  "payment_type": "WALLET",
+  "payment_status": "PAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-19T02:37:58.971Z"
+  },
+  "modified_date": {
+    "$date": "2023-12-19T02:37:59.076Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "658145ac7524d76a408260f6"
+  },
+  "product_id": "657c8e080eb5e05b2e199f60",
+  "customer_id": "657048a60e1e5e0609de3187",
+  "seller_id": "656f5fb861b6f03bbcac3762",
+  "quantity": 5,
+  "amount": 215000,
+  "destination_info": {
+    "_id": {
+      "$oid": "6577193e16f0450b90b98473"
+    },
+    "province": "Tỉnh Bắc Giang",
+    "district": "Huyện Lạng Giang",
+    "ward": "Xã Quang Thịnh",
+    "detail": "Sân bóng thôn 5",
+    "phone": "0395474001",
+    "recipientName": "Nguyễn Hiền Thảo",
+    "userId": "657048a60e1e5e0609de3187"
+  },
+  "payment_type": "CASH",
+  "payment_status": "UNPAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-19T07:26:36.049Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+},
+{
+  "_id": {
+    "$oid": "658146017524d76a408260f8"
+  },
+  "product_id": "65729e1f24e5c5517f5df656",
+  "customer_id": "657048a60e1e5e0609de3187",
+  "seller_id": "656f5fb861b6f03bbcac3762",
+  "quantity": 1,
+  "amount": 16000000,
+  "destination_info": {
+    "_id": {
+      "$oid": "6577193e16f0450b90b98473"
+    },
+    "province": "Tỉnh Bắc Giang",
+    "district": "Huyện Lạng Giang",
+    "ward": "Xã Quang Thịnh",
+    "detail": "Sân bóng thôn 5",
+    "phone": "0395474001",
+    "recipientName": "Nguyễn Hiền Thảo",
+    "userId": "657048a60e1e5e0609de3187"
+  },
+  "payment_type": "CASH",
+  "payment_status": "UNPAID",
+  "status": "ACTIVE",
+  "order_status": "PENDING",
+  "created_date": {
+    "$date": "2023-12-19T07:28:01.775Z"
+  },
+  "_class": "com.kientruchanoi.ecommerce.orderservicecore.entity.Order"
+}]

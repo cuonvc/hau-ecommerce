@@ -3,9 +3,11 @@ package com.kientruchanoi.ecommerce.authservicecore.controller;
 import com.kientruchanoi.ecommerce.authservicecore.config.CustomUserDetail;
 import com.kientruchanoi.ecommerce.authservicecore.config.CustomUserDetailService;
 import com.kientruchanoi.ecommerce.authservicecore.config.jwt.JwtTokenProvider;
+import com.kientruchanoi.ecommerce.authservicecore.entity.DeviceToken;
 import com.kientruchanoi.ecommerce.authservicecore.entity.User;
 import com.kientruchanoi.ecommerce.authservicecore.exception.ResourceNotFoundException;
 import com.kientruchanoi.ecommerce.authservicecore.payload.response.CustomUserDetailResponse;
+import com.kientruchanoi.ecommerce.authservicecore.repository.DeviceTokenRepository;
 import com.kientruchanoi.ecommerce.authservicecore.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,7 @@ public class InternalController {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailService customUserDetailService;
     private final UserRepository userRepository;
+    private final DeviceTokenRepository deviceTokenRepository;
 
     @GetMapping("/admins")
     public ResponseEntity<List<String>> getAllAdmin() {
@@ -55,6 +58,17 @@ public class InternalController {
         }
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @GetMapping("/device_token")
+    public ResponseEntity<String> getDeviceToken(@RequestParam("userId") String userId) {
+        DeviceToken deviceToken = deviceTokenRepository.findByUserId(userId)
+                .orElse(null);
+
+        if (deviceToken == null) {
+            ResponseEntity.ok("");
+        }
+        return ResponseEntity.ok(deviceToken.getToken());
     }
 
     private UsernamePasswordAuthenticationToken buildAuthenticationToken(CustomUserDetail userDetails, List<GrantedAuthority> authorityList) {
