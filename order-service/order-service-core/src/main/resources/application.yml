@@ -16,10 +16,18 @@ spring:
   kafka:
     consumer:
       auto-offset-reset: earliest
+  cloud:
+    function:
+      definition:
+        "orderNotificationHandle"
     stream:
       kafka:
         binder:
           brokers: ${KAFKA_HOST}:${KAFKA_PORT}
+      bindings:
+        orderNotificationHandle-in-0:
+          destination: order.notify.action
+          content-type: application.json
 
     compatibility-verifier:
       enabled: false

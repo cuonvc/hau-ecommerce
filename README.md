@@ -2,6 +2,8 @@
 Backend module for the final project of the Service-oriented Software Engineering course
 #### 20CN2 - Hanoi Architectural University
 
+### Application architecture diagram
+![alt text](System-design.png)
 ### How to pull and start the backend module
 
 #### 1. Install Docker and Docker-compose
