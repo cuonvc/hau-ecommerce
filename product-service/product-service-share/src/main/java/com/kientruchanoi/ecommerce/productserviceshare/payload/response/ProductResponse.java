@@ -1,6 +1,7 @@
 package com.kientruchanoi.ecommerce.productserviceshare.payload.response;
 
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
+import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ public class ProductResponse {
     private String code;
     private String description;
     private Integer remaining;
+    private Status isActive;
     private List<ProductResourceResponse> resources;
     private String brand;
     private Set<CategoryDto> categories;

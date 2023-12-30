@@ -357,11 +357,9 @@ public class OrderServiceImpl implements OrderService {
         order = orderRepository.save(order);
 
         //pay for seller
-        if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
-            Wallet wallet = walletService.sellerPay(order);
-            transactionService.create(TransactionType.SELL,
-                    "Thu tiền sản phẩm", List.of(order.getId()), wallet, order.getAmount());
-        }
+        Wallet wallet = walletService.sellerPay(order);
+        transactionService.create(TransactionType.SELL,
+                "Thu tiền sản phẩm", List.of(order.getId()), wallet, order.getAmount());
 
         commonService.sendNotification(NotificationType.ORDER_DONE,
                 "Đơn hàng " + order.getId() + " đã được giao thành công.",
