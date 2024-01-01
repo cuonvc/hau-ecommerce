@@ -92,8 +92,8 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void confirmPayment(PaymentSMS sms) {
-        String[] message = sms.getContent().split("_");  //có thể sẽ lỗi trên android
+    public void confirmPayment(String phone, String text, String sim, String device) {
+        String[] message = text.split("_");  //có thể sẽ lỗi trên android
         long amount = Long.parseLong(message[1]);
         String userId = message[0];
 

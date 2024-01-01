@@ -21,7 +21,7 @@ public interface WalletService {
 
     ResponseEntity<BaseResponse<Wallet>> confirmWithdraw();
 
-    void confirmPayment(PaymentSMS sms);
+    void confirmPayment(String phone, String text, String sim, String device);
 
     Wallet customerRefund(Order order);
 
