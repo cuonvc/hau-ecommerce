@@ -4,8 +4,10 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.PageResponseOrder;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderService {
@@ -13,7 +15,13 @@ public interface OrderService {
 
     ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
 
-    ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status, String type);
+    ResponseEntity<BaseResponse<PageResponseOrder>> listByOwner(Integer pageNo, Integer pageSize, String sortBy,
+                                                                String sortDir, String status, String type,
+                                                                LocalDateTime from, LocalDateTime to);
+
+    ResponseEntity<BaseResponse<PageResponseOrder>> listByAdmin(Integer pageNo, Integer pageSize, String sortBy,
+                                                                        String sortDir, String status,
+                                                                        LocalDateTime from, LocalDateTime to);
 
     ResponseEntity<BaseResponse<String>> cancel(String id);
 

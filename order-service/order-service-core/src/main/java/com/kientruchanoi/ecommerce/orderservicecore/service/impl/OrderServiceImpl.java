@@ -7,6 +7,8 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.notificationserviceshare.enumerate.NotificationType;
 import com.kientruchanoi.ecommerce.notificationserviceshare.payload.kafka.NotificationBuilder;
+import com.kientruchanoi.ecommerce.notificationserviceshare.payload.response.NotificationResponse;
+import com.kientruchanoi.ecommerce.notificationserviceshare.payload.response.PageResponseNotification;
 import com.kientruchanoi.ecommerce.orderservicecore.configuration.CustomUserDetail;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Cart;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
@@ -24,11 +26,16 @@ import com.kientruchanoi.ecommerce.orderserviceshare.payload.kafka.OrderReducePr
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
+import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.PageResponseOrder;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.TransactionResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -206,19 +213,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> listByOwner(String status, String type) {
+    public ResponseEntity<BaseResponse<PageResponseOrder>> listByOwner(Integer pageNo, Integer pageSize, String sortBy,
+                                                                               String sortDir, String status, String type,
+                                                                               LocalDateTime from, LocalDateTime to) {
 
         String currentUserId = commonService.getCurrentUserId();
-        List<Order> orders = new ArrayList<>();
+        Page<Order> orders;
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
         switch (type) {
             case ORDER_TYPE_SELL -> {
                 if (status == null) {
-                    orders = orderRepository.findAllBySellerId(currentUserId);
+                    if (from != null && to != null) {
+                        orders = orderRepository.findAllBySellerIdAndRange(currentUserId, from, to, pageable);
+                    }
+                    orders = orderRepository.findAllBySellerId(currentUserId, pageable);
                 } else {
                     try {
                         OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
-                        orders = orderRepository.findAllBySellerIdAndOrderStatus(currentUserId, orderStatus.name());
+
+                        if (from != null && to != null) {
+                            orders = orderRepository.findAllBySellerIdAndOrderStatusAndRange(currentUserId, orderStatus.name(), from, to, pageable);
+                        }
+                        orders = orderRepository.findAllBySellerIdAndOrderStatus(currentUserId, orderStatus.name(), pageable);
                     } catch (Exception exception) {
                         throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
                     }
@@ -226,11 +247,18 @@ public class OrderServiceImpl implements OrderService {
             }
             case ORDER_TYPE_BUY -> {
                 if (status == null) {
-                    orders = orderRepository.findAllByCustomerId(currentUserId);
+                    if (from != null && to != null) {
+                        orders = orderRepository.findAllByCustomerIdAndRange(currentUserId, from, to, pageable);
+                    }
+                    orders = orderRepository.findAllByCustomerId(currentUserId, pageable);
                 } else {
                     try {
                         OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
-                        orders = orderRepository.findAllByCustomerIdAndOrderStatus(currentUserId, orderStatus.name());
+
+                        if (from != null && to != null) {
+                            orders = orderRepository.findAllByCustomerIdAndOrderStatusAndRange(currentUserId, orderStatus.name(), from, to, pageable);
+                        }
+                        orders = orderRepository.findAllByCustomerIdAndOrderStatus(currentUserId, orderStatus.name(), pageable);
                     } catch (Exception exception) {
                         throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
                     }
@@ -239,17 +267,55 @@ public class OrderServiceImpl implements OrderService {
             default -> throw new APIException(HttpStatus.BAD_REQUEST, "Type không hợp lệ");
         }
 
-        List<OrderResponseDetail> detailList = orders.stream()
-                .map(this::buildResponseDetail)
-                .sorted(Comparator.comparing(OrderResponseDetail::getCreatedDate).reversed())
-                .collect(Collectors.toList());
+//        paging(orders);
+//        List<OrderResponseDetail> detailList = orders.stream()
+//                .map(this::buildResponseDetail)
+////                .sorted(Comparator.comparing(OrderResponseDetail::getCreatedDate).reversed())
+//                .collect(Collectors.toList());
 
 //        detailList.sort(Comparator.comparing(OrderResponseDetail::getCreatedDate));
 //        Collections.sort(detailList, (o1, o2) -> (o1.getCreatedDate().compareTo(o2.getCreatedDate())));
 //        Collections.reverse(detailList);
-        return responseFactory.success("Succes", detailList);
+        return responseFactory.success("Succes", paging(orders));
     }
 
+    @Override
+    public ResponseEntity<BaseResponse<PageResponseOrder>> listByAdmin(Integer pageNo, Integer pageSize, String sortBy,
+                                                                               String sortDir, String status,
+                                                                               LocalDateTime from, LocalDateTime to) {
+        //xem lai
+        Page<Order> orders;
+
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        if (status == null) {
+            if (from != null && to != null) {
+                orders = orderRepository.findAllByRange(from, to, pageable);
+            }
+            orders = orderRepository.findAll(pageable);
+        } else {
+            try {
+                OrderStatus orderStatus = OrderStatus.valueOf(status.trim().toUpperCase()); //check enum name ok
+
+                if (from != null && to != null) {
+                    orders = orderRepository.findAllByOrderStatusAndRange(orderStatus.name(), from, to, pageable);
+                }
+                orders = orderRepository.findAllByOrderStatus(orderStatus.name(), pageable);
+            } catch (Exception exception) {
+                throw new APIException(HttpStatus.BAD_REQUEST, "Status khoông hợp lệ");
+            }
+        }
+
+//        List<OrderResponseDetail> detailList = orders.stream()
+//                .map(this::buildResponseDetail)
+//                .sorted(Comparator.comparing(OrderResponseDetail::getCreatedDate).reversed())
+//                .collect(Collectors.toList());
+
+        return responseFactory.success("success", paging(orders));
+    }
 
     @Override
     public ResponseEntity<BaseResponse<String>> cancel(String id) {
@@ -391,6 +457,21 @@ public class OrderServiceImpl implements OrderService {
         detail.setProduct(commonService.getProductInfo(order.getProductId()));
 
         return detail;
+    }
+
+    private PageResponseOrder paging(Page<Order> orders) {
+        List<OrderResponseDetail> notificationList = orders.getContent()
+                .stream().map(entity -> buildResponseDetail(entity))
+                .collect(Collectors.toList());
+
+        return (PageResponseOrder) PageResponseOrder.builder()
+                .pageNo(orders.getNumber())
+                .pageSize(notificationList.size())
+                .content(notificationList)
+                .totalPages(orders.getTotalPages())
+                .totalItems((int) orders.getTotalElements())
+                .last(orders.isLast())
+                .build();
     }
 
 }
