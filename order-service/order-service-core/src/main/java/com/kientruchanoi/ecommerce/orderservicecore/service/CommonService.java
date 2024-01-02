@@ -22,5 +22,5 @@ public interface CommonService {
 
     ProductResponse getProductInfoNotUser(String productId);
 
-    void sendNotification(NotificationType type, String message, List<String> recipients);
+    void sendNotification(NotificationType type, String message, String recipient);
 }

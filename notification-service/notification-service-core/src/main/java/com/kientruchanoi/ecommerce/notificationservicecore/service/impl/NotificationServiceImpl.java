@@ -104,19 +104,17 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void create(NotificationBuilder request) {
-        request.getRecipients().forEach(userId -> {
-            Notification notification = repository.save(Notification.builder()
-                    .title(request.getTitle())
-                    .content(request.getContent())
-                    .type(request.getType().name())
-                    .recipient(userId)
-                    .seen(false)
-                    .createdDate(LocalDateTime.now())
-                    .build()
-            );
+        Notification notification = repository.save(Notification.builder()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .type(request.getType().name())
+                .recipient(request.getRecipient())
+                .seen(false)
+                .createdDate(LocalDateTime.now())
+                .build()
+        );
 
-            pushNotification(notification);
-        });
+        pushNotification(notification);
     }
 
     private void pushNotification(Notification notification) {

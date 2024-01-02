@@ -149,7 +149,7 @@ public class OrderServiceImpl implements OrderService {
         //push notification
         responses.forEach(o -> commonService.sendNotification(NotificationType.ORDER_CREATED,
                 "Bạn có đơn hàng " + o.getProduct().getName() + " mới.",
-                List.of(o.getSeller().getId()))
+                o.getSeller().getId())
         );
 
         return responseFactory.success(ORDER_CREATE_SUCCESS, responses);
@@ -273,12 +273,12 @@ public class OrderServiceImpl implements OrderService {
 
             commonService.sendNotification(NotificationType.WALLET_REFUND,
                     "Hoàn tiền do đơn hàng " + order.getId() + " bị huỷ.",
-                    List.of(order.getCustomerId()));
+                    order.getCustomerId());
         }
 
         commonService.sendNotification(NotificationType.ORDER_CANCEL,
                 "Đơn hàng " + order.getId() + " đã bị huỷ.",
-                List.of(order.getSellerId()));
+                order.getSellerId());
 
         return responseFactory.success("Đã huỷ đơn hàng " + order.getId(), ORDER_CANCEL_SUCCESS);
     }
@@ -299,7 +299,7 @@ public class OrderServiceImpl implements OrderService {
 
         commonService.sendNotification(NotificationType.ORDER_ACCEPTED,
                 "Đơn hàng " + order.getId() + " đã được tiếp nhận.",
-                List.of(order.getCustomerId()));
+                order.getCustomerId());
 
         return responseFactory.success("Đã tiếp nhận đơn hàng", buildResponseDetail(order));
     }
@@ -321,7 +321,7 @@ public class OrderServiceImpl implements OrderService {
 
         commonService.sendNotification(NotificationType.ORDER_REJECTED,
                 "Đơn hàng " + order.getId() + " đã bị từ chối",
-                List.of(order.getCustomerId()));
+                order.getCustomerId());
 
         return responseFactory.success("Bạn đã từ chối đơn hàng", buildResponseDetail(order));
     }
@@ -337,7 +337,7 @@ public class OrderServiceImpl implements OrderService {
 
         commonService.sendNotification(NotificationType.ORDER_DELIVERY,
                 "Đơn hàng " + order.getId() + " đang trên đường vận chuyển.",
-                List.of(order.getCustomerId()));
+                order.getCustomerId());
 
         return responseFactory.success("Đơn hàng đang trên đường vận chuyển.", buildResponseDetail(order));
     }
@@ -363,7 +363,7 @@ public class OrderServiceImpl implements OrderService {
 
         commonService.sendNotification(NotificationType.ORDER_DONE,
                 "Đơn hàng " + order.getId() + " đã được giao thành công.",
-                List.of(order.getSellerId()));
+                order.getSellerId());
 
         return responseFactory.success("Đã nhận được hàng", buildResponseDetail(order));
     }

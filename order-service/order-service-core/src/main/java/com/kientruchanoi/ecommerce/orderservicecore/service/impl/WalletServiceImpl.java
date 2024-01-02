@@ -61,9 +61,12 @@ public class WalletServiceImpl implements WalletService {
         wallet.setSmsFormat(currentUserId + "_" + amount);
         wallet = walletRepository.save(wallet);
 
-        commonService.sendNotification(NotificationType.WALLET_REQUIRE_DEPOSIT,
-                "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu nạp số tiền " + amount + "đ",
-                commonService.getAllAdminId());
+        commonService.getAllAdminId().forEach(id -> {
+            commonService.sendNotification(NotificationType.WALLET_REQUIRE_DEPOSIT,
+                    "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu nạp số tiền " + amount + "đ",
+                    id
+            );
+        });
 
         return responseFactory.success("Nạp tiền thanh công, vui lòng chuyển " + amount + "VNĐ cho quản trị viên",
                 wallet);
@@ -122,7 +125,7 @@ public class WalletServiceImpl implements WalletService {
 
             commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
                     "Đã nạp thành công " + amount + "vnđ vào ví.",
-                    List.of(wallet.getUserId()));
+                    wallet.getUserId());
         }
     }
 
@@ -146,9 +149,12 @@ public class WalletServiceImpl implements WalletService {
         wallet.setModifiedDate(LocalDateTime.now());
         wallet = walletRepository.save(wallet);
 
-        commonService.sendNotification(NotificationType.WALLET_REQUIRE_WITHDRAW,
-                "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu rút số tiền " + amount + "đ",
-                commonService.getAllAdminId());
+        commonService.getAllAdminId().forEach(id -> {
+            commonService.sendNotification(NotificationType.WALLET_REQUIRE_WITHDRAW,
+                    "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu rút số tiền " + amount + "đ",
+                    id
+            );
+        });
 
         return responseFactory.success("Đã yêu cầu rút số tiền " + amount + "đ", wallet);
     }
@@ -169,9 +175,9 @@ public class WalletServiceImpl implements WalletService {
         wallet.setStatus(WalletStatus.WITHDRAW_CONFIRM.name());
         wallet = walletRepository.save(wallet);
 
-        commonService.sendNotification(NotificationType.WALLET_REQUIRE_WITHDRAW,
+        commonService.sendNotification(NotificationType.WALLET_ACCEPTED_WITHDRAW,
                 "Rút tiền thành công",
-                List.of(wallet.getId()));
+                wallet.getId());
 
         return responseFactory.success("Chờ người dùng xác nhận.", wallet);
     }
@@ -261,7 +267,7 @@ public class WalletServiceImpl implements WalletService {
 
         commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
                 "Đã nạp thành công " + newAmount + "vnđ vào ví.",
-                List.of(wallet.getUserId()));
+                wallet.getUserId());
 
         return responseFactory.success("Đã xác nhận nạp tiền.", wallet);
     }

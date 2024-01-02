@@ -6,17 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class NotificationBuilder {
+public class NotificationBuilder implements Serializable {
 
     private String title;
     private String content;
-    private List<String> recipients;
+    private String recipient;
     private NotificationType type;
     private Object resource;
+    private LocalDateTime builtAt;
 }

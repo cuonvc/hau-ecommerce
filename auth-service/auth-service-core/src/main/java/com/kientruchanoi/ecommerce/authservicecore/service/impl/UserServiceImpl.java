@@ -132,18 +132,21 @@ public class UserServiceImpl implements UserService {
         UserResponse response = userMapper.entityToResponse(saved);
         redisTemplateObject.delete(request);
 
-        Message<NotificationBuilder> message = MessageBuilder
-                .withPayload(
-                        NotificationBuilder.builder()
-                        .type(NotificationType.USER_CREATED)
-                        .title(NotificationType.USER_CREATED.getMessage())
-                        .content("Tài khoản " + user.getEmail() + " vừa mới đăng ký.")
-                        .recipients(userRepository.findAllByRole("ADMIN").stream().map(u -> u.getId()).toList())
-                        .build()
-                )
-                .setHeader(KafkaHeaders.KEY, user.getId().getBytes())
-                .build();
-        streamBridge.send(ORDER_NOTIFY_ACTION, message);
+        userRepository.findAllByRole("ADMIN").forEach(u -> {
+            Message<NotificationBuilder> message = MessageBuilder
+                    .withPayload(
+                            NotificationBuilder.builder()
+                                    .type(NotificationType.USER_CREATED)
+                                    .title(NotificationType.USER_CREATED.getMessage())
+                                    .content("Tài khoản " + user.getEmail() + " vừa mới đăng ký.")
+                                    .recipient(u.getId())
+                                    .builtAt(LocalDateTime.now())
+                                    .build()
+                    )
+                    .setHeader(KafkaHeaders.KEY, user.getId().getBytes())
+                    .build();
+            streamBridge.send(ORDER_NOTIFY_ACTION, message);
+        });
 
         return responseFactory.success("Kích hoạt tài khoản thành công, vui lòng đăng nhập lại!", response);
     }

@@ -11,22 +11,26 @@ import com.kientruchanoi.ecommerce.orderservicecore.exception.ResourceNotFoundEx
 import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CommonServiceImpl implements CommonService {
 
     private final RestTemplate restTemplate;
@@ -111,15 +115,18 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public void sendNotification(NotificationType type, String message, List<String> recipients) {
+    public void sendNotification(NotificationType type, String message, String recipient) {
         Message<NotificationBuilder> notiMessage = MessageBuilder.withPayload(
                 NotificationBuilder.builder()
                         .type(type)
                         .title(type.getMessage())
                         .content(message)
-                        .recipients(recipients)
+                        .recipient(recipient)
+                        .builtAt(LocalDateTime.now())
                         .build()
-        ).build();
+                ).setHeader(KafkaHeaders.KEY, recipient.getBytes())
+                .build();
+        log.info("STARTING SEND MESSAGE...");
         streamBridge.send(ORDER_NOTIFY_ACTION, notiMessage);
     }
 }
