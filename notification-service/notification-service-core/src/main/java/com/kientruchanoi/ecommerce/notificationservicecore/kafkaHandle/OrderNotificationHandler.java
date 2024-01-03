@@ -27,14 +27,15 @@ public class OrderNotificationHandler {
             log.info("KEYYY - {}", recipient);
             log.info("PAYLOAD - {}", message.getPayload());
 
-            notificationService.create(message.getPayload());
+//            notificationService.create(message.getPayload());
 //            redisTemplate.opsForValue().set(recipient, message.getPayload());
 
-//            NotificationBuilder value = redisTemplate.opsForValue().get(recipient);
-//            if (value == null || !value.equals(message.getPayload())) {
-//                log.info("CREATING...");
-//                notificationService.create(message.getPayload());
-//            }
+            NotificationBuilder value = redisTemplate.opsForValue().get(recipient);
+            if (value == null || !value.equals(message.getPayload())) {
+                log.info("CREATING...");
+                redisTemplate.opsForValue().set(recipient, message.getPayload());
+                notificationService.create(message.getPayload());
+            }
         };
     }
 }

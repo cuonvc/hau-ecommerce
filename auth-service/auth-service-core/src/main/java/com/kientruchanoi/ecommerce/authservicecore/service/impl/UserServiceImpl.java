@@ -140,7 +140,6 @@ public class UserServiceImpl implements UserService {
                                     .title(NotificationType.USER_CREATED.getMessage())
                                     .content("Tài khoản " + user.getEmail() + " vừa mới đăng ký.")
                                     .recipient(u.getId())
-                                    .builtAt(LocalDateTime.now())
                                     .build()
                     )
                     .setHeader(KafkaHeaders.KEY, user.getId().getBytes())
