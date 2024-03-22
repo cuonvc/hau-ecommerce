@@ -14,7 +14,7 @@ spring:
     port: 587
     username: cuong.test.development@gmail.com
 #    bellow password encoded -> avoid scanner on Github
-    password: YWttYW5veGd6Z2htaGZycA==
+    password: c2pkZyBsb3J1IGNtZmYgeHF6ZQ==
     properties:
       mail:
         smtp:

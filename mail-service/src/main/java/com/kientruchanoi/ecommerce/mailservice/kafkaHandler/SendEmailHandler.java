@@ -26,7 +26,7 @@ public class SendEmailHandler {
 
             sendEmailService.send(EmailTo.builder()
                             .sendTo(emailTo)
-                            .subject("Active Lender account")
+                            .subject("Active Ecommerce app account")
                             .content("Your activation code: " + request.getPayload())
                     .build());
         };
