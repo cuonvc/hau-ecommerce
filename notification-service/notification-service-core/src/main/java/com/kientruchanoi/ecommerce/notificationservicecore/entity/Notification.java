@@ -1,41 +1,42 @@
 package com.kientruchanoi.ecommerce.notificationservicecore.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Document(collection = "notification_clt")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@Entity
+@Table(name = "notification")
 public class Notification {
 
     @Id
     private String id;
 
-    @Field("title")
+    @Column(name = "title")
     private String title;
 
-    @Field("content")
+    @Column(name = "content")
     private String content;
 
-    @Field("type")
+    @Column(name = "type")
     private String type;  //enum name
 
-    @Field("recipient")
+    @Column(name = "recipient")
     private String recipient;
 
-    @Field("seen")
+    @Column(name = "seen")
     private boolean seen = false;
 
-    @Field("created_date")
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
 }

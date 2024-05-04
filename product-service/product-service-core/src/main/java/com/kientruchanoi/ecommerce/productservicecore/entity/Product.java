@@ -1,64 +1,60 @@
 package com.kientruchanoi.ecommerce.productservicecore.entity;
 
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.TextIndexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Document("product_clt")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@Entity
+@Table(name = "product")
 public class Product {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.productservicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
     private String code;
 
-    @TextIndexed
     private String name;
 
     private String description;
 
-    @TextIndexed
     private String brand;
 
-    @Field("standard_price")
+    @Column(name = "standard_price")
     private Double standardPrice;
 
-    @Field("sale_price")
+    @Column(name = "sale_price")
     private Double salePrice;
 
-    @Field("sale_expire_at")
+    @Column(name = "sale_expire_at")
     private LocalDateTime saleExpireAt;
 
-    @Field("remaining")
+    @Column(name = "remaining")
     private Integer remaining = 0;
 
-    @Field("sold")
+    @Column(name = "sold")
     private Integer sold = 0;
 
-    @Field("is_active")
-    private Status isActive = Status.ACTIVE;
+    @Column(name = "is_active")
+    private String isActive = Status.ACTIVE.name();
 
-    @Field("user_id")
+    @Column(name = "user_id")
     private String userId;
 
-    @Field("resources")
-    private Set<ProductResource> resources = new HashSet<>();
-
-    @Field("categories")
-    private Set<Category> categories = new HashSet<>();
+//    @Column(name = "category_id")
+//    private String categoryId;
 
 }

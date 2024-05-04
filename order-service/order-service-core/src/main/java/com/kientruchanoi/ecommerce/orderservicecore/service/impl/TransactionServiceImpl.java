@@ -4,6 +4,7 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.PageResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
+import com.kientruchanoi.ecommerce.orderservicecore.entity.OrderTransaction;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Transaction;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.exception.APIException;
@@ -20,6 +21,7 @@ import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.PageRespon
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.TransactionResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.PageResponseProduct;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -46,20 +49,28 @@ public class TransactionServiceImpl implements TransactionService {
     private final TransactionMapper transactionMapper;
     private final WalletService walletService;
     private final OrderRepository orderRepository;
+    private final EntityManager entityManager;
 
     @Override
+    @Transactional
     public void create(TransactionType type, String des, List<String> orderIds, Wallet wallet, double amount) {
-        transactionRepository.save(
-                Transaction.builder()
-                        .orderIds(orderIds)
-                        .type(type.name())
-                        .walletId(wallet.getId())
-                        .balance(wallet.getBalance())
-                        .createdDate(LocalDateTime.now())
-                        .amount(amount)
-                        .description(des)
-                        .build()
-        );
+        Transaction transaction = Transaction.builder()
+                .type(type.name())
+                .walletId(wallet.getId())
+                .balance(wallet.getBalance())
+                .createdDate(LocalDateTime.now())
+                .amount(amount)
+                .description(des)
+                .build();
+
+        entityManager.persist(transaction);
+
+        orderIds.forEach(oId -> {
+            entityManager.persist(OrderTransaction.builder()
+                    .orderId(oId)
+                    .transactionId(transaction.getId())
+                    .build());
+        });
     }
 
     @Override
@@ -67,11 +78,13 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Không tìm thấy lịch sử giao dịch"));
 
-        Order order = orderRepository.findById(transaction.getOrderIds().get(0))
-                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống"));
+        List<Order> orders = orderRepository.findByTransactionId(transaction.getId());
+        if (orders.isEmpty()) {
+            throw new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống");
+        }
 
         String currentUserId = commonService.getCurrentUserId();
-        if (!currentUserId.equals(order.getSellerId()) && !currentUserId.equals(order.getCustomerId())) {
+        if (!currentUserId.equals(orders.get(0).getSellerId()) && !currentUserId.equals(orders.get(0).getCustomerId())) {
             throw new APIException(HttpStatus.UNAUTHORIZED, "Không được phép truy cập.");
         }
 

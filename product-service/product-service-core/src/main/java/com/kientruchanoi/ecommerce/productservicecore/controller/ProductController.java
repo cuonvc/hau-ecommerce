@@ -72,7 +72,7 @@ public class ProductController {
 
     @GetMapping("/view/search")
     public ResponseEntity<BaseResponse<List<ProductResponse>>> search(@RequestParam("keyword") String keyword) {
-        return productService.filterByKeyword(keyword);
+        return productService.filterByKeyword(keyword.toLowerCase());
     }
 
     @GetMapping("/owner")

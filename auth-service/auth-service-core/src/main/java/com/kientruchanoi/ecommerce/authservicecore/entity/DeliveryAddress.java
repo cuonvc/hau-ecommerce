@@ -1,44 +1,52 @@
 package com.kientruchanoi.ecommerce.authservicecore.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.hibernate.HibernateException;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.id.IdentifierGenerator;
+
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Document(collection = "delivery_address_clt")
+@Entity
+@Table(name = "delivery_address")
 public class DeliveryAddress {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.authservicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
-    @Field("province")
+    @Column(name = "province")
     private String province;
 
-    @Field("district")
+    @Column(name = "district")
     private String district;
 
-    @Field("ward")
+    @Column(name = "ward")
     private String ward;
 
-    @Field("detail")
+    @Column(name = "detail")
     private String detail;
 
-    @Field("phone")
+    @Column(name = "phone")
     private String phone;
 
-    @Field("recipient_name")
+    @Column(name = "recipient_name")
     private String recipientName;
 
-    @Field("user_id")
+    @Column(name = "user_id")
     private String userId;
 
-    @Field("is_default")
+    @Column(name = "is_default")
     private boolean isDefault = false;
+
 }

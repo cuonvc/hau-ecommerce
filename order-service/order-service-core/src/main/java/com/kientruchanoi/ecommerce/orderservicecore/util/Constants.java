@@ -1,4 +1,4 @@
-package com.kientruchanoi.ecommerce.orderservicecore.utils;
+package com.kientruchanoi.ecommerce.orderservicecore.util;
 
 public class Constants {
 

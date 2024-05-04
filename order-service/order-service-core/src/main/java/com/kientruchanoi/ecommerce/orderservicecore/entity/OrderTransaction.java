@@ -8,18 +8,21 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Entity
-@Table(name = "cart")
-public class Cart {
+@Table(name = "order_transaction") //môỗi giỏ hàng có nhiều orders, nếu thanh toán cùng lúc thì case này sẽ xảy ra
+public class OrderTransaction {
 
     @Id
     @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.orderervicecore.util.CustomIdGenerator")
     @GeneratedValue(generator = "custom_id")
     private String id;
 
-    @Column(name = "user_Id")
-    private String userId;
+    @Column(name = "order_id")
+    private String orderId;
+
+    @Column(name = "transaction_id")
+    private String transactionId;
 }

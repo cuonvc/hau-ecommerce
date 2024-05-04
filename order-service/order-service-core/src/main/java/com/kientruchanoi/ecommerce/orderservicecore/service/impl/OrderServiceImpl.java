@@ -1,51 +1,41 @@
 package com.kientruchanoi.ecommerce.orderservicecore.service.impl;
 
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.DeliveryAddressResponse;
-import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.notificationserviceshare.enumerate.NotificationType;
-import com.kientruchanoi.ecommerce.notificationserviceshare.payload.kafka.NotificationBuilder;
-import com.kientruchanoi.ecommerce.orderservicecore.configuration.CustomUserDetail;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Cart;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Order;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Wallet;
 import com.kientruchanoi.ecommerce.orderservicecore.exception.APIException;
-import com.kientruchanoi.ecommerce.orderservicecore.exception.ResourceNotFoundException;
 import com.kientruchanoi.ecommerce.orderservicecore.mapper.OrderMapper;
+import com.kientruchanoi.ecommerce.orderservicecore.repository.CartProductRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.CartRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.WalletRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.service.*;
-import com.kientruchanoi.ecommerce.orderservicecore.utils.Constants;
+import com.kientruchanoi.ecommerce.orderservicecore.util.Constants;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.*;
-import com.kientruchanoi.ecommerce.orderserviceshare.payload.kafka.OrderReduceProduct;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
-import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
-import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.TransactionResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.kientruchanoi.ecommerce.orderservicecore.utils.Constants.HttpMessage.ACCESS_DENIED;
-import static com.kientruchanoi.ecommerce.orderservicecore.utils.Constants.OrderStatus.*;
+import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.HttpMessage.ACCESS_DENIED;
+import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.OrderStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +46,7 @@ public class OrderServiceImpl implements OrderService {
     private final ResponseFactory responseFactory;
     private final CommonService commonService;
     private final CartRepository cartRepository;
+    private final CartProductRepository cartProductRepository;
     private final WalletRepository walletRepository;
     private final WalletService walletService;
     private final TransactionService transactionService;
@@ -81,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         products.stream().forEach(p -> {
             if (p.getRemaining() < 1) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm đã hết.");
-            } else if (p.getRemaining() < cart.getProductMapQuantity().get(p.getId())) {
+            } else if (p.getRemaining() < cartProductRepository.countQuantityOfProductInCart(cart.getId(), p.getId())) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm không đủ");
             } else if (p.getUser().getId().equals(currentUserId)) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể tự tăng traffic sản phẩm của mình =))");
@@ -93,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 
         Double amount = 0d;
         for (ProductResponse p : products) {
-            amount += (cart.getProductMapQuantity().get(p.getId()) * p.getStandardPrice());
+            amount += (cartProductRepository.countQuantityOfProductInCart(cart.getId(), p.getId()) * p.getStandardPrice());
         }
 
         if (request.getPaymentType().equals(PaymentType.WALLET)) {
@@ -109,10 +100,11 @@ public class OrderServiceImpl implements OrderService {
             try {
 //                DeliveryAddressResponse deliverySource = commonService.getDeliveryInfo(request.getDeliverySourceId());
                 DeliveryAddressResponse deliveryDestination = commonService.getDeliveryInfo(request.getDeliveryDestinationId());
+                int quantity = cartProductRepository.countQuantityOfProductInCart(cart.getId(), p.getId());
 
                 Order order = orderRepository.save(Order.builder()
                         .productId(p.getId())
-                        .amount(p.getStandardPrice() * cart.getProductMapQuantity().get(p.getId()))
+                        .amount(p.getStandardPrice() * quantity)
                         .note(request.getNote())
                         .sellerId(p.getUser().getId())
                         .customerId(currentUserId)
@@ -122,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
                         .orderStatus(OrderStatus.PENDING.name())
                         .paymentType(request.getPaymentType().name())
                         .paymentStatus(PaymentStatus.UNPAID.name())
-                        .quantity(cart.getProductMapQuantity().get(p.getId()))
+                        .quantity(quantity)
                         .build());
 
                 return buildResponseDetail(order);
@@ -143,7 +135,7 @@ public class OrderServiceImpl implements OrderService {
                     walletRepository.findByUserId(currentUserId).get(), amount);
         }
 
-        //delete cart
+        //delete products in the cart
         cartService.deleteProducts(currentUserId);
 
         //push notification
@@ -160,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Không tìm thấy giỏ hàng của bạn."));
 
         productIds.forEach(pId -> {
-            if (!cart.getProductMapQuantity().containsKey(pId)) {
+            if (cartProductRepository.findByCartAndProduct(cart.getId(), pId).isEmpty()) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Xảy ra lỗi, mặt hàng không có trong giỏ.");
             }
         });

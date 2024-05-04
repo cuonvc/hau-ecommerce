@@ -5,74 +5,76 @@ import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "order_clt")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@Entity
+@Table(name = "order")
 public class Order {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.orderervicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
-    @Field("product_id")
+    @Column(name = "product_id")
     private String productId;
 
-    @Field("customer_id")
+    @Column(name = "customer_id")
     private String customerId;
 
-    @Field("seller_id")
+    @Column(name = "seller_id")
     private String sellerId;
 
-    @Field("quantity")
+    @Column(name = "quantity")
     private int quantity;
 
-    @Field("amount")
+    @Column(name = "amount")
     private double amount;
 
-    @Field("wallet_id")
+    @Column(name = "wallet_id")
     private String walletId;
 
-    @Field("source_info")
+    @Transient
     private DeliveryAddressResponse sourceInfo;
 
-    @Field("destination_info")
+    @Transient
     private DeliveryAddressResponse destinationInfo;
 
-//    @Field("source_address")
+//    @Column(name = "source_address")
 //    private String sourceAddress;
 //
-//    @Field("destination_address")
+//    @Column(name = "destination_address")
 //    private String destinationAddress;
 
-    @Field("note")
+    @Column(name = "note")
     private String note;
 
-    @Field("payment_type")
+    @Column(name = "payment_type")
     private String paymentType = PaymentType.CASH.name();
 
-    @Field("payment_status")
+    @Column(name = "payment_status")
     private String paymentStatus = PaymentStatus.UNPAID.name();
 
-    @Field("status")
+    @Column(name = "status")
     private String status = Status.ACTIVE.name();
 
-    @Field("order_status")
+    @Column(name = "order_status")
     private String orderStatus = OrderStatus.PENDING.name();
 
-    @Field("created_date")
+    @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @Field("modified_date")
+    @Column(name = "modified_date")
     private LocalDateTime modifiedDate = LocalDateTime.now();
 }

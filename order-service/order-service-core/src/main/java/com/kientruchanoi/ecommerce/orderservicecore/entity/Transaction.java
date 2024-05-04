@@ -1,13 +1,12 @@
 package com.kientruchanoi.ecommerce.orderservicecore.entity;
 
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,31 +15,31 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Document(collection = "transaction_clt")
+@Entity
+@Table(name = "transaction")
 public class Transaction {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.orderervicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
-    @Field("order_ids")
-    private List<String> orderIds; //using for order production
-
-    @Field("wallet_id")
+    @Column(name = "wallet_id")
     private String walletId;  //using for withdraw, deposit
 
-    @Field("amount")
+    @Column(name = "amount")
     private double amount;
 
-    @Field("balance")
+    @Column(name = "balance")
     private double balance;
 
-    @Field("type")
+    @Column(name = "type")
     private String type = TransactionType.INIT.name(); //default
 
-    @Field("description")
+    @Column(name = "description")
     private String description;
 
-    @Field("created_date")
+    @Column(name = "created_date")
     //khi người mua thanh toán, 2 transaction được tạo (type.SELL  cho người bán, type.BUY cho người mua)
     //cần phải set thời điểm tạo 2 tránsaction cùng lúc cho hai dòng lệnh (-> tạo biến local)
     private LocalDateTime createdDate = LocalDateTime.now();
