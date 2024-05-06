@@ -1,5 +1,5 @@
 ## Hau-Ecommerce
-Backend module for the final project of the Service-oriented Software Engineering course
+Backend module for the final project of the Ecommerce System Development course
 #### 20CN2 - Hanoi Architectural University
 
 ### Application architecture diagram
