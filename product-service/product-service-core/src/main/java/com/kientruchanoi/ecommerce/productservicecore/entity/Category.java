@@ -1,32 +1,34 @@
 package com.kientruchanoi.ecommerce.productservicecore.entity;
 
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.hibernate.annotations.GenericGenerator;
 
-@Document("category_clt")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder(toBuilder = true)
+@Entity
+@Table(name = "category")
 public class Category {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.productservicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
     private String name;
 
     private String description;
 
-    @Field("image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
-    @Field("is_active")
-    private Status isActive = Status.ACTIVE;
+    @Column(name = "is_active")
+    private String isActive = Status.ACTIVE.name();
 
 }

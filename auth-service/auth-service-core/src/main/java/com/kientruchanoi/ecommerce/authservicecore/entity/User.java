@@ -7,74 +7,73 @@ import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Gender;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.Role;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.enumerate.UserProvider;
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
-@Document(collection = "user_clt")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
+@Entity
+@Table(name = "user_tbl")
 public class User {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.authservicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
-    @Field(name = "first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Field("last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Field("email")
+    @Column(name = "email")
     private String email;
 
-    @Field("password")
+    @Column(name = "password")
     private String password;
 
-    @Field("bank_account")
-    private BankAccount bankAccount;
+    @Column(name = "bank_account")
+    private String bankAccountId;
 
-    @Field(name = "gender")
+    @Column(name = "gender")
     private String gender = Gender.UNDEFINE.toString();
 
-    @Field("avatar_url")
+    @Column(name = "avatar_url")
     private String avatarUrl;
 
-    @Field("cover_url")
+    @Column(name = "cover_url")
     private String coverUrl;
 
-    @Field("about")
+    @Column(name = "about")
     private String about;
 
-    @Field("city")
+    @Column(name = "city")
     private String city;
 
-    @Field("detail_address")
+    @Column(name = "detail_address")
     private String detailAddress;
 
-    @Field("created_date")
+    @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @Field("modified_date")
+    @Column(name = "modified_date")
     private LocalDateTime modifiedDate = LocalDateTime.now();
 
-    @Field("status")
+    @Column(name = "status")
     private String status = Status.ACTIVE.toString();
 
-    @Field("user_provider")
+    @Column(name = "user_provider")
     private String provider = UserProvider.SYSTEM.toString();
 
-    @Field("role")
+    @Column(name = "role")
     private String role = Role.USER.toString();
-
-    @Field("refresh_token")
-    private RefreshToken refreshToken;
 }

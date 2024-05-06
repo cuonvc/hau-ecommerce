@@ -1,13 +1,12 @@
 package com.kientruchanoi.ecommerce.orderservicecore.entity;
 
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.WalletStatus;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
@@ -15,33 +14,36 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-@Document(collection = "wallet_clt")
+@Entity
+@Table(name = "wallet")
 public class Wallet {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.orderervicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
-    @Field("user_id")
+    @Column(name = "user_id")
     private String userId;
 
-    @Field("balance")
+    @Column(name = "balance")
     private Double balance;
 
-    @Field("balance_temporary")
+    @Column(name = "balance_temporary")
     private Double balanceTemporary;
 
-    @Field("total_amount_paid")
+    @Column(name = "total_amount_paid")
     private Double totalAmountPaid;
 
-    @Field("sms_format")
+    @Column(name = "sms_format")
     private String smsFormat;
 
-    @Field("status")
+    @Column(name = "status")
     private String status = WalletStatus.NORMAL.name();
 
-    @Field("created_date")
+    @Column(name = "created_date")
     private LocalDateTime createdDate = LocalDateTime.now();
 
-    @Field("modified_date")
+    @Column(name = "modified_date")
     private LocalDateTime modifiedDate = LocalDateTime.now();
 }

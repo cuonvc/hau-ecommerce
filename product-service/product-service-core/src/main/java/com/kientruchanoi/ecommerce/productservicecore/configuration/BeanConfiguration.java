@@ -4,7 +4,6 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration

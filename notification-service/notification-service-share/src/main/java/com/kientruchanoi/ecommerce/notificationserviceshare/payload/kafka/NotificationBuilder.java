@@ -20,5 +20,5 @@ public class NotificationBuilder implements Serializable {
     private String recipient;
     private NotificationType type;
     private Object resource;
-    private LocalDateTime builtAt;
+//    private LocalDateTime builtAt;
 }

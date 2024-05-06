@@ -8,11 +8,13 @@ import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.productservicecore.configuration.CustomUserDetail;
 import com.kientruchanoi.ecommerce.productservicecore.entity.Category;
 import com.kientruchanoi.ecommerce.productservicecore.entity.Product;
+import com.kientruchanoi.ecommerce.productservicecore.entity.ProductCategory;
 import com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource;
 import com.kientruchanoi.ecommerce.productservicecore.exception.APIException;
 import com.kientruchanoi.ecommerce.productservicecore.exception.ResourceNotFoundException;
 import com.kientruchanoi.ecommerce.productservicecore.mapper.ProductMapper;
 import com.kientruchanoi.ecommerce.productservicecore.repository.CategoryRepository;
+import com.kientruchanoi.ecommerce.productservicecore.repository.ProductCategoryRepository;
 import com.kientruchanoi.ecommerce.productservicecore.repository.ProductRepository;
 import com.kientruchanoi.ecommerce.productservicecore.service.FileImageService;
 import com.kientruchanoi.ecommerce.productservicecore.service.ProductResourceService;
@@ -21,6 +23,7 @@ import com.kientruchanoi.ecommerce.productserviceshare.payload.request.ProductRe
 import com.kientruchanoi.ecommerce.productserviceshare.payload.request.ProductResourceRequest;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.PageResponseProduct;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.common.errors.ApiException;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -54,6 +57,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductCategoryRepository pcRepository;
     private final ProductResourceService resourceService;
     private final ProductMapper productMapper;
     private final ResponseFactory responseFactory;
@@ -61,8 +65,10 @@ public class ProductServiceImpl implements ProductService {
     private final RestTemplate restTemplate;
     private final ProductResourceService productResourceService;
     private final FileImageService fileImageService;
+    private final EntityManager entityManager;
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponse<ProductResponse>> create(ProductRequest request) {
         CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -78,13 +84,17 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toSet());
 
         Product product = productMapper.requestToEntity(request);
-        product.setCategories(categories);
         product.setUserId(userDetail.getId());
-        productRepository.save(product);
+        entityManager.persist(product);
 
-        List<ProductResource> resources = productResourceService.initResources(product, request.getResources());
-        product.setResources(new HashSet<>(resources));
+        categories.forEach(c -> {
+            entityManager.persist(ProductCategory.builder()
+                            .productId(product.getId())
+                            .categoryId(c.getId())
+                    .build());
+        });
 
+        productResourceService.initResources(product, request.getResources());
         ProductResponse response = productMapper.entityToResponse(productRepository.save(product));
         response.setResources(productResourceService.getImageUrls(product.getId()));
 
@@ -113,6 +123,7 @@ public class ProductServiceImpl implements ProductService {
 //    }
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponse<ProductResponse>> update(String id, ProductRequest request) {
         CustomUserDetail userDetail = (CustomUserDetail)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -136,9 +147,13 @@ public class ProductServiceImpl implements ProductService {
 
 //        resourceService.clearImagePath(product.getId());
         productMapper.requestToEntity(request, product);
-        product.setCategories(categories);
-        List<ProductResource> newResources = productResourceService.updateResources(product, request.getResources());
-        product.setResources(new HashSet<>(newResources));
+        categories.forEach(c -> {
+            entityManager.persist(ProductCategory.builder()
+                    .productId(product.getId())
+                    .categoryId(c.getId())
+                    .build());
+        });
+        productResourceService.updateResources(product, request.getResources());
 
         return responseFactory.success("Cập nhật thành công",
                 productMapper.entityToResponse(productRepository.save(product)));
@@ -184,7 +199,7 @@ public class ProductServiceImpl implements ProductService {
             return responseFactory.fail(HttpStatus.UNAUTHORIZED, "Không được phép truy cập", null);
         }
 
-        product.setIsActive(Status.INACTIVE);
+        product.setIsActive(Status.INACTIVE.name());
         productRepository.save(product);
         return responseFactory.success("Xóa thành công", "Xóa thành công");
     }
@@ -195,7 +210,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findByIdAndIsActive(id, Status.INACTIVE)
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Mặt hàng đang online hoặc không tồn tại"));
 
-        product.setIsActive(Status.ACTIVE);
+        product.setIsActive(Status.ACTIVE.name());
 
         return responseFactory.success("Khôi phục thành công", mappingResponse(productRepository.save(product)));
     }
@@ -229,10 +244,10 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Product> productPage;
         if (isAnonymousUser()) {
-            productPage = productRepository.findByIsActive(pageable, Status.ACTIVE);
+            productPage = productRepository.findByIsActive(pageable, Status.ACTIVE.toString());
         } else {
             productPage = productRepository.findAllByIsActiveAndUserIdNotIn(pageable,
-                    Status.ACTIVE, getCurrentUserId());
+                    Status.ACTIVE.name(), getCurrentUserId());
         }
 
         return responseFactory.success("Success", paging(productPage));

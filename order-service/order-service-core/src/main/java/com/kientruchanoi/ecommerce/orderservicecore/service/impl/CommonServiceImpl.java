@@ -122,7 +122,6 @@ public class CommonServiceImpl implements CommonService {
                         .title(type.getMessage())
                         .content(message)
                         .recipient(recipient)
-                        .builtAt(LocalDateTime.now())
                         .build()
                 ).setHeader(KafkaHeaders.KEY, recipient.getBytes())
                 .build();

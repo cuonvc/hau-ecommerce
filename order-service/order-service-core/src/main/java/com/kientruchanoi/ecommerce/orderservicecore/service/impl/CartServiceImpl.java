@@ -3,21 +3,26 @@ package com.kientruchanoi.ecommerce.orderservicecore.service.impl;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.orderservicecore.entity.Cart;
+import com.kientruchanoi.ecommerce.orderservicecore.entity.CartProduct;
 import com.kientruchanoi.ecommerce.orderservicecore.exception.APIException;
+import com.kientruchanoi.ecommerce.orderservicecore.repository.CartProductRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.CartRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.service.CartService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.CartResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.ProductMapQuantity;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.CacheResponse;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,14 +37,17 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final CommonService commonService;
     private final ResponseFactory responseFactory;
+    private final CartProductRepository cartProductRepository;
+    private final EntityManager entityManager;
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponse<CartResponse>> addItem(String productId, int quantity) {
         String currentUserId = commonService.getCurrentUserId();
+        LocalDateTime now = LocalDateTime.now();
         Cart cart = cartRepository.findByUserId(currentUserId)
                 .orElse(Cart.builder()
                         .userId(currentUserId)
-                        .productMapQuantity(new HashMap<>())
                         .build()
                 );
 
@@ -54,26 +62,33 @@ public class CartServiceImpl implements CartService {
             throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể tự tăng traffic cho sản phẩm của mình =))");
         }
 
-        cart.getProductMapQuantity().put(productId, quantity);
-        return responseFactory.success("Success", buildResponse(cartRepository.save(cart)));
+        CartProduct cartProduct = CartProduct.builder()
+                .cartId(cart.getId())
+                .productId(productId)
+                .quantity(quantity)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+        entityManager.persist(cartProduct);
+        entityManager.persist(cart);
+        return responseFactory.success("Success", buildResponse(cart, cartProduct));
     }
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponse<CartResponse>> deleteItem(String productId) {
         Cart cart = cartRepository.findByUserId(commonService.getCurrentUserId())
                 .orElseThrow(() -> new APIException(HttpStatus.UNAUTHORIZED, "Không được phép truy cập."));
 
-        if (!cart.getProductMapQuantity().containsKey(productId)) {
+        List<String> cartProductListId = cartProductRepository.findAllByCartId(cart.getId())
+                .stream().map(CartProduct::getProductId)
+                .toList();
+        if (!cartProductListId.contains(productId)) {
             throw new APIException(HttpStatus.NOT_FOUND, "Mặt hàng không có trong giỏ");
         }
-
-
-        Map<String, Integer> pmq = cart.getProductMapQuantity();
-        log.info("BEFORE ====== > - {}", pmq);
-        pmq.remove(productId);
-        log.info("AFTER ====== > - {}", pmq);
-        cart.setProductMapQuantity(pmq);
-        return responseFactory.success("Success", buildResponse(cartRepository.save(cart)));
+        cartProductRepository.deleteByCartAndProduct(cart.getId(), productId);
+        entityManager.flush();
+        return responseFactory.success("Success", buildResponse(cartRepository.save(cart), null));
     }
 
     @Override
@@ -81,11 +96,10 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUserId(commonService.getCurrentUserId())
                 .orElse(Cart.builder()
                         .userId(commonService.getCurrentUserId())
-                        .productMapQuantity(new HashMap<>())
                         .build());
         cartRepository.save(cart);
 
-        return responseFactory.success("Success", cart.getProductMapQuantity().size());
+        return responseFactory.success("Success", cartProductRepository.countProductInCart(cart.getId()));
     }
 
     @Override
@@ -93,19 +107,23 @@ public class CartServiceImpl implements CartService {
         Cart cart = cartRepository.findByUserId(commonService.getCurrentUserId())
                 .orElse(Cart.builder()
                         .userId(commonService.getCurrentUserId())
-                        .productMapQuantity(new HashMap<>())
                         .build());
         cartRepository.save(cart);
 
-        return responseFactory.success("Success", buildResponse(cart));
+        return responseFactory.success("Success", buildResponse(cart, null));
     }
 
-    private CartResponse buildResponse(Cart cart) {
+    private CartResponse buildResponse(Cart cart, CartProduct newCartProduct) {
         List<ProductMapQuantity> responseList = new ArrayList<>();
-        cart.getProductMapQuantity().forEach((key, value) -> responseList.add(
+        List<CartProduct> listInCart = cartProductRepository.findAllByCartId(cart.getId());
+        if (newCartProduct != null) {
+            listInCart.add(newCartProduct);
+        }
+
+        listInCart.forEach(item -> responseList.add(
                 ProductMapQuantity.builder()
-                        .product(commonService.getProductInfo(key))
-                        .quantity(value)
+                        .product(commonService.getProductInfo(item.getProductId()))
+                        .quantity(item.getQuantity())
                         .build()
                 )
         );
@@ -118,12 +136,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void deleteProducts(String userId) {
         Cart cart = cartRepository.findByUserId(userId)
-                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống, không thể xoá giỏ hàng"));
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống, không thể clear giỏ hàng"));
 
-        cart.setProductMapQuantity(new HashMap<>());
-        cartRepository.save(cart);
+        cartProductRepository.deleteAllByCart(cart.getId());
     }
 
     @Override
@@ -131,7 +149,6 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(
                 Cart.builder()
                         .userId(userId)
-                        .productMapQuantity(new HashMap<>())
                         .build()
         );
     }

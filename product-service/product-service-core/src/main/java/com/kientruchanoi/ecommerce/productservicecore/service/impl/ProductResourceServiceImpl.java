@@ -12,9 +12,11 @@ import com.kientruchanoi.ecommerce.productservicecore.service.FileImageService;
 import com.kientruchanoi.ecommerce.productservicecore.service.ProductResourceService;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.request.ProductResourceRequest;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResourceResponse;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -31,9 +33,11 @@ public class ProductResourceServiceImpl implements ProductResourceService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final FileImageService fileImageService;
+    private final EntityManager entityManager;
 
 
     @Override
+    @Transactional
     public List<ProductResource> initResources(Product product, List<ProductResourceRequest> request) {
         List<ProductResource> resources = new ArrayList<>();
         for (ProductResourceRequest resourceRequest : request) {
@@ -42,7 +46,8 @@ public class ProductResourceServiceImpl implements ProductResourceService {
             resource.setImageUrl(fileImageService
                     .saveImageFile(Base64.getDecoder()
                             .decode(resourceRequest.getImageValue())));
-            resources.add(resourceRepository.save(resource));
+            entityManager.persist(resource);
+            resources.add(resource);
         }
 
         return resources;

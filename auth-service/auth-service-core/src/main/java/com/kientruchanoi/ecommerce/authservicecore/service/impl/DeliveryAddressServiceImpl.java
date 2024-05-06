@@ -80,7 +80,8 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     @Override
     public ResponseEntity<BaseResponse<DeliveryAddress>> setDefault(String id) {
 
-        DeliveryAddress deliveryAddress = repository.findByDefaultIsAndUserId(getCurrentUserId());
+        DeliveryAddress deliveryAddress = repository.findByDefaultIsAndUserId(getCurrentUserId())
+                .orElse(null);
         if (deliveryAddress != null) {
             deliveryAddress.setDefault(false);
             repository.save(deliveryAddress);

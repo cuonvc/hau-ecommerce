@@ -20,7 +20,7 @@ public class BeanConfiguration {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
         mailSender.setUsername("cuong.test.development@gmail.com");
-        mailSender.setPassword(new String(Base64.getDecoder().decode("YWttYW5veGd6Z2htaGZycA==")));
+        mailSender.setPassword(new String(Base64.getDecoder().decode("c2pkZyBsb3J1IGNtZmYgeHF6ZQ==")));
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol", "smtp");

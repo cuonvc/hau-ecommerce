@@ -139,7 +139,7 @@ public class CategoryServiceImpl implements CategoryService {
     public ResponseEntity<BaseResponse<String>> delete(String id) {
         Category category = validateCategory("id", id);
 
-        category.setIsActive(Status.INACTIVE);
+        category.setIsActive(Status.INACTIVE.name());
         categoryRepository.save(category);
         return responseFactory.success("Success", "Đã xóa " + category.getName());
     }
@@ -148,7 +148,7 @@ public class CategoryServiceImpl implements CategoryService {
     public ResponseEntity<BaseResponse<CategoryDto>> restore(String id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
-        category.setIsActive(Status.ACTIVE);
+        category.setIsActive(Status.ACTIVE.name());
         category = categoryRepository.save(category);
 
         return responseFactory.success("Success", categoryMapper.entityToDto(category));

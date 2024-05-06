@@ -1,13 +1,13 @@
 package com.kientruchanoi.ecommerce.productservicecore.repository;
 
 import com.kientruchanoi.ecommerce.productservicecore.entity.ProductResource;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ProductResourceRepository extends MongoRepository<ProductResource, String> {
+public interface ProductResourceRepository extends JpaRepository<ProductResource, String> {
 
 //    @Query("SELECT r FROM ProductResource r WHERE r.product.id = :productId")
 //    List<ProductResource> findByProductId(String productId);
