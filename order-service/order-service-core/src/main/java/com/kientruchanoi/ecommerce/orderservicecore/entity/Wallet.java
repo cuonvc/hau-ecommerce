@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class Wallet {
 
     @Id
-    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.orderervicecore.util.CustomIdGenerator")
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.orderservicecore.util.CustomIdGenerator")
     @GeneratedValue(generator = "custom_id")
     private String id;
 

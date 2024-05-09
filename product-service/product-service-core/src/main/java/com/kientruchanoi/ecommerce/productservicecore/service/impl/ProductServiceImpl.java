@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
         });
 
         Set<Category> categories = request.getCategoryIds().stream()
-                .map(categoryId -> categoryRepository.findByIdAndIsActive(categoryId, Status.ACTIVE)
+                .map(categoryId -> categoryRepository.findByIdAndIsActive(categoryId, Status.ACTIVE.name())
                         .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId)))
                 .collect(Collectors.toSet());
 
@@ -141,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Set<Category> categories = request.getCategoryIds().stream()
-                .map(categoryId -> categoryRepository.findByIdAndIsActive(categoryId, Status.ACTIVE)
+                .map(categoryId -> categoryRepository.findByIdAndIsActive(categoryId, Status.ACTIVE.name())
                         .orElseThrow(() -> new ResourceNotFoundException("Category", "id", categoryId)))
                 .collect(Collectors.toSet());
 

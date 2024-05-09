@@ -90,13 +90,13 @@ public class CategoryServiceImpl implements CategoryService {
     private Category validateCategory(String field, String value) {
         return switch (field) {
             case "name" -> {
-                if (categoryRepository.findByNameAndIsActive(value, Status.ACTIVE).isPresent()) {
+                if (categoryRepository.findByNameAndIsActive(value, Status.ACTIVE.name()).isPresent()) {
                     throw new APIException(HttpStatus.BAD_REQUEST, "Category '" + value + "' đã tồn tại hoặc tên không hợp lệ");
                 }
                 yield null;
             }
 
-            case "id" -> categoryRepository.findByIdAndIsActive(value, Status.ACTIVE)
+            case "id" -> categoryRepository.findByIdAndIsActive(value, Status.ACTIVE.name())
                     .orElseThrow(() -> new ResourceNotFoundException("Category", "id", value));
 
             default -> throw new APIException(HttpStatus.BAD_REQUEST, "Lỗi không xác định, liên hệ Admin");
@@ -119,7 +119,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
-        Page<Category> categories = categoryRepository.findAllByIsActive(pageable, Status.ACTIVE);
+        Page<Category> categories = categoryRepository.findAllByIsActive(pageable, Status.ACTIVE.name());
         return responseFactory.success("Success", paging(categories));
     }
 

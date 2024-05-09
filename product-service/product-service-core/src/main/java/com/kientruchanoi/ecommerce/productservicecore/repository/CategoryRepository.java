@@ -13,11 +13,11 @@ import java.util.Optional;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, String> {
 
-    Optional<Category> findByNameAndIsActive(String name, Status status);
+    Optional<Category> findByNameAndIsActive(String name, String status);
 
-    Page<Category> findAllByIsActive(Pageable pageable, Status status);
+    Page<Category> findAllByIsActive(Pageable pageable, String status);
 
-    Optional<Category> findByIdAndIsActive(String id, Status status);
+    Optional<Category> findByIdAndIsActive(String id, String status);
 
 //    @Query("SELECT c FROM Category c WHERE c.name = :name")
 //    Optional<Category> findByName(String name);

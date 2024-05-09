@@ -8,7 +8,7 @@ eureka:
 
 application:
   firebase:
-    bucket-name: lender-394509.appspot.com
+    bucket-name: hau-ecommerce.appspot.com
     image-url: "https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media"
 
 spring:
