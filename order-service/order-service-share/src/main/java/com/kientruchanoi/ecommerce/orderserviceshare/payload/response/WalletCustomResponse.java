@@ -20,7 +20,13 @@ public class WalletCustomResponse {
 
     private String name;
 
-    private BankAccount bankAccount;
+    private String bankName;
+
+    private String bankAccountBin;
+
+    private String bankAccountNumber;
+
+    private String bankAccountName;
 
     private Double balance;
 

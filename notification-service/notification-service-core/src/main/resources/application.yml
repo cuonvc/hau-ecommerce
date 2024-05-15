@@ -24,6 +24,14 @@ spring:
         format_sql: true
         default_schema: ${DB_DEFAULT_SCHEMA}
 
+  data:
+    redis:
+      port: ${REDIS_PORT}
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
+  cache:
+    type: redis
+
   kafka:
     consumer:
       auto-offset-reset: latest

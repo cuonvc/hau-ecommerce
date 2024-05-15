@@ -108,6 +108,7 @@ public class OrderServiceImpl implements OrderService {
                         .note(request.getNote())
                         .sellerId(p.getUser().getId())
                         .customerId(currentUserId)
+                        .deliveryAddressId(deliveryDestination.getId())
                         .destinationInfo(deliveryDestination)
                         .createdDate(LocalDateTime.now())
                         .status(Status.ACTIVE.name())
@@ -381,6 +382,7 @@ public class OrderServiceImpl implements OrderService {
         detail.setCustomer(commonService.getUserInfo(order.getCustomerId()));
         detail.setSeller(commonService.getUserInfo(order.getSellerId()));
         detail.setProduct(commonService.getProductInfo(order.getProductId()));
+        detail.setDestinationInfo(commonService.getDeliveryInfo(order.getDeliveryAddressId()));
 
         return detail;
     }

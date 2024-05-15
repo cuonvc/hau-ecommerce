@@ -285,7 +285,10 @@ public class WalletServiceImpl implements WalletService {
                         UserResponse userinfo = commonService.getUserInfo(e.getUserId());
                         WalletCustomResponse response = walletMapper.entityToResponse(e);
                         response.setName(userinfo.getFirstName() + " " + userinfo.getLastName());
-                        response.setBankAccount(userinfo.getBankAccount());
+                        response.setBankAccountBin(userinfo.getBankAccountBin());
+                        response.setBankAccountName(userinfo.getBankAccountName());
+                        response.setBankAccountNumber(userinfo.getBankAccountNumber());
+                        response.setBankName(userinfo.getBankName());
                         return response;
                     }).toList();
 

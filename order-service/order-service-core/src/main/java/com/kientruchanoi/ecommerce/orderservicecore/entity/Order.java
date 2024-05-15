@@ -45,6 +45,9 @@ public class Order {
     @Column(name = "wallet_id")
     private String walletId;
 
+    @Column(name = "delivery_address_id")
+    private String deliveryAddressId;
+
     @Transient
     private DeliveryAddressResponse sourceInfo;
 
