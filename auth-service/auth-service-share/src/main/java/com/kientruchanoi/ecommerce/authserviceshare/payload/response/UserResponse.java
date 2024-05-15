@@ -20,7 +20,10 @@ public class UserResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private BankAccount bankAccount;
+    private String bankName;
+    private String bankAccountBin;
+    private String bankAccountNumber;
+    private String bankAccountName;
     private int products;
     private String gender;
     private String avatarUrl;

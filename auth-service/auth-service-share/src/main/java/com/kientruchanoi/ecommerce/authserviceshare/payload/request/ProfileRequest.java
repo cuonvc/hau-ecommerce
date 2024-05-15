@@ -29,7 +29,13 @@ public class ProfileRequest {
     @Size(min = 1, max = 6, message = "Tên phải có từ 3 đến 6 ký tự")
     private String lastName;
 
-    private BankAccount bankAccount;
+    private String bankName;
+
+    private String bankAccountBin;
+
+    private String bankAccountNumber;
+
+    private String bankAccountName;
 
 //    @NotBlank
     private String gender;

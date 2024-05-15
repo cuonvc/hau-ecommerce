@@ -41,8 +41,17 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "bank_account")
-    private String bankAccountId;
+    @Column(name = "bank_name")
+    private String bankName;
+
+    @Column(name = "bank_account_bin")
+    private String bankAccountBin;
+
+    @Column(name = "bank_account_number")
+    private String bankAccountNumber;
+
+    @Column(name = "bank_account_name")
+    private String bankAccountName;
 
     @Column(name = "gender")
     private String gender = Gender.UNDEFINE.toString();
