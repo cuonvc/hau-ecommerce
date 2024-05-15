@@ -1,7 +1,7 @@
 EUREKA_CLIENT_HOST: eureka-server
 EUREKA_CLIENT_PORT: 8761
 
-DB_HOST: host.docker.internal
+DB_HOST: localhost
 DB_PORT: 5432
 DB_NAME: ecommerce_dev
 DB_DEFAULT_SCHEMA: dev

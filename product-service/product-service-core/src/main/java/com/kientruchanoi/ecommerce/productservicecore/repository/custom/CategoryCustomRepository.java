@@ -9,7 +9,7 @@ import java.util.List;
 public interface CategoryCustomRepository {
     Category findByName(String name);
 
-    Category findByIdAndStatus(String id, Status status);
+    Category findByIdAndStatus(String id, String status);
 
 //    List<Category> findByParentIdAndStatus(String id, Status status);
 }

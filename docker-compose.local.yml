@@ -5,7 +5,8 @@ networks:
 
 services:
   eureka-server:
-    image: cuonvc/eureka-server-hau:v1.0
+    image: eureka-server-hau:v1.0
+    build: ./eureka-server
     container_name: eureka-server-hau
     networks:
       - ecommerce-network
@@ -49,7 +50,8 @@ services:
 
   api-gateway:
     container_name: api-gateway-hau
-    image: cuonvc/api-gateway-hau:v1.0
+    image: api-gateway-hau:v1.0
+    build: ./api-gateway
     networks:
       - ecommerce-network
     ports:
@@ -58,7 +60,8 @@ services:
 
   auth-service:
     container_name: auth-service-hau
-    image: cuonvc/auth-service-hau:v1.0
+    image: auth-service-hau:v1.0
+    build: ./auth-service/auth-service-core
     networks:
       - ecommerce-network
     ports:
@@ -77,7 +80,8 @@ services:
 
   product-service:
     container_name: product-service-hau
-    image: cuonvc/product-service-hau:v1.0
+    image: product-service-hau:v1.0
+    build: ./product-service/product-service-core
     networks:
       - ecommerce-network
     ports:
@@ -90,7 +94,8 @@ services:
 
   order-service:
     container_name: order-service-hau
-    image: cuonvc/order-service-hau:v1.0
+    image: order-service-hau:v1.0
+    build: ./order-service/order-service-core
     networks:
       - ecommerce-network
     ports:
@@ -101,7 +106,8 @@ services:
 
   mail-service:
     container_name: mail-service-hau
-    image: cuonvc/mail-service-hau:v1.0
+    image: mail-service-hau:v1.0
+    build: ./order-service/order-service-core
     networks:
       - ecommerce-network
     ports:
@@ -116,7 +122,8 @@ services:
 
   notification-service:
     container_name: notification-service-hau
-    image: cuonvc/notification-service-hau:v1.0
+    image: notification-service-hau:v1.0
+    build: ./notification-service/notification-service-core
     networks:
       - ecommerce-network
     ports:

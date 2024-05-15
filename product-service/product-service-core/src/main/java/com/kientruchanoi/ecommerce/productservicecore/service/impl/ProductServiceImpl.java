@@ -179,7 +179,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ResponseEntity<BaseResponse<ProductResponse>> getById(String id) {
-        Product product = productRepository.findByIdAndIsActive(id, Status.ACTIVE)
+        Product product = productRepository.findByIdAndIsActive(id, Status.ACTIVE.name())
                 .orElseThrow(() -> new ResourceNotFoundException("Sản phẩm", "id", id));
         ProductResponse response = productMapper.entityToResponse(product);
         response.setResources(productResourceService.getImageUrls(response.getId()));
@@ -191,7 +191,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ResponseEntity<BaseResponse<String>> deleteById(String id) {
-        Product product = productRepository.findByIdAndIsActive(id, Status.ACTIVE)
+        Product product = productRepository.findByIdAndIsActive(id, Status.ACTIVE.name())
                 .orElseThrow(() -> new ResourceNotFoundException("Sản phẩm", "id", id));
 
         CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -207,7 +207,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public ResponseEntity<BaseResponse<ProductResponse>> restore(String id) {
-        Product product = productRepository.findByIdAndIsActive(id, Status.INACTIVE)
+        Product product = productRepository.findByIdAndIsActive(id, Status.INACTIVE.name())
                 .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Mặt hàng đang online hoặc không tồn tại"));
 
         product.setIsActive(Status.ACTIVE.name());
@@ -295,7 +295,7 @@ public class ProductServiceImpl implements ProductService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userDetail.getId(), Status.ACTIVE);
+        Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userDetail.getId(), Status.ACTIVE.name());
 
         return responseFactory.success("Success", paging(productPage));
     }
@@ -307,7 +307,7 @@ public class ProductServiceImpl implements ProductService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userId, Status.ACTIVE);
+        Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userId, Status.ACTIVE.name());
 
         return responseFactory.success("Success", paging(productPage));
     }

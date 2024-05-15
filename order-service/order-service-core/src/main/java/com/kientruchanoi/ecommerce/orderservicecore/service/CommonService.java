@@ -18,6 +18,7 @@ public interface CommonService {
     UserResponse getUserInfo(String userId);
 
     List<String> getAllAdminId();
+
     ProductResponse getProductInfo(String productId);
 
     ProductResponse getProductInfoNotUser(String productId);

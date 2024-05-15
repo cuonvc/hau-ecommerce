@@ -5,8 +5,7 @@ networks:
 
 services:
   eureka-server:
-    image: eureka-server-hau:v1.0
-    build: ./eureka-server
+    image: cuonvc/eureka-server-hau:v1.0
     container_name: eureka-server-hau
     networks:
       - ecommerce-network
@@ -50,8 +49,7 @@ services:
 
   api-gateway:
     container_name: api-gateway-hau
-    image: api-gateway-hau:v1.0
-    build: ./api-gateway
+    image: cuonvc/api-gateway-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -60,8 +58,7 @@ services:
 
   auth-service:
     container_name: auth-service-hau
-    image: auth-service-hau:v1.0
-    build: ./auth-service/auth-service-core
+    image: cuonvc/auth-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -74,14 +71,15 @@ services:
       - redis
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-      SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-auth-db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/ecommerce_dev
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
       REDIS_HOST: redis
       REDIS_PORT: 6379
 
   product-service:
     container_name: product-service-hau
-    image: product-service-hau:v1.0
-    build: ./product-service/product-service-core
+    image: cuonvc/product-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -90,24 +88,26 @@ services:
       - kafka
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-      SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-product-db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/ecommerce_dev
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
 
   order-service:
     container_name: order-service-hau
-    image: order-service-hau:v1.0
-    build: ./order-service/order-service-core
+    image: cuonvc/order-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
       - "8083:8083"
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-      SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-order-db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/ecommerce_dev
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
 
   mail-service:
     container_name: mail-service-hau
-    image: mail-service-hau:v1.0
-    build: ./order-service/order-service-core
+    image: cuonvc/mail-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -122,8 +122,7 @@ services:
 
   notification-service:
     container_name: notification-service-hau
-    image: notification-service-hau:v1.0
-    build: ./notification-service/notification-service-core
+    image: cuonvc/notification-service-hau:v1.0
     networks:
       - ecommerce-network
     ports:
@@ -132,7 +131,9 @@ services:
       - kafka
     environment:
       SPRING_KAFKA_BOOTSTRAPSERVERS: kafka:9092
-      SPRING_DATA_MONGODB_URI: mongodb://host.docker.internal:27017/ecommerce-notification-db
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/ecommerce_dev
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
 
 volumes:
   redis_data:

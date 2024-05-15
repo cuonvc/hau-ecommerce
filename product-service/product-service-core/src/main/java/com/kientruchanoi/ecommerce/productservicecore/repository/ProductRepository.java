@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
 
-    Optional<Product> findByIdAndIsActive(String id, Status status);
+    Optional<Product> findByIdAndIsActive(String id, String status);
 
     Optional<Product> findByIdAndUserId(String id, String userId);
 
@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     Page<Product> findByIsActive(Pageable pageable, String status);
 
-    Page<Product> findAllByUserIdAndIsActive(Pageable pageable, String userId, Status status);
+    Page<Product> findAllByUserIdAndIsActive(Pageable pageable, String userId, String status);
 
     @Query("SELECT p FROM Product p " +
             "WHERE p.isActive = :status " +
