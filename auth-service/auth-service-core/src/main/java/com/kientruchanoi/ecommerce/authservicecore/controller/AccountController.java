@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -73,5 +74,10 @@ public class AccountController {
     @PutMapping("/assign")
     public ResponseEntity<BaseResponse<String>> assign(@RequestParam("role") String role, @RequestParam("user_id") String userId) {
         return userService.assignRole(role.toUpperCase(), userId);
+    }
+
+    @GetMapping("/admin-list")
+    public ResponseEntity<BaseResponse<List<UserResponse>>> getAdminList() {
+        return userService.getAdminList();
     }
 }

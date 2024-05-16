@@ -383,4 +383,13 @@ public class UserServiceImpl implements UserService {
 
         return responseFactory.success("Success", role);
     }
+
+    @Override
+    public ResponseEntity<BaseResponse<List<UserResponse>>> getAdminList() {
+        List<UserResponse> admins = userRepository.findAllByRoleIn(
+                List.of(Role.ROOT.name(), Role.ADMIN.name(), Role.MODERATOR.name())
+        ).stream().map(userMapper::entityToResponse).toList();
+
+        return responseFactory.success("Success", admins);
+    }
 }
