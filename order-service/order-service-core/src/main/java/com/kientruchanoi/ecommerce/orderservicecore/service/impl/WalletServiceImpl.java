@@ -24,6 +24,8 @@ import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.WalletStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.WalletCustomResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WalletServiceImpl implements WalletService {
 
+    private static final Logger log = LoggerFactory.getLogger(WalletServiceImpl.class);
     private final WalletRepository walletRepository;
     private final CommonService commonService;
     private final ResponseFactory responseFactory;
@@ -58,7 +61,7 @@ public class WalletServiceImpl implements WalletService {
 
         wallet.setBalanceTemporary((double) amount);
         wallet.setStatus(WalletStatus.DEPOSIT_PENDING.name());
-        wallet.setSmsFormat(currentUserId + "_" + amount);
+        wallet.setSmsFormat("HAU_" + currentUserId + "_" + amount + "_vnd");
         wallet = walletRepository.save(wallet);
 
         commonService.getAllAdminId().forEach(id -> {
@@ -96,37 +99,64 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public void confirmPayment(SmsRequest smsRequest) {
-        String[] message = smsRequest.getContent().split("_");  //có thể sẽ lỗi trên android
-        long amount = Long.parseLong(message[1]);
-        String userId = message[0];
+        String[] elements = getMessageInfo(smsRequest.getContent());
+        if (elements.length > 0) {
+            String userId = elements[0];
+            long amount = Long.parseLong(elements[1]);
 
-        Wallet wallet = walletRepository.findByUserId(userId)
-                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống..."));
+            Wallet wallet = walletRepository.findByUserId(userId)
+                    .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống..."));
+            if (amount == wallet.getBalanceTemporary()) {
 
-        if (amount == wallet.getBalanceTemporary()) {
+                wallet.setBalance(wallet.getBalance() + amount);
+                wallet.setBalanceTemporary(0D);
+                wallet.setSmsFormat(null);
+                wallet.setStatus(WalletStatus.NORMAL.name());
+                wallet.setModifiedDate(LocalDateTime.now());
+                wallet = walletRepository.save(wallet);
 
-            wallet.setBalance(wallet.getBalance() + amount);
-            wallet.setBalanceTemporary(0D);
-            wallet.setSmsFormat(null);
-            wallet.setStatus(WalletStatus.NORMAL.name());
-            wallet.setModifiedDate(LocalDateTime.now());
-            wallet = walletRepository.save(wallet);
+                transactionRepository.save(
+                        Transaction.builder()
+                                .walletId(wallet.getId())
+                                .type(TransactionType.DEPOSIT.name())
+                                .amount(amount)
+                                .balance(wallet.getBalance())
+                                .description("Nạp tiền vào ví")
+                                .createdDate(LocalDateTime.now())
+                                .build()
+                );
 
-            transactionRepository.save(
-                    Transaction.builder()
-                            .walletId(wallet.getId())
-                            .type(TransactionType.DEPOSIT.name())
-                            .amount(amount)
-                            .balance(wallet.getBalance())
-                            .description("Nạp tiền vào ví")
-                            .createdDate(LocalDateTime.now())
-                            .build()
-            );
-
-            commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
-                    "Đã nạp thành công " + amount + "vnđ vào ví.",
-                    wallet.getUserId());
+                commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
+                        "Đã nạp thành công " + amount + "vnđ vào ví.",
+                        wallet.getUserId());
+            }
+        } else {
+            log.info("Nạp tiền không trúng đích :v");
         }
+    }
+
+    private String[] getMessageInfo(String sms) {
+//        sms = "TK 450xxx4312 tai BIDV +500,000VND vao 13:04 06/04/2024. So du:4,352,776VND. ND: TKThe :9965551728, tai VCB. MBVCB.5687898919.669638.NGUYEN VAN MANH chuyen tien";
+        if (sms.contains("TK 450xxx4312 tai BIDV") && sms.contains("HAU_") && sms.contains("_vnd")) {
+            int startIndex = sms.indexOf("HAU_");
+            int endIndex = sms.indexOf("_vnd") + 4;
+            String smsFormated = sms.substring(startIndex, endIndex); //after formated -> 237482374343234234_amount;
+
+            String[] elements = sms.split("_");
+            String userId = elements[1];
+            String amount = elements[2];
+            if (!sms.substring(sms.indexOf("TK 450xxx4312 tai BIDV +") + 24, sms.indexOf("VND vao ")).replace(",", "").equals(amount)) {
+                return new String[]{};
+            }
+
+            Wallet wallet = walletRepository.findByUserId(userId)
+                    .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống..."));
+            if (!wallet.getSmsFormat().equals(smsFormated)) {
+                return new String[]{};
+            }
+            return new String[]{userId, amount};
+        }
+        return new String[]{};
     }
 
     @Override
