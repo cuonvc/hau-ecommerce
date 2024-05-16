@@ -1,7 +1,6 @@
 package com.kientruchanoi.ecommerce.orderservicecore.controller;
 
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
-import com.kientruchanoi.ecommerce.orderservicecore.request.PaymentSMS;
 import com.kientruchanoi.ecommerce.orderservicecore.service.OrderService;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;

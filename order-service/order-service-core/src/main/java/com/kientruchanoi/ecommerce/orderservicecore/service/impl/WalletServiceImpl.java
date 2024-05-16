@@ -14,7 +14,7 @@ import com.kientruchanoi.ecommerce.orderservicecore.mapper.WalletMapper;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.TransactionRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.WalletRepository;
-import com.kientruchanoi.ecommerce.orderservicecore.request.PaymentSMS;
+import com.kientruchanoi.ecommerce.orderservicecore.request.SmsRequest;
 import com.kientruchanoi.ecommerce.orderservicecore.service.CommonService;
 import com.kientruchanoi.ecommerce.orderservicecore.service.WalletService;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
@@ -95,8 +95,8 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public void confirmPayment(String phone, String text, String sim, String device) {
-        String[] message = text.split("_");  //có thể sẽ lỗi trên android
+    public void confirmPayment(SmsRequest smsRequest) {
+        String[] message = smsRequest.getContent().split("_");  //có thể sẽ lỗi trên android
         long amount = Long.parseLong(message[1]);
         String userId = message[0];
 
