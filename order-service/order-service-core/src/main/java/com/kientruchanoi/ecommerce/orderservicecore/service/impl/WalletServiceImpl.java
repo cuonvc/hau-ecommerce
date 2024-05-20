@@ -31,7 +31,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +47,8 @@ public class WalletServiceImpl implements WalletService {
     private final TransactionRepository transactionRepository;
     private final OrderRepository orderRepository;
     private final WalletMapper walletMapper;
+
+    private static final Map<String, SmsRequest> SMS_SENDER_MAP_CONTENT = new HashMap<>();
 
     @Override
     public ResponseEntity<BaseResponse<Wallet>> deposit(Long amount) {
@@ -61,7 +66,7 @@ public class WalletServiceImpl implements WalletService {
 
         wallet.setBalanceTemporary((double) amount);
         wallet.setStatus(WalletStatus.DEPOSIT_PENDING.name());
-        wallet.setSmsFormat("HAU_" + currentUserId + "_" + amount + "_vnd");
+        wallet.setSmsFormat("HAU " + currentUserId.substring(currentUserId.length() - 16) + " " + amount + " vnd");
         wallet = walletRepository.save(wallet);
 
         commonService.getAllAdminId().forEach(id -> {
@@ -99,7 +104,9 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     public void confirmPayment(SmsRequest smsRequest) {
-        String[] elements = getMessageInfo(smsRequest.getContent());
+//        String lastMessage = mergeMessage(smsRequest);
+//        log.info("========> LAST MESSAGE - {}", lastMessage);
+        String[] elements = getMessageInfo(smsRequest);
         if (elements.length > 0) {
             String userId = elements[0];
             long amount = Long.parseLong(elements[1]);
@@ -135,29 +142,54 @@ public class WalletServiceImpl implements WalletService {
         }
     }
 
-    private String[] getMessageInfo(String sms) {
-//        sms = "TK 450xxx4312 tai BIDV +500,000VND vao 13:04 06/04/2024. So du:4,352,776VND. ND: TKThe :9965551728, tai VCB. MBVCB.5687898919.669638.NGUYEN VAN MANH chuyen tien";
-        if (sms.contains("TK 450xxx4312 tai BIDV") && sms.contains("HAU_") && sms.contains("_vnd")) {
-            int startIndex = sms.indexOf("HAU_");
-            int endIndex = sms.indexOf("_vnd") + 4;
+    private String[] getMessageInfo(SmsRequest request) {
+//        sms = "TK 450xxx4312 tai BIDV +500,000VND vao 13:04 06/04/2024. So du:4,352,776VND. ND: TKThe :9965551728, tai VCB. MBVCB.5687898919.669638.NGUYEN VAN A chuyen tien";
+        String sms = request.getContent();
+        if (request.getSender().equals("BIDV") && sms.contains("TK 450xxx4312 tai BIDV") && sms.contains("HAU ") && sms.contains(" vnd")) {
+            int startIndex = sms.indexOf("HAU ");
+            int endIndex = sms.indexOf(" vnd") + 4;
             String smsFormated = sms.substring(startIndex, endIndex); //after formated -> 237482374343234234_amount;
 
-            String[] elements = sms.split("_");
+            String[] elements = smsFormated.split(" ");
             String userId = elements[1];
             String amount = elements[2];
             if (!sms.substring(sms.indexOf("TK 450xxx4312 tai BIDV +") + 24, sms.indexOf("VND vao ")).replace(",", "").equals(amount)) {
                 return new String[]{};
             }
 
-            Wallet wallet = walletRepository.findByUserId(userId)
+            Wallet wallet = walletRepository.findByShortUserId(userId)
                     .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống..."));
             if (!wallet.getSmsFormat().equals(smsFormated)) {
                 return new String[]{};
             }
-            return new String[]{userId, amount};
+            return new String[]{wallet.getUserId(), amount};
         }
         return new String[]{};
     }
+
+    //tin nhắn ngân hàng thường và được chia làm 2 sms, nên cần hợp nhất chúng lại trước khi đọc
+//    private String mergeMessage(SmsRequest request) {
+//        SmsRequest firstMessage = SMS_SENDER_MAP_CONTENT.get(request.getSender());
+//        log.info("========> FIRST MESSAGE - {}", firstMessage);
+//        if (firstMessage == null) {
+//            SMS_SENDER_MAP_CONTENT.put(request.getSender(), request);
+//            return null;
+//        } else {
+//            int delayTime = getSecondOfTime(request.getTime()) - getSecondOfTime(firstMessage.getTime());
+//            if (delayTime >= 0 && delayTime <= 2) {
+//                List<String> contentList = Stream.of(firstMessage, request).map(SmsRequest::getContent).toList();
+//                SMS_SENDER_MAP_CONTENT.remove(request.getContent());
+//                return String.join("", contentList);
+//            } else {
+//                log.warn("=====> Merge SMS failed");
+//                return null;
+//            }
+//        }
+//    }
+
+//    private int getSecondOfTime(String time) {
+//        return Integer.parseInt(time.substring(time.length() - 6, time.length() - 4)); //ex: 2024-05-17 21:37:51.000 -> 51
+//    }
 
     @Override
     public ResponseEntity<BaseResponse<Wallet>> withdrawRequest(long amount) {
