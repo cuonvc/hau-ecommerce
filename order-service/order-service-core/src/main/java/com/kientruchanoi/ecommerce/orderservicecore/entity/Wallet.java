@@ -46,4 +46,11 @@ public class Wallet {
 
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate = LocalDateTime.now();
+
+    @Transient
+    private String adminBankName = "BIDV";
+    @Transient
+    private String adminBankBin = "970422";
+    @Transient
+    private String adminBankNumber = "4505054312";
 }

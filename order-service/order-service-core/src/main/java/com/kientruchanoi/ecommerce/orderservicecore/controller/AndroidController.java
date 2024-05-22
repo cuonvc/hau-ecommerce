@@ -26,7 +26,7 @@ public class AndroidController {
 //    }
 
     @PostMapping("/deposit/submit")
-    public ResponseEntity<String> test(@RequestBody SmsRequest smsRequest) {
+    public ResponseEntity<String> receiveSms(@RequestBody SmsRequest smsRequest) {
         log.info("RECEIVED SMS ON SERVER - {}", smsRequest);
         walletService.confirmPayment(smsRequest);
         return ResponseEntity.ok("OK");
