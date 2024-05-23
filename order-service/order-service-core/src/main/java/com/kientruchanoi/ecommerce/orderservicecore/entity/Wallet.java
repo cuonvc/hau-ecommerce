@@ -48,9 +48,14 @@ public class Wallet {
     private LocalDateTime modifiedDate = LocalDateTime.now();
 
     @Transient
-    private String adminBankName = "BIDV";
+    private String bankName = "BIDV";
+
     @Transient
-    private String adminBankBin = "970422";
+    private String bankAccountBin = "970418";
+
     @Transient
-    private String adminBankNumber = "4505054312";
+    private String bankAccountNumber = "4505054312";
+
+    @Transient
+    private String bankAccountName = "NGUYEN VAN CUONG";
 }
