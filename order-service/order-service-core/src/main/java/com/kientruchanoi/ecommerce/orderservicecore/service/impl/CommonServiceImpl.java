@@ -25,8 +25,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+
+import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.FirebaseData.BODY;
+import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.FirebaseData.TITLE;
 
 @Service
 @RequiredArgsConstructor
@@ -55,13 +59,13 @@ public class CommonServiceImpl implements CommonService {
     public List<String> getAllAdminId() {
         return Optional.of(
                 Objects.requireNonNull(restTemplate.exchange(
-                        "http://AUTH-SERVICE/api/auth/internal/admins",
-                        HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<List<String>>() {
-                        }
-                ).getBody()
-        )).orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống, không có admin nào"));
+                                "http://AUTH-SERVICE/api/auth/internal/admins",
+                                HttpMethod.GET,
+                                null,
+                                new ParameterizedTypeReference<List<String>>() {
+                                }
+                        ).getBody()
+                )).orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống, không có admin nào"));
     }
 
     @Override
@@ -115,17 +119,23 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public void sendNotification(NotificationType type, String message, String recipient) {
-        Message<NotificationBuilder> notiMessage = MessageBuilder.withPayload(
-                NotificationBuilder.builder()
-                        .type(type)
-                        .title(type.getMessage())
-                        .content(message)
-                        .recipient(recipient)
-                        .build()
-                ).setHeader(KafkaHeaders.KEY, recipient.getBytes())
-                .build();
-        log.info("STARTING SEND MESSAGE...");
-        streamBridge.send(ORDER_NOTIFY_ACTION, notiMessage);
+    public String getDeviceToken(String userId) {
+        return getUserInfo(userId).getDeviceToken();
+    }
+
+    @Override
+    public void sendNotification(Map<String, String> firebaseData,String recipient) {
+        if (!firebaseData.get(TITLE).isEmpty() && !firebaseData.get(BODY).isEmpty()) {
+            Message<NotificationBuilder> notiMessage = MessageBuilder.withPayload(
+                            NotificationBuilder.builder()
+                                    .recipient(recipient)
+                                    .deviceToken(getDeviceToken(recipient))
+                                    .firebaseData(firebaseData)
+                                    .build()
+                    ).setHeader(KafkaHeaders.KEY, recipient.getBytes())
+                    .build();
+            log.info("STARTING SEND MESSAGE... - {}", notiMessage);
+            streamBridge.send(ORDER_NOTIFY_ACTION, notiMessage);
+        }
     }
 }

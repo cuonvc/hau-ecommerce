@@ -1,13 +1,11 @@
 package com.kientruchanoi.ecommerce.notificationservicecore.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 
@@ -20,6 +18,8 @@ import java.time.LocalDateTime;
 public class Notification {
 
     @Id
+    @GenericGenerator(name = "custom_id", strategy = "com.kientruchanoi.ecommerce.notificationservicecore.util.CustomIdGenerator")
+    @GeneratedValue(generator = "custom_id")
     private String id;
 
     @Column(name = "title")

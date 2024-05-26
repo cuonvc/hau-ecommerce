@@ -34,4 +34,5 @@ public class UserResponse {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private String status;
+    private String deviceToken;
 }

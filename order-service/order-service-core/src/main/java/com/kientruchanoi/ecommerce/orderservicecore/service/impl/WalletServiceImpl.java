@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.FirebaseData.*;
+
 @Service
 @RequiredArgsConstructor
 public class WalletServiceImpl implements WalletService {
@@ -70,10 +72,12 @@ public class WalletServiceImpl implements WalletService {
         wallet = walletRepository.save(wallet);
 
         commonService.getAllAdminId().forEach(id -> {
-            commonService.sendNotification(NotificationType.WALLET_REQUIRE_DEPOSIT,
-                    "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu nạp số tiền " + amount + "đ",
-                    id
-            );
+            //push notification
+            Map<String, String> firebaseData = new HashMap<>();
+            firebaseData.put(TYPE, NotificationType.WALLET_REQUIRE_DEPOSIT.name());
+            firebaseData.put(TITLE, NotificationType.WALLET_REQUIRE_DEPOSIT.getMessage());
+            firebaseData.put(BODY, "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu nạp số tiền " + amount + "đ");
+            commonService.sendNotification(firebaseData, id);
         });
 
         return responseFactory.success("Nạp tiền thanh công, vui lòng chuyển " + amount + "VNĐ cho quản trị viên",
@@ -133,9 +137,12 @@ public class WalletServiceImpl implements WalletService {
                                 .build()
                 );
 
-                commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
-                        "Đã nạp thành công " + amount + "vnđ vào ví.",
-                        wallet.getUserId());
+                //push notification
+                Map<String, String> firebaseData = new HashMap<>();
+                firebaseData.put(TYPE, NotificationType.WALLET_ACCEPTED_DEPOSIT.name());
+                firebaseData.put(TITLE, NotificationType.WALLET_ACCEPTED_DEPOSIT.getMessage());
+                firebaseData.put(BODY, "Đã nạp thành công " + amount + "vnđ vào ví.");
+                commonService.sendNotification(firebaseData, wallet.getUserId());
             }
         } else {
             log.info("Nạp tiền không trúng đích :v");
@@ -212,10 +219,12 @@ public class WalletServiceImpl implements WalletService {
         wallet = walletRepository.save(wallet);
 
         commonService.getAllAdminId().forEach(id -> {
-            commonService.sendNotification(NotificationType.WALLET_REQUIRE_WITHDRAW,
-                    "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu rút số tiền " + amount + "đ",
-                    id
-            );
+            //push notification
+            Map<String, String> firebaseData = new HashMap<>();
+            firebaseData.put(TYPE, NotificationType.WALLET_REQUIRE_WITHDRAW.name());
+            firebaseData.put(TITLE, NotificationType.WALLET_REQUIRE_WITHDRAW.getMessage());
+            firebaseData.put(BODY, "Người dùng " + commonService.getCurrentUser().getEmail() + " yêu cầu rút số tiền " + amount + "đ");
+            commonService.sendNotification(firebaseData, id);
         });
 
         return responseFactory.success("Đã yêu cầu rút số tiền " + amount + "đ", wallet);
@@ -237,9 +246,12 @@ public class WalletServiceImpl implements WalletService {
         wallet.setStatus(WalletStatus.WITHDRAW_CONFIRM.name());
         wallet = walletRepository.save(wallet);
 
-        commonService.sendNotification(NotificationType.WALLET_ACCEPTED_WITHDRAW,
-                "Rút tiền thành công",
-                wallet.getId());
+        //push notification
+        Map<String, String> firebaseData = new HashMap<>();
+        firebaseData.put(TYPE, NotificationType.WALLET_ACCEPTED_WITHDRAW.name());
+        firebaseData.put(TITLE, NotificationType.WALLET_ACCEPTED_WITHDRAW.getMessage());
+        firebaseData.put(BODY, "Rút tiền thành công");
+        commonService.sendNotification(firebaseData, wallet.getUserId());
 
         return responseFactory.success("Chờ người dùng xác nhận.", wallet);
     }
@@ -327,9 +339,12 @@ public class WalletServiceImpl implements WalletService {
         );
         wallet = walletRepository.save(wallet);
 
-        commonService.sendNotification(NotificationType.WALLET_ACCEPTED_DEPOSIT,
-                "Đã nạp thành công " + newAmount + "vnđ vào ví.",
-                wallet.getUserId());
+        //push notification
+        Map<String, String> firebaseData = new HashMap<>();
+        firebaseData.put(TYPE, NotificationType.WALLET_ACCEPTED_DEPOSIT.name());
+        firebaseData.put(TITLE, NotificationType.WALLET_ACCEPTED_DEPOSIT.getMessage());
+        firebaseData.put(BODY, "Đã nạp thành công " + newAmount + "vnđ vào ví.");
+        commonService.sendNotification(firebaseData, wallet.getUserId());
 
         return responseFactory.success("Đã xác nhận nạp tiền.", wallet);
     }

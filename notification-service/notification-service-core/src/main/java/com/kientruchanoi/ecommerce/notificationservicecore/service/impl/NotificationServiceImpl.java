@@ -1,5 +1,6 @@
 package com.kientruchanoi.ecommerce.notificationservicecore.service.impl;
 
+import com.google.firebase.messaging.*;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.PageResponseUsers;
 import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -31,8 +33,12 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.kientruchanoi.ecommerce.notificationservicecore.util.Constant.FirebaseData.BODY;
+import static com.kientruchanoi.ecommerce.notificationservicecore.util.Constant.FirebaseData.TITLE;
 
 @Service
 @Slf4j
@@ -45,6 +51,7 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationMapper notificationMapper;
 
     private static final String EXPO_PUSH_NOTI_URL = "https://exp.host/--/api/v2/push/send";
+    private final FirebaseMessaging firebaseMessaging;
 
     @Override
     public ResponseEntity<BaseResponse<Notification>> markRead(String id) {
@@ -63,10 +70,10 @@ public class NotificationServiceImpl implements NotificationService {
 //            throw new APIException(HttpStatus.BAD_REQUEST, "Type khong hpo le");
 //        }
         List<Notification> list = repository.findAllByRecipient(getCurrentUserId())
-                        .stream().map(n -> {
-                            n.setSeen(true);
-                            return n;
-                 }).toList();
+                .stream().map(n -> {
+                    n.setSeen(true);
+                    return n;
+                }).toList();
         repository.saveAll(list);
     }
 
@@ -104,6 +111,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void create(NotificationBuilder request) {
+        log.info("TRIGGERR NOTIFICATION CREATING - {}", request);
         Notification notification = repository.save(Notification.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
@@ -114,35 +122,26 @@ public class NotificationServiceImpl implements NotificationService {
                 .build()
         );
 
-        pushNotification(notification);
+        pushNotification(request.getDeviceToken(), request.getFirebaseData(), notification);
     }
 
-    private void pushNotification(Notification notification) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        log.info("TIGGERRRR - {}", 1);
-
-        HttpEntity<PushNotification> entity = new HttpEntity<>(PushNotification.builder()
-                .to(getDeviceToken(notification.getRecipient()))
-                .sound("default")
-                .title(notification.getTitle())
-                .body(notification.getContent())
-                .data(notification)
-                .build(), headers);
-
-        log.info("TIGGERRRR - {}", entity);
-
-        RestTemplate externalRequest = new RestTemplate();
-        ResponseEntity<String> response = externalRequest.postForEntity(EXPO_PUSH_NOTI_URL, entity, String.class);
-
-        log.info("TRIGGERRR - {}", response);
-
-        if (response.getStatusCode().is2xxSuccessful()) {
-            String responseBody = response.getBody();
-            System.out.println("Response: " + responseBody);
-        } else {
-            System.err.println("Error: " + response.getStatusCodeValue());
+    @Async
+    public void pushNotification(String deviceToken, Map<String, String> data, Notification notification) {
+        if (!data.get(TITLE).isEmpty() && !data.get(BODY).isEmpty()) {
+            log.info("LOGGGGG PUSH NOTI - {} - {} - {}", deviceToken, data, notification);
+            Message message = Message.builder()
+                    .setToken(deviceToken)
+                    .putAllData(data)
+                    .setAndroidConfig(AndroidConfig.builder()
+                            .setPriority(AndroidConfig.Priority.HIGH)
+                            .build())
+                    .setApnsConfig(ApnsConfig.builder()
+                            .setAps(Aps.builder()
+                                    .setContentAvailable(true)
+                                    .build())
+                            .build())
+                    .build();
+            firebaseMessaging.sendAsync(message);
         }
     }
 

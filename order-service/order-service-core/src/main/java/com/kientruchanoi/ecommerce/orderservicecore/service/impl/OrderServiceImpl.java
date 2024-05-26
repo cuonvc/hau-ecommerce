@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.FirebaseData.*;
 import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.HttpMessage.ACCESS_DENIED;
 import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.OrderStatus.*;
 
@@ -140,10 +141,13 @@ public class OrderServiceImpl implements OrderService {
         cartService.deleteProducts(currentUserId);
 
         //push notification
-        responses.forEach(o -> commonService.sendNotification(NotificationType.ORDER_CREATED,
-                "Bạn có đơn hàng " + o.getProduct().getName() + " mới.",
-                o.getSeller().getId())
-        );
+        responses.forEach(o -> {
+            Map<String, String> firebaseData = new HashMap<>();
+            firebaseData.put(TYPE, NotificationType.ORDER_CREATED.name());
+            firebaseData.put(TITLE, NotificationType.ORDER_CREATED.getMessage());
+            firebaseData.put(BODY, "Bạn có đơn hàng " + o.getProduct().getName() + " mới.");
+            commonService.sendNotification(firebaseData, o.getSeller().getId());
+        });
 
         return responseFactory.success(ORDER_CREATE_SUCCESS, responses);
     }
@@ -161,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
         return cart;
     }
 
-//    @Override
+    //    @Override
 //    public ResponseEntity<BaseResponse<OrderResponse>> update(String id, OrderRequest request) {
 //        String currentUserId = commonService.getCurrentUserId();
 //
@@ -264,14 +268,20 @@ public class OrderServiceImpl implements OrderService {
             transactionService.create(TransactionType.REFUND,
                     "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet, order.getAmount());
 
-            commonService.sendNotification(NotificationType.WALLET_REFUND,
-                    "Hoàn tiền do đơn hàng " + order.getId() + " bị huỷ.",
-                    order.getCustomerId());
+            //push notification
+            Map<String, String> firebaseData = new HashMap<>();
+            firebaseData.put(TYPE, NotificationType.WALLET_REFUND.name());
+            firebaseData.put(TITLE, NotificationType.WALLET_REFUND.getMessage());
+            firebaseData.put(BODY, "Hoàn tiền do đơn hàng " + order.getId() + " bị huỷ.");
+            commonService.sendNotification(firebaseData, order.getCustomerId());
         }
 
-        commonService.sendNotification(NotificationType.ORDER_CANCEL,
-                "Đơn hàng " + order.getId() + " đã bị huỷ.",
-                order.getSellerId());
+        //push notification
+        Map<String, String> firebaseData = new HashMap<>();
+        firebaseData.put(TYPE, NotificationType.ORDER_CANCEL.name());
+        firebaseData.put(TITLE, NotificationType.ORDER_CANCEL.getMessage());
+        firebaseData.put(BODY, "Đơn hàng " + order.getId() + " đã bị huỷ.");
+        commonService.sendNotification(firebaseData, order.getSellerId());
 
         return responseFactory.success("Đã huỷ đơn hàng " + order.getId(), ORDER_CANCEL_SUCCESS);
     }
@@ -290,9 +300,12 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         streamBridge.send(ORDER_REDUCE_PRODUCT_QUANTITY, message);
 
-        commonService.sendNotification(NotificationType.ORDER_ACCEPTED,
-                "Đơn hàng " + order.getId() + " đã được tiếp nhận.",
-                order.getCustomerId());
+        //push notification
+        Map<String, String> firebaseData = new HashMap<>();
+        firebaseData.put(TYPE, NotificationType.ORDER_ACCEPTED.name());
+        firebaseData.put(TITLE, NotificationType.ORDER_ACCEPTED.getMessage());
+        firebaseData.put(BODY, "Đơn hàng " + order.getId() + " đã được tiếp nhận.");
+        commonService.sendNotification(firebaseData, order.getCustomerId());
 
         return responseFactory.success("Đã tiếp nhận đơn hàng", buildResponseDetail(order));
     }
@@ -312,9 +325,12 @@ public class OrderServiceImpl implements OrderService {
                     "Hoàn tiền cho do hàng bị từ chối", List.of(order.getId()), wallet, order.getAmount());
         }
 
-        commonService.sendNotification(NotificationType.ORDER_REJECTED,
-                "Đơn hàng " + order.getId() + " đã bị từ chối",
-                order.getCustomerId());
+        //push notification
+        Map<String, String> firebaseData = new HashMap<>();
+        firebaseData.put(TYPE, NotificationType.ORDER_REJECTED.name());
+        firebaseData.put(TITLE, NotificationType.ORDER_REJECTED.getMessage());
+        firebaseData.put(BODY, "Đơn hàng " + order.getId() + " đã bị từ chối");
+        commonService.sendNotification(firebaseData, order.getCustomerId());
 
         return responseFactory.success("Bạn đã từ chối đơn hàng", buildResponseDetail(order));
     }
@@ -328,9 +344,12 @@ public class OrderServiceImpl implements OrderService {
                 OrderStatus.DELIVERING);
         orderRepository.save(order);
 
-        commonService.sendNotification(NotificationType.ORDER_DELIVERY,
-                "Đơn hàng " + order.getId() + " đang trên đường vận chuyển.",
-                order.getCustomerId());
+        //push notification
+        Map<String, String> firebaseData = new HashMap<>();
+        firebaseData.put(TYPE, NotificationType.ORDER_DELIVERY.name());
+        firebaseData.put(TITLE, NotificationType.ORDER_DELIVERY.getMessage());
+        firebaseData.put(BODY, "Đơn hàng " + order.getId() + " đang trên đường vận chuyển.");
+        commonService.sendNotification(firebaseData, order.getCustomerId());
 
         return responseFactory.success("Đơn hàng đang trên đường vận chuyển.", buildResponseDetail(order));
     }
@@ -354,9 +373,12 @@ public class OrderServiceImpl implements OrderService {
         transactionService.create(TransactionType.SELL,
                 "Thu tiền sản phẩm", List.of(order.getId()), wallet, order.getAmount());
 
-        commonService.sendNotification(NotificationType.ORDER_DONE,
-                "Đơn hàng " + order.getId() + " đã được giao thành công.",
-                order.getSellerId());
+        //push notification
+        Map<String, String> firebaseData = new HashMap<>();
+        firebaseData.put(TYPE, NotificationType.ORDER_DONE.name());
+        firebaseData.put(TITLE, NotificationType.ORDER_DONE.getMessage());
+        firebaseData.put(BODY, "Đơn hàng " + order.getId() + " đã được giao thành công.");
+        commonService.sendNotification(firebaseData, order.getSellerId());
 
         return responseFactory.success("Đã nhận được hàng", buildResponseDetail(order));
     }

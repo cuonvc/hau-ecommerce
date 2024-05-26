@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -18,6 +19,8 @@ public class NotificationBuilder implements Serializable {
     private String title;
     private String content;
     private String recipient;
+    private String deviceToken;
+    private Map<String, String> firebaseData;
     private NotificationType type;
     private Object resource;
 //    private LocalDateTime builtAt;

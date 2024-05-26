@@ -293,6 +293,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         UserResponse response = userMapper.entityToResponse(user);
         response.setProducts(commonService.getProductsByUser(user.getId()));
+        DeviceToken dvt = deviceTokenRepository.findByUserId(userId)
+                .orElseThrow(() -> new APIException(HttpStatus.BAD_GATEWAY, "Device token not found"));
+        response.setDeviceToken(dvt.getToken());
 
         return responseFactory.success("Success", response);
     }

@@ -24,6 +24,7 @@ public class ProductResponse {
     private String code;
     private String description;
     private Integer remaining;
+    private Integer sold;
     private Status isActive;
     private List<ProductResourceResponse> resources;
     private String brand;

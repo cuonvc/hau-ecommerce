@@ -22,4 +22,10 @@ public class Constants {
         public static String ORDER_CANNOT_DELIVERING = "Tiếp nhận đơn hàng trước khi giao";
         public static String ORDER_CANNOT_RECEIVE = "Đơn hàng không trong trạng thái đang giao";
     }
+
+    public static class FirebaseData {
+        public static String TYPE = "type";
+        public static String TITLE = "title";
+        public static String BODY = "body";
+    }
 }

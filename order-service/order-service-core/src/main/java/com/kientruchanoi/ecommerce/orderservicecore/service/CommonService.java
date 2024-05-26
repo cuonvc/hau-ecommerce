@@ -7,6 +7,7 @@ import com.kientruchanoi.ecommerce.orderservicecore.configuration.CustomUserDeta
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CommonService {
 
@@ -17,11 +18,13 @@ public interface CommonService {
 
     UserResponse getUserInfo(String userId);
 
+    String getDeviceToken(String userId);
+
     List<String> getAllAdminId();
 
     ProductResponse getProductInfo(String productId);
 
     ProductResponse getProductInfoNotUser(String productId);
 
-    void sendNotification(NotificationType type, String message, String recipient);
+    void sendNotification(Map<String, String> firebaseData, String recipient);
 }
