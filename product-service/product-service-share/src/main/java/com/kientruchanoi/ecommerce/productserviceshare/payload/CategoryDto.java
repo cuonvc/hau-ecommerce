@@ -25,9 +25,6 @@ public class CategoryDto {
 
     private String description;
 
-    @NotNull
-    @NotBlank(message = "Ảnh không được để trống")
-    @NotEmpty
     private String imageValue;
 
     private Status isActive;

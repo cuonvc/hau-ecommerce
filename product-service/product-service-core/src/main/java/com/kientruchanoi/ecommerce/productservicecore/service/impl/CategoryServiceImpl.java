@@ -1,7 +1,6 @@
 package com.kientruchanoi.ecommerce.productservicecore.service.impl;
 
 import com.kientruchanoi.ecommerce.baseservice.constant.enumerate.Status;
-import com.kientruchanoi.ecommerce.baseservice.payload.request.FileObjectRequest;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.productservicecore.entity.Category;
@@ -9,7 +8,6 @@ import com.kientruchanoi.ecommerce.productservicecore.exception.APIException;
 import com.kientruchanoi.ecommerce.productservicecore.exception.ResourceNotFoundException;
 import com.kientruchanoi.ecommerce.productservicecore.mapper.CategoryMapper;
 import com.kientruchanoi.ecommerce.productservicecore.repository.CategoryRepository;
-import com.kientruchanoi.ecommerce.productservicecore.repository.custom.CategoryCustomRepository;
 import com.kientruchanoi.ecommerce.productservicecore.service.CategoryService;
 import com.kientruchanoi.ecommerce.productservicecore.service.FileImageService;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.CategoryDto;
@@ -23,9 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -48,14 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public ResponseEntity<BaseResponse<CategoryResponse>> create(CategoryDto dto) {
         validateCategory("name", dto.getName());
-
-        if (!isBase64Image(dto.getImageValue())) {
-            return responseFactory.fail(HttpStatus.BAD_REQUEST, "Base64 image invalid", null);
-        }
         Category category = categoryMapper.dtoToEntity(dto);
-        category.setImageUrl(
-                fileImageService.saveImageFile(Base64.getDecoder()
-                        .decode(dto.getImageValue())));
         return responseFactory.success("Success",
                 categoryMapper.entityToResponse(categoryRepository.save(category)));
     }
@@ -65,26 +53,23 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = validateCategory("id", categoryDto.getId());
         validateCategory("name", categoryDto.getName());
 
-        if (!isBase64Image(categoryDto.getImageValue())) {
-            return responseFactory.fail(HttpStatus.BAD_REQUEST, "Base64 image invalid", null);
-        }
-
         categoryMapper.dtoToEntity(categoryDto, category);
-        category.setImageUrl(
-                fileImageService.saveImageFile(Base64.getDecoder()
-                        .decode(categoryDto.getImageValue())));
         category = categoryRepository.save(category);
         CategoryResponse response = categoryMapper.entityToResponse(category);
         return responseFactory.success("Success", response);
     }
 
     private boolean isBase64Image(String data) {
-        try {
-            byte[] decoded = Base64.getDecoder().decode(data);
-            return ImageIO.read(new ByteArrayInputStream(decoded)) != null;
-        } catch (IOException e) {
-            throw new APIException(HttpStatus.BAD_REQUEST, "Base64 Image invalid");
+        if (data != null) {
+            try {
+                byte[] decoded = Base64.getDecoder().decode(data);
+                ImageIO.read(new ByteArrayInputStream(decoded));
+                return true;
+            } catch (IOException e) {
+                throw new APIException(HttpStatus.BAD_REQUEST, "Base64 Image invalid");
+            }
         }
+        return false;
     }
 
     private Category validateCategory(String field, String value) {
