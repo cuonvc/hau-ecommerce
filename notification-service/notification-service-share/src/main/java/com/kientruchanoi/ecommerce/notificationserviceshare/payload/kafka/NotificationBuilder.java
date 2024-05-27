@@ -15,13 +15,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder(toBuilder = true)
 public class NotificationBuilder implements Serializable {
-
-    private String title;
-    private String content;
     private String recipient;
     private String deviceToken;
     private Map<String, String> firebaseData;
-    private NotificationType type;
-    private Object resource;
-//    private LocalDateTime builtAt;
 }

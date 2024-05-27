@@ -30,7 +30,7 @@ public class OrderNotificationHandler {
 //            notificationService.create(message.getPayload());
 //            redisTemplate.opsForValue().set(recipient, message.getPayload());
 
-            NotificationBuilder value = redisTemplate.opsForValue().get(recipient);
+            NotificationBuilder value = redisTemplate.opsForValue().get(recipient); //tránh bị lặp thông báo khi server restart
             if (value == null || !value.equals(message.getPayload())) {
                 log.info("CREATING...");
                 redisTemplate.opsForValue().set(recipient, message.getPayload());

@@ -1,8 +1,6 @@
 package com.kientruchanoi.ecommerce.notificationservicecore.service.impl;
 
 import com.google.firebase.messaging.*;
-import com.kientruchanoi.ecommerce.authserviceshare.payload.response.PageResponseUsers;
-import com.kientruchanoi.ecommerce.authserviceshare.payload.response.UserResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
 import com.kientruchanoi.ecommerce.notificationservicecore.configuration.CustomUserDetail;
@@ -10,8 +8,6 @@ import com.kientruchanoi.ecommerce.notificationservicecore.entity.Notification;
 import com.kientruchanoi.ecommerce.notificationservicecore.exception.APIException;
 import com.kientruchanoi.ecommerce.notificationservicecore.exception.ResourceNotFoundException;
 import com.kientruchanoi.ecommerce.notificationservicecore.mapper.NotificationMapper;
-import com.kientruchanoi.ecommerce.notificationservicecore.payload.PushNotification;
-import com.kientruchanoi.ecommerce.notificationservicecore.payload.PushNotificationResponse;
 import com.kientruchanoi.ecommerce.notificationservicecore.repository.NotificationRepository;
 import com.kientruchanoi.ecommerce.notificationservicecore.service.NotificationService;
 import com.kientruchanoi.ecommerce.notificationserviceshare.payload.kafka.NotificationBuilder;
@@ -37,8 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.kientruchanoi.ecommerce.notificationservicecore.util.Constant.FirebaseData.BODY;
-import static com.kientruchanoi.ecommerce.notificationservicecore.util.Constant.FirebaseData.TITLE;
+import static com.kientruchanoi.ecommerce.notificationservicecore.util.Constant.FirebaseData.*;
 
 @Service
 @Slf4j
@@ -112,10 +107,11 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public void create(NotificationBuilder request) {
         log.info("TRIGGERR NOTIFICATION CREATING - {}", request);
+        Map<String, String> firebaseData = request.getFirebaseData();
         Notification notification = repository.save(Notification.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .type(request.getType().name())
+                .title(firebaseData.get(TITLE))
+                .content(firebaseData.get(BODY))
+                .type(firebaseData.get(TYPE))
                 .recipient(request.getRecipient())
                 .seen(false)
                 .createdDate(LocalDateTime.now())
