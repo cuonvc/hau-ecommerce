@@ -124,7 +124,7 @@ public class CommonServiceImpl implements CommonService {
     }
 
     @Override
-    public void sendNotification(Map<String, String> firebaseData,String recipient) {
+    public void sendNotification(Map<String, String> firebaseData, String recipient) {
         if (!firebaseData.get(TITLE).isEmpty() && !firebaseData.get(BODY).isEmpty()) {
             Message<NotificationBuilder> notiMessage = MessageBuilder.withPayload(
                             NotificationBuilder.builder()

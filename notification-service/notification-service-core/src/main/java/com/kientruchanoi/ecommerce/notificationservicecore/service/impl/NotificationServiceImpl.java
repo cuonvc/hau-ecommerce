@@ -1,5 +1,8 @@
 package com.kientruchanoi.ecommerce.notificationservicecore.service.impl;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.*;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
 import com.kientruchanoi.ecommerce.baseservice.payload.response.ResponseFactory;
@@ -16,6 +19,7 @@ import com.kientruchanoi.ecommerce.notificationserviceshare.payload.response.Pag
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -44,9 +49,9 @@ public class NotificationServiceImpl implements NotificationService {
     private final ResponseFactory responseFactory;
     private final RestTemplate restTemplate;
     private final NotificationMapper notificationMapper;
+    private final FirebaseMessaging firebaseMessaging;
 
     private static final String EXPO_PUSH_NOTI_URL = "https://exp.host/--/api/v2/push/send";
-    private final FirebaseMessaging firebaseMessaging;
 
     @Override
     public ResponseEntity<BaseResponse<Notification>> markRead(String id) {
@@ -118,27 +123,26 @@ public class NotificationServiceImpl implements NotificationService {
                 .build()
         );
 
-        pushNotification(request.getDeviceToken(), request.getFirebaseData(), notification);
+        try {
+            pushNotification(request.getDeviceToken(), request.getFirebaseData());
+        } catch (Exception e) {
+            log.error("PUSH NOTIFICATION ERROR - {}", e.getMessage());
+        }
     }
 
-    @Async
-    public void pushNotification(String deviceToken, Map<String, String> data, Notification notification) {
+    public String pushNotification(String deviceToken, Map<String, String> data) throws FirebaseMessagingException, IOException {
         if (!data.get(TITLE).isEmpty() && !data.get(BODY).isEmpty()) {
-            log.info("LOGGGGG PUSH NOTI - {} - {} - {}", deviceToken, data, notification);
+            log.info("LOGGGGG PUSH NOTI - {} - {} - {}", deviceToken, data);
             Message message = Message.builder()
                     .setToken(deviceToken)
+                    .setNotification(
+                            new com.google.firebase.messaging.Notification(data.get(TITLE), data.get(BODY))
+                    )
                     .putAllData(data)
-                    .setAndroidConfig(AndroidConfig.builder()
-                            .setPriority(AndroidConfig.Priority.HIGH)
-                            .build())
-                    .setApnsConfig(ApnsConfig.builder()
-                            .setAps(Aps.builder()
-                                    .setContentAvailable(true)
-                                    .build())
-                            .build())
                     .build();
-            firebaseMessaging.sendAsync(message);
+            return firebaseMessaging.send(message);
         }
+        return "Failed to push notification";
     }
 
     private String getDeviceToken(String userId) {

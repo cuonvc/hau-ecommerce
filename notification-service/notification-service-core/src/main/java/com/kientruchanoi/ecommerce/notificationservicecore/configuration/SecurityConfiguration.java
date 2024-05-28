@@ -22,7 +22,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/notification/moderator/*").hasAnyAuthority("ROOT", "ADMIN", "MODERATOR")
                         .requestMatchers("/api/notification/admin/*").hasAnyAuthority("ROOT", "ADMIN")
                         .requestMatchers("/api/notification/root/*").hasAnyAuthority("ROOT")
-                        .requestMatchers("/api/notification/view/*").permitAll()
+                        .requestMatchers("/api/notification/view/*", "/api/test/push").permitAll()
                         .anyRequest()
                         .authenticated())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)

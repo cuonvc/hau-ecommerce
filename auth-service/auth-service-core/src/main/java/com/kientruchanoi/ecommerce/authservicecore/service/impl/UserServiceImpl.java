@@ -51,12 +51,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
+
+import static com.kientruchanoi.ecommerce.authservicecore.util.Constant.FirebaseData.*;
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +81,7 @@ public class UserServiceImpl implements UserService {
     private final FileImageService fileImageService;
     private final CommonService commonService;
 
-    private static final String ORDER_NOTIFY_ACTION = "order.notify.action";
+    public static final String ORDER_NOTIFY_ACTION = "order.notify.action";
 
     @Override
     public ResponseEntity<BaseResponse<String>> register(RegRequest request) {
@@ -133,18 +132,12 @@ public class UserServiceImpl implements UserService {
         redisTemplateObject.delete(request);
 
         userRepository.findAllByRole("ADMIN").forEach(u -> {
-            Message<NotificationBuilder> message = MessageBuilder
-                    .withPayload(
-                            NotificationBuilder.builder()
-                                    .type(NotificationType.USER_CREATED)
-                                    .title(NotificationType.USER_CREATED.getMessage())
-                                    .content("Tài khoản " + user.getEmail() + " vừa mới đăng ký.")
-                                    .recipient(u.getId())
-                                    .build()
-                    )
-                    .setHeader(KafkaHeaders.KEY, user.getId().getBytes())
-                    .build();
-            streamBridge.send(ORDER_NOTIFY_ACTION, message);
+            //push notification
+            Map<String, String> firebaseData = new HashMap<>();
+            firebaseData.put(TYPE, NotificationType.USER_CREATED.name());
+            firebaseData.put(TITLE, NotificationType.USER_CREATED.getMessage());
+            firebaseData.put(BODY, "Tài khoản " + user.getEmail() + " vừa mới đăng ký.");
+            commonService.sendNotification(firebaseData, u.getId());
         });
 
         return responseFactory.success("Kích hoạt tài khoản thành công, vui lòng đăng nhập lại!", response);
@@ -175,11 +168,11 @@ public class UserServiceImpl implements UserService {
         DeviceToken deviceToken = deviceTokenRepository.findByUserId(user.getId())
                 .orElse(
                         DeviceToken.builder()
-                                .token(request.getExpoToken())
+                                .token(request.getDeviceToken())
                                 .userId(user.getId())
                                 .build()
                 );
-        deviceToken.setToken(request.getExpoToken());
+        deviceToken.setToken(request.getDeviceToken());
         deviceTokenRepository.save(deviceToken);
 
         return responseFactory.success("Success", response);
@@ -191,7 +184,7 @@ public class UserServiceImpl implements UserService {
                 .getContext().getAuthentication().getPrincipal();
 
         tokenService.clearToken(userDetail.getId());
-        deviceTokenRepository.findByUserId(userDetail.getId()).ifPresent(deviceTokenRepository::delete);
+//        deviceTokenRepository.findByUserId(userDetail.getId()).ifPresent(deviceTokenRepository::delete);
         return responseFactory.success("Đã đăng xuất", "Success");
     }
 
