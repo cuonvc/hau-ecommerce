@@ -357,6 +357,9 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<BaseResponse<String>> assignRole(String role, String userId) {
         CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         log.info("Trigger - {}", "");
+        if (userId.equals(userDetail.getId())) {
+            return responseFactory.fail(HttpStatus.BAD_REQUEST, "Không thể gán quyền cho chính bạn", null);
+        }
 
         boolean roleMatch = Stream.of(Role.values())
                 .map(eRole -> eRole.name())
