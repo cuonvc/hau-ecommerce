@@ -1,6 +1,7 @@
 ## Hau-Ecommerce
 - Backend module for the final project of the Ecommerce System Development course
 - [App mobile source](https://github.com/yosefPham/e-commerce-app/tree/huy_2405)
+- [SMS Receiver Android app](https://drive.google.com/file/d/1Dhik-WqprDjZOlb5sG2dkG175M8XLjUS/view?usp=sharing) - Catching SMS balance change message from the bank and request to server
 #### 20CN2 - Hanoi Architectural University
 
 ### Application architecture diagram
