@@ -1,15 +1,16 @@
 package com.kientruchanoi.ecommerce.orderservicecore.service;
 
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
+import com.kientruchanoi.ecommerce.orderservicecore.response.OrderCreatedResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
-import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZpPaymentResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface OrderService {
-    ResponseEntity<BaseResponse<List<OrderResponseDetail>>> create(OrderRequest request);
+    ResponseEntity<BaseResponse<OrderCreatedResponse>> create(OrderRequest request);
 
     ResponseEntity<BaseResponse<OrderResponseDetail>> detail(String id);
 

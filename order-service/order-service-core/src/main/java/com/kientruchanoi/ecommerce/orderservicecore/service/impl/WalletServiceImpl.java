@@ -22,6 +22,7 @@ import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.TransactionType;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.WalletStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.WalletCustomResponse;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -49,6 +51,7 @@ public class WalletServiceImpl implements WalletService {
     private final TransactionRepository transactionRepository;
     private final OrderRepository orderRepository;
     private final WalletMapper walletMapper;
+    private final EntityManager entityManager;
 
     private static final Map<String, SmsRequest> SMS_SENDER_MAP_CONTENT = new HashMap<>();
 
@@ -384,18 +387,19 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
+    @Transactional
     public void reduceBalanceByOrder(String userId, Double amount, List<String> orderIds) {
         Wallet wallet = walletRepository.findByUserId(userId)
                 .orElse(walletBuilder(userId));
         wallet.setBalance(wallet.getBalance() - amount);
         wallet.setTotalAmountPaid(wallet.getTotalAmountPaid() + amount);
-        walletRepository.save(wallet);
+        entityManager.persist(wallet);
 
         orderIds.forEach(id -> {
             Order order = orderRepository.findById(id)
                     .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, "Lỗi hệ thống....hm"));
             order.setPaymentStatus(PaymentStatus.PAID.name());
-            orderRepository.save(order);
+            entityManager.persist(order);
         });
     }
 

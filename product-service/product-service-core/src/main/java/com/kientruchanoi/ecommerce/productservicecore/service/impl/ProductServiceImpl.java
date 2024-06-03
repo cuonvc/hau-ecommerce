@@ -231,7 +231,7 @@ public class ProductServiceImpl implements ProductService {
                         null,
                         new ParameterizedTypeReference<BaseResponse<UserResponse>>() {}
                 ).getBody().getData())
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+                .orElse(new UserResponse());
     }
 
 

@@ -78,7 +78,7 @@ public class CommonServiceImpl implements CommonService {
                         new ParameterizedTypeReference<BaseResponse<DeliveryAddressResponse>>() {
                         }
                 ).getBody()).getData()
-        ).orElseThrow(() -> new ResourceNotFoundException("Delivery information", "id", id));
+        ).orElse(new DeliveryAddressResponse());
         return response;
     }
 
@@ -115,7 +115,7 @@ public class CommonServiceImpl implements CommonService {
                         new ParameterizedTypeReference<BaseResponse<UserResponse>>() {
                         }
                 ).getBody()).getData()
-        ).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+        ).orElse(new UserResponse());
     }
 
     @Override

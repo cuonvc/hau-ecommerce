@@ -14,12 +14,17 @@ import com.kientruchanoi.ecommerce.orderservicecore.repository.CartProductReposi
 import com.kientruchanoi.ecommerce.orderservicecore.repository.CartRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.OrderRepository;
 import com.kientruchanoi.ecommerce.orderservicecore.repository.WalletRepository;
+import com.kientruchanoi.ecommerce.orderservicecore.response.OrderCreatedResponse;
 import com.kientruchanoi.ecommerce.orderservicecore.service.*;
 import com.kientruchanoi.ecommerce.orderservicecore.util.Constants;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.*;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ItemRequest;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZpPaymentRequest;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZpPaymentResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
@@ -29,6 +34,7 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -53,6 +59,8 @@ public class OrderServiceImpl implements OrderService {
     private final TransactionService transactionService;
     private final CartService cartService;
     private final StreamBridge streamBridge;
+    private final RestTemplate restTemplate;
+    private final EntityManager entityManager;
 
     private static final String ORDER_REDUCE_PRODUCT_QUANTITY = "order.reduce.prduct.quantity";
     private static final String ORDER_TYPE_SELL = "SELL";
@@ -60,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> create(OrderRequest request) {
+    public ResponseEntity<BaseResponse<OrderCreatedResponse>> create(OrderRequest request) {
         Cart cart = validCartMapProduct(request.getCartId(), request.getProductIds());
 
         List<ProductResponse> products = request.getProductIds().stream()
@@ -78,7 +86,8 @@ public class OrderServiceImpl implements OrderService {
             } else if (p.getUser().getId().equals(currentUserId)) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể tự tăng traffic sản phẩm của mình =))");
             } else if (!request.getPaymentType().equals(PaymentType.WALLET)
-                    && !request.getPaymentType().equals(PaymentType.CASH)) {
+                    && !request.getPaymentType().equals(PaymentType.CASH)
+                    && !request.getPaymentType().equals(PaymentType.ZALO_PAY)) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Phương thức thanh toán không hợp lệ");
             }
         });
@@ -103,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
                 DeliveryAddressResponse deliveryDestination = commonService.getDeliveryInfo(request.getDeliveryDestinationId());
                 int quantity = cartProductRepository.countQuantityOfProductInCart(cart.getId(), p.getId());
 
-                Order order = orderRepository.save(Order.builder()
+                Order order = Order.builder()
                         .productId(p.getId())
                         .amount(p.getStandardPrice() * quantity)
                         .note(request.getNote())
@@ -117,7 +126,8 @@ public class OrderServiceImpl implements OrderService {
                         .paymentType(request.getPaymentType().name())
                         .paymentStatus(PaymentStatus.UNPAID.name())
                         .quantity(quantity)
-                        .build());
+                        .build();
+                entityManager.persist(order);
 
                 return buildResponseDetail(order);
             } catch (APIException exception) {
@@ -137,6 +147,18 @@ public class OrderServiceImpl implements OrderService {
                     walletRepository.findByUserId(currentUserId).get(), amount);
         }
 
+        ZpPaymentResponse response = null;
+        if (request.getPaymentType().equals(PaymentType.ZALO_PAY)) {
+            response = Objects.requireNonNull(restTemplate.postForEntity(
+                    "http://PAYMENT-GATEWAY/api/payment/zalopay",
+                    ZpPaymentRequest.builder()
+                            .amount(responses.stream().map(OrderResponseDetail::getAmount).reduce(0, Integer::sum))
+                            .itemRequest(new ItemRequest[]{new ItemRequest()})
+                            .build(),
+                    ZpPaymentResponse.class
+            ).getBody());
+        }
+
         //delete products in the cart
         cartService.deleteProducts(currentUserId);
 
@@ -149,7 +171,9 @@ public class OrderServiceImpl implements OrderService {
             commonService.sendNotification(firebaseData, o.getSeller().getId());
         });
 
-        return responseFactory.success(ORDER_CREATE_SUCCESS, responses);
+        return response != null
+                ? responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().response(response).build())
+                : responseFactory.fail(HttpStatus.BAD_REQUEST, "FAILED", null);
     }
 
     private Cart validCartMapProduct(String cartId, List<String> productIds) {

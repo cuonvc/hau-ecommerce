@@ -1,0 +1,31 @@
+server:
+  port: 8086
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA_CLIENT_HOST}:${EUREKA_CLIENT_PORT}/eureka/
+
+spring:
+  application:
+    name: PAYMENT-GATEWAY
+
+  kafka:
+    #    listener: PLAINTEXT://kafka:9092
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+    #    producer:
+    #      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    #      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      auto-offset-reset: latest
+  cloud:
+    function:
+      definition: requestCreateOrder
+    stream:
+      bindings:
+        requestCreateOrder-in-0:
+          destination: request.payment.order
+          content-type: application/json
+      kafka:
+        binder:
+          brokers: ${KAFKA_HOST}:${KAFKA_PORT}

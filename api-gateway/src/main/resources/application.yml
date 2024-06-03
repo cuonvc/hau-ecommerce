@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 8080
 
 eureka:
   client:
@@ -43,6 +43,11 @@ spring:
           uri: lb://NOTIFICATION-SERVICE
           predicates:
             - Path=/api/notification/**
+
+        - id: payment-gateway
+          uri: lb://PAYMENT-GATEWAY
+          predicates:
+            - Path=/api/payment/**
 
     compatibility-verifier:
       enabled: false

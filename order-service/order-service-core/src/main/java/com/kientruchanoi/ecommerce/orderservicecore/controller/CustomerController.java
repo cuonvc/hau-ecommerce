@@ -1,10 +1,12 @@
 package com.kientruchanoi.ecommerce.orderservicecore.controller;
 
 import com.kientruchanoi.ecommerce.baseservice.payload.response.BaseResponse;
+import com.kientruchanoi.ecommerce.orderservicecore.response.OrderCreatedResponse;
 import com.kientruchanoi.ecommerce.orderservicecore.service.OrderService;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponse;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZpPaymentResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.system.ApplicationHome;
@@ -23,7 +25,7 @@ public class CustomerController {
     private final OrderService orderService;
 
     @PostMapping("/create")
-    public ResponseEntity<BaseResponse<List<OrderResponseDetail>>> create(@RequestBody OrderRequest request) {
+    public ResponseEntity<BaseResponse<OrderCreatedResponse>> create(@RequestBody OrderRequest request) {
         return orderService.create(request);
     }
 
