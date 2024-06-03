@@ -1,6 +1,6 @@
 ## Hau-Ecommerce
 - Backend module for the final project of the Ecommerce System Development course
-- [App mobile source](https://github.com/yosefPham/ecommerce-app/tree/dev_local)
+- [App mobile source](https://github.com/yosefPham/e-commerce-app/tree/huy_2405)
 #### 20CN2 - Hanoi Architectural University
 
 ### Application architecture diagram
