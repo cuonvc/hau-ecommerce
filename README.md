@@ -5,7 +5,7 @@
 #### 20CN2 - Hanoi Architectural University
 
 ### Application architecture diagram
-![alt text](System-design.png)
+![System-design](System-design.png)
 ### How to pull and start the backend module
 
 #### 1. Install Docker and Docker-compose
