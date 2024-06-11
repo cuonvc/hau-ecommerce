@@ -19,7 +19,7 @@ public interface CartProductRepository extends JpaRepository<CartProduct, String
 
     @Query("SELECT cp FROM CartProduct cp " +
             "WHERE cp.cartId = :cartId AND cp.productId = :productId")
-    Optional<CartProduct> findByCartAndProduct(String cartId, String productId);
+    List<CartProduct> findByCartAndProduct(String cartId, String productId);
 
     @Modifying
     @Transactional

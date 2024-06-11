@@ -283,7 +283,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<BaseResponse<UserResponse>> getById(String userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+                .orElse(new User());
         UserResponse response = userMapper.entityToResponse(user);
         response.setProducts(commonService.getProductsByUser(user.getId()));
         DeviceToken dvt = deviceTokenRepository.findByUserId(userId)

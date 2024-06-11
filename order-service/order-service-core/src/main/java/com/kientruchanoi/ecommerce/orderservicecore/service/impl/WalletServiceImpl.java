@@ -279,7 +279,7 @@ public class WalletServiceImpl implements WalletService {
         transactionRepository.save(
                 Transaction.builder()
                         .walletId(wallet.getId())
-                        .type(TransactionType.WITHDRAW.name())
+                        .type(TransactionType.BUY.name())
                         .amount(amount)
                         .balance(wallet.getBalance())
                         .description("Rút tiền từ ví")

@@ -115,7 +115,7 @@ public class DeliveryAddressServiceImpl implements DeliveryAddressService {
     public ResponseEntity<BaseResponse<DeliveryAddressResponse>> detail(String id) {
         return responseFactory.success("Success", deliveryMapper.entityToResponse(
                 repository.findById(id)
-                        .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, "Địa chỉ không tồn tại"))
+                        .orElse(new DeliveryAddress())
         ));
     }
 

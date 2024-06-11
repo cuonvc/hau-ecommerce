@@ -173,7 +173,7 @@ public class OrderServiceImpl implements OrderService {
 
         return response != null
                 ? responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().response(response).build())
-                : responseFactory.fail(HttpStatus.BAD_REQUEST, "FAILED", null);
+                : responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().build());
     }
 
     private Cart validCartMapProduct(String cartId, List<String> productIds) {
@@ -287,7 +287,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         //refund to wallet
-        if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+        if ((order.getPaymentType().equals(PaymentType.WALLET.name()) || order.getPaymentType().equals(PaymentType.ZALO_PAY.name())) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
             Wallet wallet = walletService.customerRefund(order);
             transactionService.create(TransactionType.REFUND,
                     "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet, order.getAmount());

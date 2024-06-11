@@ -1,6 +1,7 @@
 package com.kientruchanoi.ecommerce.payment_gateway.service;
 
 
+import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZaloPayCallbackRequest;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZpPaymentRequest;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZaloGetListBankResponse;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZpPaymentResponse;
@@ -11,5 +12,8 @@ import java.util.List;
 
 public interface ZaloPayService {
     List<ZaloGetListBankResponse> getListBank() throws URISyntaxException, IOException;
+
     ZpPaymentResponse createOrder(ZpPaymentRequest request) throws IOException;
+
+    String receiveOrderStatus(String jsonString);
 }

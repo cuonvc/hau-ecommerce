@@ -3,11 +3,13 @@ package com.kientruchanoi.ecommerce.payment_gateway.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ItemRequest;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZaloPayCallbackRequest;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZpPaymentRequest;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZaloGetListBankResponse;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZpPaymentResponse;
 import com.kientruchanoi.ecommerce.payment_gateway.service.ZaloPayService;
 import com.kientruchanoi.ecommerce.payment_gateway.utils.zalopay.HMACUtil;
+import jakarta.xml.bind.DatatypeConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -22,6 +24,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -34,6 +38,16 @@ import static com.kientruchanoi.ecommerce.payment_gateway.utils.Constant.ZaloCon
 @Service
 @Slf4j
 public class ZaloPayServiceImpl implements ZaloPayService {
+
+    private static final String ZALOPAY_CALLBACK_URL = "https://viper-chief-secondly.ngrok-free.app/api/payment/callback/zalopay";
+
+    private String keyCallback = "eG4r0GcoNtRGbO8";
+    private Mac HmacSHA256;
+
+    public ZaloPayServiceImpl() throws Exception {
+        HmacSHA256 = Mac.getInstance("HmacSHA256");
+        HmacSHA256.init(new SecretKeySpec(keyCallback.getBytes(), "HmacSHA256"));
+    }
 
     @Override
     public List<ZaloGetListBankResponse> getListBank() throws URISyntaxException, IOException {
@@ -137,6 +151,7 @@ public class ZaloPayServiceImpl implements ZaloPayService {
                 put("description", "HAU Ecommerce - #" + random_id);
                 put("bank_code", "zalopayapp"); //chỗ này hiện đang là bankcode của tài khoản ngân hàng liên kết với app demo, nếu được sử dụng thật thì nó sẽ là tài khoản admin hệ thống
                 put("item", itemsJson);
+                put("callback_url", ZALOPAY_CALLBACK_URL);
                 put("embed_data", new JSONObject(embed_data).toString());
             }};
         } catch (JsonProcessingException e) {
@@ -179,6 +194,41 @@ public class ZaloPayServiceImpl implements ZaloPayService {
                 .zpTransToken(result.get("zp_trans_token").toString())
                 .returnCode((Integer) result.get("return_code"))
                 .build();
+    }
+
+    @Override
+    public String receiveOrderStatus(String jsonStr) {
+        JSONObject result = new JSONObject();
+
+        try {
+            JSONObject cbdata = new JSONObject(jsonStr);
+            String dataStr = cbdata.getString("data");
+            String reqMac = cbdata.getString("mac");
+
+            byte[] hashBytes = HmacSHA256.doFinal(dataStr.getBytes());
+            String mac = DatatypeConverter.printHexBinary(hashBytes).toLowerCase();
+
+            // kiểm tra callback hợp lệ (đến từ ZaloPay server)
+            if (!reqMac.equals(mac)) {
+                // callback không hợp lệ
+                result.put("return_code", -1);
+                result.put("return_message", "mac not equal");
+            } else {
+                // thanh toán thành công
+                // merchant cập nhật trạng thái cho đơn hàng
+                JSONObject data = new JSONObject(dataStr);
+                log.warn("update order's status = success where app_trans_id = " + data.getString("app_trans_id"));
+
+                result.put("return_code", 1);
+                result.put("return_message", "success");
+            }
+        } catch (Exception ex) {
+            result.put("return_code", 0); // ZaloPay server sẽ callback lại (tối đa 3 lần)
+            result.put("return_message", ex.getMessage());
+        }
+
+        // thông báo kết quả cho ZaloPay server
+        return result.toString();
     }
 
     private String getCurrentTimeString(String format) {

@@ -92,9 +92,9 @@ public class CommonServiceImpl implements CommonService {
                         new ParameterizedTypeReference<BaseResponse<ProductResponse>>() {
                         }
                 ).getBody()).getData()
-        ).orElseThrow(() -> new ResourceNotFoundException("Product", "id", id));
+        ).orElse(new ProductResponse());
 
-        response.setUser(getUserInfo(response.getUser().getId()));
+        response.setUser(response.getUser() != null ? getUserInfo(response.getUser().getId()) : null);
         return response;
     }
 

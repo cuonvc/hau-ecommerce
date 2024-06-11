@@ -5,6 +5,7 @@ import com.kientruchanoi.ecommerce.orderservicecore.service.OrderService;
 import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.OrderStatus;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
