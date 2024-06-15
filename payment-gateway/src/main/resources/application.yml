@@ -29,3 +29,13 @@ spring:
       kafka:
         binder:
           brokers: ${KAFKA_HOST}:${KAFKA_PORT}
+
+payment:
+  vnPay:
+    url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+    tmnCode: 58X4B4HP
+    secretKey: VRLDWNVWDNPCOEPBZUTWSEDQAGXJCNGZ
+    returnUrl: https://viper-chief-secondly.ngrok-free.app/api/payment/callback/vnpay
+    version: 2.1.0
+    command: pay
+    orderType: other

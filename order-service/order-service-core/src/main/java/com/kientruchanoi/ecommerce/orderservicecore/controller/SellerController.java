@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
@@ -17,6 +19,11 @@ public class SellerController {
     @PutMapping("/accept/{id}")
     public ResponseEntity<BaseResponse<OrderResponseDetail>> accept(@PathVariable("id") String id) {
         return orderService.accept(id);
+    }
+
+    @PutMapping("/accept/list/{ids}")
+    public ResponseEntity<BaseResponse<String>> acceptMultipleOrder(@PathVariable("ids") List<String> ids) {
+        return orderService.acceptMultiple(ids);
     }
 
     @PutMapping("/reject/{id}")

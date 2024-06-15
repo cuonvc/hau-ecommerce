@@ -3,6 +3,7 @@ package com.kientruchanoi.ecommerce.payment_gateway.service;
 
 import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZaloPayCallbackRequest;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZpPaymentRequest;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.response.VNPayPaymentResponse;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZaloGetListBankResponse;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZpPaymentResponse;
 

@@ -21,14 +21,17 @@ import com.kientruchanoi.ecommerce.orderserviceshare.enumerate.*;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.request.OrderRequest;
 import com.kientruchanoi.ecommerce.orderserviceshare.payload.response.OrderResponseDetail;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ItemRequest;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.request.VNPayPaymentRequest;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.request.ZpPaymentRequest;
+import com.kientruchanoi.ecommerce.payment_gateway.payload.response.VNPayPaymentResponse;
 import com.kientruchanoi.ecommerce.payment_gateway.payload.response.ZpPaymentResponse;
 import com.kientruchanoi.ecommerce.productserviceshare.payload.response.ProductResponse;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.cloud.stream.function.StreamBridge;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -43,9 +46,11 @@ import java.util.stream.Collectors;
 import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.FirebaseData.*;
 import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.HttpMessage.ACCESS_DENIED;
 import static com.kientruchanoi.ecommerce.orderservicecore.util.Constants.OrderStatus.*;
+import static com.kientruchanoi.ecommerce.orderserviceshare.enumerate.PaymentType.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -85,9 +90,7 @@ public class OrderServiceImpl implements OrderService {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Số lượng sản phẩm không đủ");
             } else if (p.getUser().getId().equals(currentUserId)) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Bạn không thể tự tăng traffic sản phẩm của mình =))");
-            } else if (!request.getPaymentType().equals(PaymentType.WALLET)
-                    && !request.getPaymentType().equals(PaymentType.CASH)
-                    && !request.getPaymentType().equals(PaymentType.ZALO_PAY)) {
+            } else if (!List.of(WALLET, CASH, ZALO_PAY, VN_PAY).contains(request.getPaymentType())) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Phương thức thanh toán không hợp lệ");
             }
         });
@@ -97,7 +100,7 @@ public class OrderServiceImpl implements OrderService {
             amount += (cartProductRepository.countQuantityOfProductInCart(cart.getId(), p.getId()) * p.getStandardPrice());
         }
 
-        if (request.getPaymentType().equals(PaymentType.WALLET)) {
+        if (request.getPaymentType().equals(WALLET)) {
             if (walletRepository.findByUserId(currentUserId)
                     .orElse(walletService.walletBuilder(currentUserId)).getBalance() < amount) {
                 throw new APIException(HttpStatus.BAD_REQUEST, "Số dư không đủ");
@@ -136,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
         }).toList();
 
         //change balance for customer
-        if (request.getPaymentType().equals(PaymentType.WALLET)) {
+        if (request.getPaymentType().equals(WALLET)) {
             walletService.reduceBalanceByOrder(currentUserId, amount, responses.stream().map(o -> o.getId()).toList());
 
             //create transactions for customer (one transaction map to many order)
@@ -147,9 +150,10 @@ public class OrderServiceImpl implements OrderService {
                     walletRepository.findByUserId(currentUserId).get(), amount);
         }
 
-        ZpPaymentResponse response = null;
-        if (request.getPaymentType().equals(PaymentType.ZALO_PAY)) {
-            response = Objects.requireNonNull(restTemplate.postForEntity(
+        ZpPaymentResponse zalopayResponse = null;
+        VNPayPaymentResponse vnPayResponse = null;
+        if (request.getPaymentType().equals(ZALO_PAY)) {
+            zalopayResponse = Objects.requireNonNull(restTemplate.postForEntity(
                     "http://PAYMENT-GATEWAY/api/payment/zalopay",
                     ZpPaymentRequest.builder()
                             .amount(responses.stream().map(OrderResponseDetail::getAmount).reduce(0, Integer::sum))
@@ -157,6 +161,16 @@ public class OrderServiceImpl implements OrderService {
                             .build(),
                     ZpPaymentResponse.class
             ).getBody());
+        } else if (request.getPaymentType().equals(VN_PAY)) {
+            ResponseEntity<?> responseEntity = Objects.requireNonNull(restTemplate.postForEntity(
+                    "http://PAYMENT-GATEWAY/api/payment/vnpay",
+                    VNPayPaymentRequest.builder()
+                            .amount(responses.stream().map(OrderResponseDetail::getAmount).reduce(0, Integer::sum))
+                            .bankCode("NCB")
+                            .build(),
+                    VNPayPaymentResponse.class
+            ));
+            vnPayResponse = (VNPayPaymentResponse) responseEntity.getBody();
         }
 
         //delete products in the cart
@@ -171,9 +185,16 @@ public class OrderServiceImpl implements OrderService {
             commonService.sendNotification(firebaseData, o.getSeller().getId());
         });
 
-        return response != null
-                ? responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().response(response).build())
-                : responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().build());
+        return switch (request.getPaymentType()) {
+            case ZALO_PAY:
+                yield responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().response(zalopayResponse).build());
+            case VN_PAY:
+                yield responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().response(vnPayResponse).build());
+            case WALLET, CASH:
+                yield responseFactory.success(ORDER_CREATE_SUCCESS, OrderCreatedResponse.builder().build());
+            default:
+                yield responseFactory.fail(HttpStatus.BAD_REQUEST, "Phương thức thanh toán sai", null);
+        };
     }
 
     private Cart validCartMapProduct(String cartId, List<String> productIds) {
@@ -287,7 +308,8 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         //refund to wallet
-        if ((order.getPaymentType().equals(PaymentType.WALLET.name()) || order.getPaymentType().equals(PaymentType.ZALO_PAY.name())) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+        if (List.of(WALLET.name(), ZALO_PAY.name(), VN_PAY.name()).contains(order.getPaymentType())
+                && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
             Wallet wallet = walletService.customerRefund(order);
             transactionService.create(TransactionType.REFUND,
                     "Hoàn tiền cho do hàng bị huỷ", List.of(order.getId()), wallet, order.getAmount());
@@ -311,7 +333,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponse<OrderResponseDetail>> accept(String id) {
+        return responseFactory.success("Đã tiếp nhận đơn hàng", buildResponseDetail(baseAccept(id)));
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<BaseResponse<String>> acceptMultiple(List<String> ids) {
+        ids.forEach(this::baseAccept);
+        return responseFactory.success("Đã tiếp nhận đơn hàng", "OK");
+    }
+
+    private Order baseAccept(String id) {
         Order order = sellerAction(id,
                 Status.ACTIVE,
                 OrderStatus.PENDING, //old status
@@ -330,11 +364,11 @@ public class OrderServiceImpl implements OrderService {
         firebaseData.put(TITLE, NotificationType.ORDER_ACCEPTED.getMessage());
         firebaseData.put(BODY, "Đơn hàng " + order.getId() + " đã được tiếp nhận.");
         commonService.sendNotification(firebaseData, order.getCustomerId());
-
-        return responseFactory.success("Đã tiếp nhận đơn hàng", buildResponseDetail(order));
+        return order;
     }
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponse<OrderResponseDetail>> reject(String id) {
         Order order = sellerAction(id,
                 Status.ACTIVE,
@@ -343,7 +377,8 @@ public class OrderServiceImpl implements OrderService {
                 OrderStatus.REJECTED);
 
         //refund for customer
-        if (order.getPaymentType().equals(PaymentType.WALLET.name()) && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
+        if (List.of(WALLET.name(), ZALO_PAY.name(), VN_PAY.name()).contains(order.getPaymentType())
+                && order.getPaymentStatus().equals(PaymentStatus.PAID.name())) {
             Wallet wallet = walletService.customerRefund(order);
             transactionService.create(TransactionType.REFUND,
                     "Hoàn tiền cho do hàng bị từ chối", List.of(order.getId()), wallet, order.getAmount());
@@ -360,13 +395,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<BaseResponse<OrderResponseDetail>> delivering(String id) {
         Order order = sellerAction(id,
                 Status.ACTIVE,
                 OrderStatus.ACCEPTED,
                 ORDER_CANNOT_DELIVERING,
                 OrderStatus.DELIVERING);
-        orderRepository.save(order);
+        entityManager.persist(order);
 
         //push notification
         Map<String, String> firebaseData = new HashMap<>();
@@ -407,7 +443,8 @@ public class OrderServiceImpl implements OrderService {
         return responseFactory.success("Đã nhận được hàng", buildResponseDetail(order));
     }
 
-    private Order sellerAction(String orderId, Status objectStatus,
+    @Transactional
+    public Order sellerAction(String orderId, Status objectStatus,
                                OrderStatus currentOrderStatus, String throwMessage,
                                OrderStatus targetStatus) {
         String currentUserId = commonService.getCurrentUserId();
@@ -420,7 +457,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         order.setOrderStatus(targetStatus.name());
-        return orderRepository.save(order);
+        entityManager.persist(order);
+        return order;
     }
 
     private OrderResponseDetail buildResponseDetail(Order order) {
