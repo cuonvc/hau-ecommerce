@@ -295,7 +295,7 @@ public class ProductServiceImpl implements ProductService {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
-        Page<Product> productPage = productRepository.findAllByUserIdAndIsActive(pageable, userDetail.getId(), Status.ACTIVE.name());
+        Page<Product> productPage = productRepository.findAllByUserId(pageable, userDetail.getId()); //the seller can view previously deleted products
 
         return responseFactory.success("Success", paging(productPage));
     }

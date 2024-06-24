@@ -24,6 +24,8 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     Page<Product> findByIsActive(Pageable pageable, String status);
 
+    Page<Product> findAllByUserId(Pageable pageable, String userId);
+
     Page<Product> findAllByUserIdAndIsActive(Pageable pageable, String userId, String status);
 
     @Query("SELECT p FROM Product p " +
