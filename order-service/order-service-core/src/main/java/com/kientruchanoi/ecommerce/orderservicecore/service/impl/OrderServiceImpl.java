@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
     private static final String ORDER_TYPE_BUY = "BUY";
 
     @Override
-    @Transactional
+    @Transactional // => sql transaction
     public ResponseEntity<BaseResponse<OrderCreatedResponse>> create(OrderRequest request) {
         Cart cart = validCartMapProduct(request.getCartId(), request.getProductIds());
 
@@ -140,8 +140,11 @@ public class OrderServiceImpl implements OrderService {
 
         //change balance for customer
         if (request.getPaymentType().equals(WALLET)) {
+            //tại đây người mua sẽ bị trừ tiền trong ví
             walletService.reduceBalanceByOrder(currentUserId, amount, responses.stream().map(o -> o.getId()).toList());
 
+            //ví dụ giao dich bị lỗi tại đây -> tầng persist sẽ rollback data (cụ thể là số tiền đã bị trừ) không cho lưu vào db nữa
+            //transaction có hiệu lực tới khi method kết thúc, all data sẽ được commit xuống database
             //create transactions for customer (one transaction map to many order)
             transactionService.create(
                     TransactionType.BUY,
