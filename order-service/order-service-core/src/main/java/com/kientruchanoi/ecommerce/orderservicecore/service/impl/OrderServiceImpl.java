@@ -345,12 +345,21 @@ public class OrderServiceImpl implements OrderService {
         return responseFactory.success("Đã tiếp nhận đơn hàng", "OK");
     }
 
-    private Order baseAccept(String id) {
+    @Transactional
+    protected Order baseAccept(String id) {
         Order order = sellerAction(id,
                 Status.ACTIVE,
                 OrderStatus.PENDING, //old status
                 ORDER_CANNOT_ACCEPT,
                 OrderStatus.ACCEPTED); //current status
+
+        ProductResponse product = commonService.getProductInfo(order.getProductId());
+        order.setProductCode(product.getCode());
+        order.setProductName(product.getName());
+        order.setProductDescription(product.getDescription());
+        order.setProductBrand(product.getBrand());
+        order.setProductLatestPrice(product.getStandardPrice());
+        entityManager.persist(order);
 
         //reduce product quantity
         Message<Integer> message = MessageBuilder.withPayload(order.getQuantity())

@@ -39,6 +39,21 @@ public class Order {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "product_code")
+    private String productCode;
+
+    @Column(name = "product_name")
+    private String productName;
+
+    @Column(name = "product_description")
+    private String productDescription;
+
+    @Column(name = "product_brand")
+    private String productBrand;
+
+    @Column(name = "product_latest_price")
+    private double productLatestPrice;
+
     @Column(name = "amount")
     private double amount;
 
