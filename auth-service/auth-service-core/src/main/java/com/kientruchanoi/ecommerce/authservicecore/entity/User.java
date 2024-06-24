@@ -85,4 +85,10 @@ public class User {
 
     @Column(name = "role")
     private String role = Role.USER.toString();
+
+    @Column(name = "role_assigned_reason")
+    private String assignedReason;
+
+    @Column(name = "role_assigned_by")
+    private String assignedBy;
 }

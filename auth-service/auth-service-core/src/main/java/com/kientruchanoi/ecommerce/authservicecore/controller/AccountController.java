@@ -72,8 +72,10 @@ public class AccountController {
     }
 
     @PutMapping("/assign")
-    public ResponseEntity<BaseResponse<String>> assign(@RequestParam("role") String role, @RequestParam("user_id") String userId) {
-        return userService.assignRole(role.toUpperCase(), userId);
+    public ResponseEntity<BaseResponse<String>> assign(@RequestParam("role") String role,
+                                                       @RequestParam("user_id") String userId,
+                                                       @RequestBody(required = false) String reason) {
+        return userService.assignRole(role.toUpperCase(), userId, reason);
     }
 
     @GetMapping("/admin-list")

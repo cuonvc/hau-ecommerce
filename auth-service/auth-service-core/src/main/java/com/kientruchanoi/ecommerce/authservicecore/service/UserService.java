@@ -42,7 +42,7 @@ public interface UserService {
 
     void saveChangeImage(String userId, String field, String path);
 
-    ResponseEntity<BaseResponse<String>> assignRole(String role, String userId);
+    ResponseEntity<BaseResponse<String>> assignRole(String role, String userId, String reason);
 
     ResponseEntity<BaseResponse<List<UserResponse>>> getAdminList();
 }

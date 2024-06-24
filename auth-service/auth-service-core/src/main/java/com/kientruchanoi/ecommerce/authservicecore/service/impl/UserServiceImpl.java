@@ -354,7 +354,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<BaseResponse<String>> assignRole(String role, String userId) {
+    public ResponseEntity<BaseResponse<String>> assignRole(String role, String userId, String reason) {
         CustomUserDetail userDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         log.info("Trigger - {}", "");
         if (userId.equals(userDetail.getId())) {
@@ -378,6 +378,8 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setRole(role);
+        user.setAssignedBy(userDetail.getId());
+        user.setAssignedReason(reason);
         userRepository.save(user);
 
         return responseFactory.success("Success", role);
